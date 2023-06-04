@@ -5,6 +5,10 @@ from pyrogram import Client, filters, enums
 from wroxen import Wroxen
 from wroxen.text import ChatMSG
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 @Wroxen.on_callback_query()
 async def callback_data(bot, update: CallbackQuery):
 
