@@ -6,6 +6,7 @@ from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import set_caption, delete_caption, get_caption
 import logging
 
+media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
 
 
