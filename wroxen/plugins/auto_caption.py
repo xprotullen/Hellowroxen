@@ -21,8 +21,11 @@ async def set_caption_command(bot, message):
     channel_id = command_parts[0].split()[1]
     caption = command_parts[1]
 
-    set_caption(user_id, channel_id, caption)
-    await message.reply(f"Caption set for channel {channel_id}.")
+    try:
+        set_caption(user_id, channel_id, caption)
+        await message.reply(f"Caption set for channel {channel_id}.")
+    except ValueError:
+        await message.reply("Channel already added in the database.")
 
     
 @Client.on_message(filters.command("delete_info"))
