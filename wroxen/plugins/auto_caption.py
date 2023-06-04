@@ -9,21 +9,37 @@ import logging
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
 
+user_states = {}
+
 
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
     user_id = message.from_user.id
-    command_parts = message.text.split(" ", 3)
+    user_states[user_id] = {"step": 0, "channel_id": None, "caption": None}
 
-    if len(command_parts) < 4:
-        await message.reply("Please provide both the channel ID and the caption.")
+    await message.reply("Send your channel ID:")
+    user_states[user_id]["step"] = 1
+
+@Client.on_message(filters.private & ~filters.command)
+async def handle_private_message(bot, message):
+    user_id = message.from_user.id
+
+    if user_id not in user_states:
         return
 
-    channel_id = command_parts[1]
-    caption = command_parts[2]
+    state = user_states[user_id]
 
-    set_caption(user_id, channel_id, caption)
-    await message.reply(f"Caption set for channel {channel_id}.")
+    if state["step"] == 1:
+        state["channel_id"] = message.text
+        await message.reply("Your channel ID has been recorded. Now send your channel caption:")
+        state["step"] = 2
+    elif state["step"] == 2:
+        state["caption"] = message.text
+        channel_id = state["channel_id"]
+        caption = state["caption"]
+        set_caption(user_id, channel_id, caption)
+        await message.reply(f"Your caption `{caption}` has been set for channel `{channel_id}`.")
+        del user_states[user_id]
 
     
 @Client.on_message(filters.command("delete_info"))
