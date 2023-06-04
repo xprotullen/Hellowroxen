@@ -1,3 +1,4 @@
+import os
 from .wroxen import Wroxen
 
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6018676334:AAGRzxeeL7cbPb2noJowezSiOyMC8sVlXzc")
