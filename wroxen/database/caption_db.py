@@ -10,7 +10,10 @@ channels_collection = db["channels"]
 captions_collection = db["captions"]
 
 def set_caption(user_id, channel_id, caption):
-    captions_collection.update_one({"user_id": user_id, "channel_id": channel_id}, {"$set": {"caption": caption}}, upsert=True)
+    captions_collection.update_one(
+        {"user_id": user_id, "channel_id": channel_id},
+        {"$set": {"caption": caption}},
+        upsert=True
 
 def delete_caption(user_id, channel_id):
     captions_collection.delete_one({"user_id": user_id, "channel_id": channel_id})
