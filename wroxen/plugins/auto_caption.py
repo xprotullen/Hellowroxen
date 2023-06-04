@@ -2,7 +2,7 @@
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
-from wroxen import Wroxen
+from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import set_caption, delete_caption, get_caption
 import logging
 
