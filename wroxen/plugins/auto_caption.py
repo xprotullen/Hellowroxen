@@ -62,6 +62,9 @@ async def delete_caption_command(bot, message):
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = message.chat.id
+    if message.from_user is None:
+        return
+
     user_caption = get_caption(message.from_user.id, channel_id)
 
     if user_caption:
@@ -90,3 +93,4 @@ async def editing(bot, message):
                 )
         except:
             pass
+
