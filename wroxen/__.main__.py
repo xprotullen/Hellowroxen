@@ -1,5 +1,7 @@
 # (©) TheLx0980
 
+import logging
+import logging.config
 import os
 
 
@@ -23,6 +25,10 @@ DB_URL = os.environ.get("DB_URL", "")
 #-------------------------------------------------------------------------------------------------#
 from pyrogram import Client, __version__ 
 
+# Get logging configurations
+logging.config.fileConfig('logging.conf')
+logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 class Wroxen(Client):
     def __init__(self):
