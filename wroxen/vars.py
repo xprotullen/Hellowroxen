@@ -17,6 +17,11 @@ OWNER_ID = int(os.environ.get("OWNER_ID", ""))
 
 LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
 
+
+#-------------------------------------------------------------------------------------------------#
+from pyrogram import Client, __version__ 
+
+
 class Wroxen(Client):
     def __init__(self):
         super().__init__(
