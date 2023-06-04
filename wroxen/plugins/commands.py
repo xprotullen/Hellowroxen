@@ -2,7 +2,7 @@
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import filters
-from wroxen import Wroxen
+from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
 import logging
 
