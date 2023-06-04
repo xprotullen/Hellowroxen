@@ -25,7 +25,7 @@ async def set_caption_command(bot, message):
     await message.reply(f"Caption set for channel {channel_id}.")
 
     
- @Client.on_message(filters.command("delete_info"))
+@Client.on_message(filters.command("delete_info"))
 async def delete_info_command(bot, message):
     user_id = message.from_user.id
     command_parts = message.text.split(" ", 2)
