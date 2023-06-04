@@ -1,6 +1,6 @@
 # (c) TheLx0980
 
-class CHATMSG(object):
+class ChatMSG(object):
 
       # Start text
       START_TXT = """
