@@ -22,7 +22,7 @@ async def start(client, message):
     )
     
 
-@Wroxen.on_message(filters.command("about") & filters.private & filters.incoming)
+@Wroxen.on_message(filters.command("help") & filters.private & filters.incoming)
 async def about(client, message):
     await message.reply(
         text=ChatMSG.HELP_TXT,
