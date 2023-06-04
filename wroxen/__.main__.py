@@ -4,7 +4,7 @@ import os
 
 
 #Bot token @Botfather
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6018676334:AAGRzxeeL7cbPb2noJowezSiOyMC8sVlXzc")
 
 #Your API ID from my.telegram.org
 APP_ID = int(os.environ.get("APP_ID", ""))
@@ -13,9 +13,9 @@ APP_ID = int(os.environ.get("APP_ID", ""))
 API_HASH = os.environ.get("API_HASH", "")
 
 #OWNER ID
-OWNER_ID = int(os.environ.get("OWNER_ID", ""))
+OWNER_ID = int(os.environ.get("OWNER_ID", 5326801541))
 
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+
 
 
 #-------------------------------------------------------------------------------------------------#
@@ -39,7 +39,7 @@ class Wroxen(Client):
         me = await self.get_me()
         logging.info(f"@{me.username} Is Started!")
         try:
-            await self.send_message(LOG_CHANNEL, "Bot Restarted!")
+            await self.send_message(OWNER_ID, "Bot Restarted!")
         except:
             pass
 
