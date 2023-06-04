@@ -1,8 +1,7 @@
 # (©) TheLx0980 
 
 from pyrogram import Client, enums, __version__
-
-from .vars import API_HASH, APP_ID, LOGGER, BOT_TOKEN 
+from wroxen.vars import API_HASH, APP_ID, LOGGER, BOT_TOKEN 
 
 class Wroxen(Client):
 
