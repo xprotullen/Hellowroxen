@@ -55,4 +55,4 @@ class Wroxen(Client):
         await super().stop()              
         logging.info("Bot stopped. Bye.")
         
-Wroxen().run()
+
