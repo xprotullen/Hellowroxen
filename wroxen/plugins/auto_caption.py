@@ -82,9 +82,7 @@ async def editing(bot, message):
                 filename = fname.replace("_", ".")
                 file_caption = f"`{filename}`"
 
-        try:
-            if caption_position == "top":
-                await bot.edit_message_caption(
+        try:                            await bot.edit_message_caption(
                     chat_id=message.chat.id,
                     message_id=message.message_id,
                     caption=file_caption + "\n" + caption_text,
