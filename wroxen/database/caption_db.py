@@ -1,7 +1,7 @@
 # @thelx0980
 
 from pymongo import MongoClient
-from wroxen import DB_URL
+from wroxen.vars import DB_URL
 
 # Set up MongoDB connection 
 client = MongoClient(DB_URL)
