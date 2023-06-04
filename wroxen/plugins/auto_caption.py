@@ -69,7 +69,7 @@ async def editing(bot, message):
     if user_caption:
         try:
             media = message.document or message.video or message.audio
-            caption_text = user_caption
+            caption_text = user_caption.get("caption")
         except:
             caption_text = ""
             pass
@@ -82,12 +82,13 @@ async def editing(bot, message):
                 filename = fname.replace("_", ".")
                 file_caption = f"`{filename}`"
 
-        try:                            await bot.edit_message_caption(
-                    chat_id=message.chat.id,
-                    message_id=message.message_id,
-                    caption=file_caption + "\n" + caption_text,
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
+        try:
+            await bot.edit_message_caption(
+                chat_id=message.chat.id,
+                message_id=message.message_id,
+                caption=file_caption + "\n" + caption_text,
+                parse_mode=enums.ParseMode.MARKDOWN
+            )
         except:
             pass
 
