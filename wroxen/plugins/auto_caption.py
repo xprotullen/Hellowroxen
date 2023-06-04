@@ -58,10 +58,7 @@ async def delete_caption_command(bot, message):
     else:
         await message.reply("No caption found for the specified channel.")
 
-def delete_caption(user_id, channel_id):
-    result = captions_collection.delete_one({"user_id": user_id, "channel_id": channel_id})
-    return result.deleted_count > 0
-  
+
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = message.chat.id
