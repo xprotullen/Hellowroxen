@@ -15,6 +15,9 @@ help message
 
 @lx0980AI
 """
-   
+
+      ABOUT_TXT = """
+About me function 
+"""
     
       
