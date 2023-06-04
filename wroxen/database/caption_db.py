@@ -10,6 +10,9 @@ channels_collection = db["channels"]
 captions_collection = db["captions"]
 
 def set_caption(user_id, channel_id, caption):
+    existing_caption = captions_collection.find_one({"channel_id": channel_id})
+    if existing_caption:
+        raise ValueError("Channel already added in the database.")
     captions_collection.update_one({"user_id": user_id, "channel_id": channel_id}, {"$set": {"caption": caption}}, upsert=True)
 
 def delete_caption(user_id, channel_id):
