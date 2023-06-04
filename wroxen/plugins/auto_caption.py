@@ -3,7 +3,7 @@
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen import Wroxen
-
+from wroxen.database.caption_db import set_caption, delete_caption, get_caption
 
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
