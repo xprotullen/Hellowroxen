@@ -38,7 +38,7 @@ class Wroxen(Client):
             api_hash=API_HASH,
             bot_token=TG_BOT_TOKEN,
             workers=50,
-            plugins={"root": "plugins"},
+            plugins={"root": "wroxen/plugins"},
             sleep_threshold=5
         )
 
