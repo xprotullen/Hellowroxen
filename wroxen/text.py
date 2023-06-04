@@ -3,15 +3,17 @@
 class CHATMSG(object):
 
       # Start text
-      START_MSG = """
+      START_TXT = """
 नमस्ते {}
       
 मेरा नाम रॉक्सन है, मेरे बारे में और जानने के लिए नीचे दिए हुए मदद बटन पर दबाए| 
       """
       
       #help text
-      HELP_MSG = """
+      HELP_TXT = """
 help message 
+
+@lx0980AI
 """
    
     
