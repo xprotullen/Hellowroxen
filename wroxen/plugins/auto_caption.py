@@ -1,4 +1,5 @@
-# @thelx0980
+# (c) @thelx0980
+
 from wroxen.text import ChatMSG
 from wroxen.chek import get_channel_info
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -91,7 +92,7 @@ async def editing(bot, message):
         try:
             await bot.edit_message_caption(
                 chat_id=channel_id,
-                message_id=message.message_id,
+                message_id=message.id,
                 caption=file_caption + "\n" + caption_text,
                 parse_mode=enums.ParseMode.MARKDOWN
             )
