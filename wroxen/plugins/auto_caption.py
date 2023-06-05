@@ -5,6 +5,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import set_caption, delete_caption, get_caption
+
 import logging
 
 media_filter = filters.document | filters.video | filters.audio
@@ -29,19 +30,13 @@ async def set_caption_command(bot, message):
         await message.reply("Channel already added in the database.")
 
     
-@Client.on_message(filters.command("delete_info"))
-async def delete_info_command(bot, message):
+@Client.on_message(filters.command("cleardb"))
+async def delete_all_info_command(bot, message):
     user_id = message.from_user.id
-    command_parts = message.text.split(" ", 2)
+    channels_collection.delete_many({"user_id": user_id})
+    captions_collection.delete_many({"user_id": user_id})
 
-    if len(command_parts) < 2:
-        await message.reply("Please provide the channel ID to delete.")
-        return
-
-    channel_id = command_parts[1]
-
-    delete_info(user_id, channel_id)
-    await message.reply(f"Channel ID and caption deleted for channel {channel_id}.")
+    await message.reply("All database info deleted.")
 
 
 @Client.on_message(filters.command("delete_caption"))
