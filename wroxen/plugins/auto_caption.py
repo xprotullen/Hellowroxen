@@ -60,11 +60,7 @@ async def delete_caption_command(bot, message):
 
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
-    if message.from_user is None:
-        return
-
-    # Get the user ID
-    user_id = message.from_user.id
+    user_id = message.chat.id
 
     # Retrieve the channel ID and caption from the database
     channel_id, caption = get_channel_info(user_id)
