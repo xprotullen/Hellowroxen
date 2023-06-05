@@ -80,7 +80,7 @@ async def delete_caption_command(bot, message):
         await message.reply("No caption found for the specified channel.")
 
 
-@Client.on_message(filters.channel & (media_filter))
+@Client.on_message(filters.chat(-1001986761426) & (media_filter))
 async def editing(bot, message):
     user_id = message.chat.id
 
@@ -120,7 +120,7 @@ async def editing(bot, message):
         await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id))
 
 
-@Client.on_message(filters.channel & ~filters.edited)
+@Client.on_message(filters.channel)
 async def forward_message_to_channel(bot, message):
     channel_id = message.chat.id
     caption_text = get_caption(channel_id)
