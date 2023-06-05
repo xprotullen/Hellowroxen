@@ -64,16 +64,19 @@ async def delete_caption_command(bot, message):
 
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
-    channel_id = message.chat.id
     if message.from_user is None:
         return
 
-    user_caption = get_caption(message.from_user.id, channel_id)
+    # Get the user ID
+    user_id = message.from_user.id
 
-    if user_caption:
+    # Retrieve the channel ID and caption from the database
+    channel_id, caption = get_channel_info(user_id)
+
+    if channel_id and caption:
         try:
             media = message.document or message.video or message.audio
-            caption_text = user_caption.get("caption")
+            caption_text = caption
         except:
             caption_text = ""
             pass
@@ -88,7 +91,7 @@ async def editing(bot, message):
 
         try:
             await bot.edit_message_caption(
-                chat_id=message.chat.id,
+                chat_id=channel_id,
                 message_id=message.message_id,
                 caption=file_caption + "\n" + caption_text,
                 parse_mode=enums.ParseMode.MARKDOWN
