@@ -77,9 +77,13 @@ async def editing(bot, message):
         try:
             media = message.document or message.video or message.audio
             caption_text = caption
+           
         except:
             caption_text = ""
             pass
+
+        if not channel_id.startswith("-100"):
+            channel_id = "-100" + channel_id
 
         if (message.document or message.video or message.audio):
             if message.caption:
@@ -98,4 +102,9 @@ async def editing(bot, message):
             )
         except:
             pass
+    else:        
+        await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id)
+
+
+
 
