@@ -82,22 +82,18 @@ async def delete_caption_command(bot, message):
 
 @Client.on_message(filters.chat(-1001986761426) & (media_filter))
 async def editing(bot, message):
-    user_id = message.chat.id
+    chat_id = message.chat.id
+    channel_id = "-100" + str(chat_id)
 
-    # Retrieve the channel ID and caption from the database
-    channel_id, caption = get_channel_info(user_id)
+    if is_channel_added(channel_id):
+        caption = get_caption(channel_id)
 
-    if channel_id and caption:
         try:
             media = message.document or message.video or message.audio
-            caption_text = caption
-           
+            caption_text = f"**{caption}**"
         except:
             caption_text = ""
             pass
-
-        if not channel_id.startswith("-100"):
-            channel_id = "-100" + channel_id
 
         if (message.document or message.video or message.audio):
             if message.caption:
@@ -109,43 +105,20 @@ async def editing(bot, message):
 
         try:
             await bot.edit_message_caption(
-                chat_id=channel_id,
+                chat_id=message.chat.id,
                 message_id=message.id,
                 caption=file_caption + "\n" + caption_text,
                 parse_mode=enums.ParseMode.MARKDOWN
             )
         except:
             pass
-    else:        
+    else:
         await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id))
 
 
-@Client.on_message(filters.channel)
-async def forward_message_to_channel(bot, message):
-    channel_id = message.chat.id
-    caption_text = get_caption(channel_id)
 
-    if caption_text:
-        forward_channel_id = -1001970089414  # Update with your desired forward channel ID
 
-        try:
-            media = message.document or message.video or message.audio
-            caption_text = caption_text.get("caption", "")
-        except:
-            pass
 
-        if (message.document or message.video or message.audio):
-            if message.caption:
-                file_caption = f"**{message.caption}**"
-            else:
-                fname = media.file_name
-                filename = fname.replace("_", ".")
-                file_caption = f"`{filename}`"
-
-        try:
-          #  await message.forward(chat_id=forward_channel_id)
-            await bot.send_message(chat_id=forward_channel_id, text=caption_text, parse_mode=enums.ParseMode.MARKDOWN)
-        except:
-            pass
+            
 
 
