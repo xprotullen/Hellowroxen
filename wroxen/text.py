@@ -19,5 +19,10 @@ help message
       ABOUT_TXT = """
 About me function 
 """
-    
+      NOT_FOUND_TXT = """
+आपके चैनल के लिए कोई कैप्शन नही मिला डेटाबेस में
+
+<b>चैनल नाम:</b> {}
+<b>चैनल आईडी:</b> <code>{}</code>
+"""
       
