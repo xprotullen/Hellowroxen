@@ -99,7 +99,7 @@ async def editing(bot, message):
         except:
             pass
     else:        
-        await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id)
+        await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id))
 
 
 
