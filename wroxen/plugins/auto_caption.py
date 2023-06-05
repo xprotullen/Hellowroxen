@@ -12,6 +12,24 @@ import logging
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
 
+
+@Client.on_message(filters.command("caption"))
+async def get_caption_command(bot, message):
+    user_id = message.from_user.id
+    command_parts = message.text.split(" ", 1)
+
+    if len(command_parts) != 2:
+        await message.reply("Invalid format. Please use the format `/caption {channel_id}`.")
+        return
+
+    channel_id = command_parts[1]
+    caption = get_caption(user_id, channel_id)
+
+    if caption:
+        await message.reply(f"The caption for channel {channel_id} is:\n{caption}")
+    else:
+        await message.reply(f"No caption found for channel {channel_id}.")
+
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
     user_id = message.from_user.id
