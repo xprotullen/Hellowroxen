@@ -82,8 +82,7 @@ async def delete_caption_command(bot, message):
 
 @Client.on_message(filters.chat(-1001986761426) & (media_filter))
 async def editing(bot, message):
-    chat_id = message.chat.id
-    channel_id = "-100" + str(chat_id)
+    channel_id = message.chat.id
 
     if is_channel_added(channel_id):
         caption = get_caption(channel_id)
