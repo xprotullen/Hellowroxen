@@ -3,23 +3,20 @@
 from pymongo import MongoClient
 from wroxen.vars import DB_URL
 
-# Set up MongoDB connection 
+# Set up MongoDB connection
 client = MongoClient(DB_URL)
 db = client["bot_caption_database"]
 channels_collection = db["channels"]
-captions_collection = db["captions"]
 
-def set_caption(user_id, channel_id, caption):
-    existing_caption = captions_collection.find_one({"channel_id": channel_id})
-    if existing_caption:
-        raise ValueError("Channel already added in the database.")
-    captions_collection.update_one({"user_id": user_id, "channel_id": channel_id}, {"$set": {"caption": caption}}, upsert=True)
+def add_channel(channel_id, caption):
+    channel_data = {"channel_id": channel_id, "caption": caption}
+    channels_collection.insert_one(channel_data)
 
-def delete_caption(user_id, channel_id):
-    captions_collection.delete_one({"user_id": user_id, "channel_id": channel_id})
+def delete_channel(channel_id):
+    channels_collection.delete_one({"channel_id": channel_id})
 
-def get_caption(user_id, channel_id):
-    caption_doc = captions_collection.find_one({"user_id": user_id, "channel_id": channel_id})
-    if caption_doc:
-        return caption_doc["caption"]
+def get_caption(channel_id):
+    channel_data = channels_collection.find_one({"channel_id": channel_id})
+    if channel_data:
+        return channel_data["caption"]
     return None
