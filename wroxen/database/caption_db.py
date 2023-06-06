@@ -20,3 +20,9 @@ def get_caption(channel_id):
     if channel_data:
         return channel_data["caption"]
     return None
+
+def update_caption(channel_id, new_caption):
+    channels_collection.update_one(
+        {"channel_id": channel_id},
+        {"$set": {"caption": new_caption}}
+    )
