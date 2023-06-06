@@ -1,11 +1,12 @@
 # (c) @thelx0980
 
+from wroxen.chek import is_channel_added
 from wroxen.text import ChatMSG
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
-    update_caption, is_channel_added
+    update_caption
 
 import logging
 
