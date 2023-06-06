@@ -5,7 +5,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
-    update_caption
+    update_caption, is_channel_added
 
 import logging
 
