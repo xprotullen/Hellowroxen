@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 @Client.on_message(filters.command("caption"))
 async def get_caption_command(bot, message):
-    user_id = message.from_user.id
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
@@ -23,16 +22,16 @@ async def get_caption_command(bot, message):
         return
 
     channel_id = command_parts[1]
-    caption = get_caption(user_id, channel_id)
+    caption = get_caption(channel_id)
 
     if caption:
         await message.reply(f"The caption for channel {channel_id} is:\n{caption}")
     else:
         await message.reply(f"No caption found for channel {channel_id}.")
 
+
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
-    user_id = message.from_user.id
     command_parts = message.text.split("::", 1)
 
     if len(command_parts) != 2:
@@ -46,25 +45,20 @@ async def set_caption_command(bot, message):
         channel_id = "-100" + channel_id
 
     try:
-        set_caption(user_id, channel_id, caption)
+        add_channel(channel_id, caption)
         await message.reply(f"Caption set for channel {channel_id}.\n\n{caption}")
     except ValueError:
         await message.reply("Channel already added in the database.")
 
 
-    
 @Client.on_message(filters.command("cleardb"))
 async def delete_all_info_command(bot, message):
-    user_id = message.from_user.id
-    channels_collection.delete_many({"user_id": user_id})
-    captions_collection.delete_many({"user_id": user_id})
-
+    channels_collection.delete_many({})
     await message.reply("All database info deleted.")
 
 
 @Client.on_message(filters.command("delete_caption"))
 async def delete_caption_command(bot, message):
-    user_id = message.from_user.id
     command_parts = message.text.split(" ", 2)
 
     if len(command_parts) < 2:
@@ -73,7 +67,7 @@ async def delete_caption_command(bot, message):
 
     channel_id = command_parts[1]
 
-    deleted = delete_caption(user_id, channel_id)
+    deleted = delete_channel(channel_id)
     if deleted:
         await message.reply(f"Caption deleted for channel {channel_id}.")
     else:
