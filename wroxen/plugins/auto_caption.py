@@ -1,7 +1,7 @@
 # (c) @thelx0980
 
 from wroxen.text import ChatMSG
-from wroxen.chek import get_channel_info
+from wroxen.chek import is_channel_added
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
