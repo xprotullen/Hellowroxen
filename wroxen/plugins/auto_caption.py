@@ -1,16 +1,41 @@
 # (c) @thelx0980
 
 from wroxen.text import ChatMSG
-from wroxen.chek import is_channel_added
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
-from wroxen.database.caption_db import set_caption, delete_caption, get_caption, captions_collection, channels_collection
+from wroxen.database.caption_db import set_caption, delete_caption, get_caption, captions_collection, channels_collection, \
+    is_channel_added
 
 import logging
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
+
+
+@Client.on_message(filters.command("update_caption"))
+async def update_caption_command(bot, message):
+    command_parts = message.text.split("::", 1)
+
+    if len(command_parts) != 2:
+        await message.reply("Invalid format. Please use the format `/update_caption {channel_id}::{new_caption}`.")
+        return
+
+    channel_id = command_parts[0].split()[1]
+    new_caption = command_parts[1]
+
+    if not channel_id.startswith("-100"):
+        channel_id = "-100" + channel_id
+
+    if not is_channel_added(channel_id):
+        await message.reply("The channel is not added in the database.")
+        return
+
+    try:
+        update_caption(channel_id, new_caption)
+        await message.reply(f"Caption updated for channel {channel_id}.\n\n{new_caption}")
+    except ValueError:
+        await message.reply("An error occurred while updating the caption in the database.")
 
 
 @Client.on_message(filters.command("caption"))
