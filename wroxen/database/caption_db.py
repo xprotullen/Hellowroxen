@@ -26,3 +26,8 @@ def update_caption(channel_id, new_caption):
         {"channel_id": channel_id},
         {"$set": {"caption": new_caption}}
     )
+    
+def is_channel_added(channel_id):
+    channel_doc = channels_collection.find_one({"channel_id": channel_id})
+    return channel_doc is not None
+
