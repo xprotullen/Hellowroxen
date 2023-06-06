@@ -82,7 +82,7 @@ async def delete_caption_command(bot, message):
 
 @Client.on_message(filters.chat(-1001986761426) & (media_filter))
 async def editing(bot, message):
-     if message.from_user is None:
+    if message.from_user is None:
         return
 
     user_id = message.from_user.id
@@ -116,6 +116,7 @@ async def editing(bot, message):
             pass
     else:
         await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id))
+
 
 
 
