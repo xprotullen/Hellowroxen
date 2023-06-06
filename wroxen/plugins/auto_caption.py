@@ -4,8 +4,8 @@ from wroxen.text import ChatMSG
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
-from wroxen.database.caption_db import set_caption, delete_caption, get_caption, captions_collection, channels_collection, \
-    is_channel_added
+from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
+    update_caption
 
 import logging
 
