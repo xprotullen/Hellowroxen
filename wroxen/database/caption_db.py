@@ -9,8 +9,13 @@ db = client["bot_caption_database"]
 channels_collection = db["channels"]
 
 def add_channel(channel_id, caption):
+    existing_channel = channels_collection.find_one({"channel_id": channel_id})
+    if existing_channel:
+        raise ValueError("Your channel is already available in the database.")
+
     channel_data = {"channel_id": channel_id, "caption": caption}
     channels_collection.insert_one(channel_data)
+
 
 def delete_channel(channel_id):
     channels_collection.delete_one({"channel_id": channel_id})
