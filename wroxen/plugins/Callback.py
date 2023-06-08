@@ -16,7 +16,7 @@ async def callback_data(bot, update: CallbackQuery):
 
     if query_data == "start":
         buttons = [[            
-            InlineKeyboardButton('Help ⚙', callback_data="help")
+            InlineKeyboardButton('मदद ⚙', callback_data="help")
         ]]
     
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -31,13 +31,13 @@ async def callback_data(bot, update: CallbackQuery):
 
     elif query_data == "help":
         buttons = [[
-            InlineKeyboardButton('Home ⚡', callback_data='start'),
-            InlineKeyboardButton('About', callback_data='about')
+            InlineKeyboardButton('पीछे जाए ⚡', callback_data='start'),
+            InlineKeyboardButton('मेरे बारे में', callback_data='about')
         ],[
-            
-            InlineKeyboardButton('About', callback_data='about')
+            InlineKeyboardButton('स्वचालित कैप्शन', callback_data='caption')
+            #InlineKeyboardButton('About', callback_data='about')
         ],[
-            InlineKeyboardButton('Close 🔐', callback_data='close')
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
     
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -52,8 +52,8 @@ async def callback_data(bot, update: CallbackQuery):
 
     elif query_data == "about": 
         buttons = [[
-            InlineKeyboardButton('Home ⚡', callback_data='start'),
-            InlineKeyboardButton('Close 🔐', callback_data='close')
+            InlineKeyboardButton('पीछे ⚡', callback_data='start'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
         
         reply_markup = InlineKeyboardMarkup(buttons)
