@@ -60,6 +60,20 @@ async def callback_data(bot, update: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
+    
+    elif query_data == "caption": 
+        buttons = [[
+            InlineKeyboardButton('पीछे⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+        ]]
+        
+        reply_markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.edit_text(
+            ChatMSG.CAPTION_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
 
 
     elif query_data == "close":
