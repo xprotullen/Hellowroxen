@@ -100,7 +100,7 @@ async def delete_caption_command(bot, message):
         await message.reply("No caption found for the specified channel.")
 
 
-@Client.on_message(filters.chat(-1001986761426) & (media_filter))
+@Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     if is_channel_added(channel_id):
