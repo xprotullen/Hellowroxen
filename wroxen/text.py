@@ -11,13 +11,15 @@ class ChatMSG(object):
       
       #help text
       HELP_TXT = """
-help message 
-
-@lx0980AI
+आपको जिस बारे में मदद चाहिए उस उसके लिए नीचे बटन पर क्लिक करें।
 """
 
       ABOUT_TXT = """
-About me function 
+<b>नाम:<b> रॉक्सन 
+<b>लाइब्रेरी:</b> Pyrogram
+<b>डेटाबेस:</b> MongoDB 
+<b>भाषा:</b> पायथन 
+<b>बनाने वाला:</b> @Lx0980AI
 """
       NOT_FOUND_TXT = """
 आपके चैनल के लिए कोई कैप्शन नही मिला डेटाबेस में
@@ -26,6 +28,7 @@ About me function
 <b>चैनल आईडी:</b> <code>{}</code>
 """
       
+      #caption
       CAPTION_TXT = """
 स्वचालित कैप्शन के लिए आदेश।
 
