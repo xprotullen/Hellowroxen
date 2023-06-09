@@ -131,24 +131,7 @@ async def editing(bot, message):
             )
         except:
             pass
-    else:
-        forward_settings = get_forward_settings()
-
-        if forward_settings:
-            from_chat = forward_settings["from_chat"]
-            to_chat = forward_settings["to_chat"]            
-            await bot.send_message(-1001970089414, "<b>From Channel:</b> {from_chat}\n<b>To Channel:</b> {to_chat}")
-                
-            try:
-                await bot.copy_message(
-                    chat_id=to_chat,
-                    from_chat_id=from_chat,
-                    message_id=message.id,
-                    caption=f"**{message.caption}**",
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-            except FloodWait as e:
-                await asyncio.sleep(e.value)
+    
 
 
             
