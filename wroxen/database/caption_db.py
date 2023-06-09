@@ -81,11 +81,27 @@ def add_replace_settings(channel_id, old_username, new_username):
     replace_collection.insert_one(replace_settings)
 
 def add_caption(channel_id, caption):
-    replace_settings = {
-        "channel_id": channel_id,
-        "caption": caption
-    }
-    replace_collection.insert_one(replace_settings)
+    replace_settings = replace_collection.find_one({"channel_id": channel_id})
+    if replace_settings:
+        replace_settings["caption"] = caption
+        replace_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": replace_settings},
+            upsert=True
+        )
+    else:
+        replace_settings = {
+            "channel_id": channel_id,
+            "caption": caption
+        }
+        replace_collection.insert_one(replace_settings)
+
+def delete_caption_settings(channel_id):
+    replace_collection.update_one(
+        {"channel_id": channel_id},
+        {"$unset": {"caption": ""}}
+    )
+
 
 def delete_caption_settings(channel_id):
     replace_collection.delete_one({"channel_id": channel_id})
