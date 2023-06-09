@@ -168,26 +168,18 @@ async def editing(bot, message):
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     forward_settings = get_forward_settings(channel_id)
-
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
-        replace_settings = get_replace_data(channel_id)
+        caption, old_username, new_username = get_replace_data(channel_id)
 
         if str(message.chat.id) == str(from_chat):
             try:
                 new_caption = message.caption
-                if replace_settings:
-                    for setting in replace_settings:
-                        old_username = setting["old_username"]
-                        new_username = setting["new_username"]
-                        new_caption = new_caption.replace(old_username, new_username)
-
-                if new_caption:
-                    caption_info = get_replace_data(channel_id)
-                    if caption_info:
-                        for caption in caption_info:
-                            new_caption += "\n\n" + caption
+                if caption:
+                    new_caption = f"{new_caption}\n\n{caption}"
+                if replace_text and new_caption:
+                    new_caption = new_caption.replace(replace_text.get("old_username"), replace_text.get("new_username"))
 
                 forwarded_message = await bot.copy_message(
                     chat_id=to_chat,
@@ -203,6 +195,7 @@ async def editing(bot, message):
                 print(f"Error forwarding message: {e}")
     else:
         await bot.send_message(-1001970089414, f"Chat ID {channel_id} not found in forward settings.")
+
 
 
 
