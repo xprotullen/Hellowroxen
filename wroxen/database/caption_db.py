@@ -59,9 +59,12 @@ def get_forward_settings(channel_id):
 
 
 def delete_forward_settings(channel_id):
-    forward_collection.delete_many({
+    delete_result = forward_collection.delete_many({
         "$or": [
             {"from_chat": channel_id},
             {"to_chat": channel_id}
         ]
     })
+    return delete_result.deleted_count
+
+
