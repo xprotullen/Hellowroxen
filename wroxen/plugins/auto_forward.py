@@ -4,7 +4,7 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, update_forward_settings, update_replace_text, update_msg_caption
+   clear_forward_db, update_forward_settings, update_replace_text, update_msg_caption, add_replace_settings
    
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -80,6 +80,59 @@ async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
 
+@Client.on_message(filters.command("add_caption_info"))
+async def add_caption_info_command(bot, message):
+    if len(message.command) < 2:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_caption_info\n{old_username} {new_username},,\n{old_username} {new_username}::{new_caption}")
+        return
+
+    command_args = message.text.split("\n")
+    if len(command_args) < 2:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_caption_info\n{old_username} {new_username},,\n{old_username} {new_username}::{new_caption}")
+        return
+
+    replace_data = []
+    captions = []
+    for command_arg in command_args:
+        parts = command_arg.strip().split("::")
+        if len(parts) < 2:
+            await bot.send_message(message.chat.id, "Invalid command. Usage: /add_caption_info\n{old_username} {new_username},,\n{old_username} {new_username}::{new_caption}")
+            return
+
+        replace_text = parts[0].strip()
+        caption_info = parts[1].strip().split(",,")
+        
+        for info in caption_info:
+            usernames = info.strip().split(" ")
+            if len(usernames) != 2:
+                await bot.send_message(message.chat.id, "Invalid command. Usage: /add_caption_info\n{old_username} {new_username},,\n{old_username} {new_username}::{new_caption}")
+                return
+
+            old_username = replace_text
+            new_username = usernames[1]
+            replace_data.append((old_username, new_username))
+
+        if len(parts) > 2:
+            captions.append(parts[2].strip())
+
+    channel_id = str(message.chat.id)
+
+    for old_username, new_username in replace_data:
+        try:
+            add_replace_settings(channel_id, old_username, new_username, "")
+
+        except ValueError as e:
+            await bot.send_message(message.chat.id, str(e))
+
+    for caption in captions:
+        try:
+            add_replace_settings(channel_id, "", "", caption)
+
+        except ValueError as e:
+            await bot.send_message(message.chat.id, str(e))
+
+    await bot.send_message(message.chat.id, "Replace settings and captions added successfully.")  
+   
 @Client.on_message(filters.command("update_caption"))
 async def update_caption_command(bot, message):
     if len(message.command) < 2:
