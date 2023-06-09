@@ -1,5 +1,5 @@
 # (c) @TheLx0980
- 
+ """
 import re, pyrogram
 from pyrogram import filters, enums, Client
 from config import Config
@@ -157,3 +157,4 @@ async def delete_search_id_command(bot, message):
                 f"<b> Here is the result for {message.text}</b>",
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
+"""
