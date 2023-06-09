@@ -8,7 +8,7 @@ client = MongoClient(DB_URL)
 db = client["bot_caption_database"]
 channels_collection = db["channels"]
 forward_collection = db["forward_settings"]
-replace_collection = db["replace_settings"]
+caption_collection = db["caption_settings"]
 
 def add_channel(channel_id, caption):
     existing_channel = channels_collection.find_one({"channel_id": channel_id})
@@ -80,31 +80,25 @@ def add_replace_settings(channel_id, old_username, new_username):
     }
     replace_collection.insert_one(replace_settings)
 
-def add_caption(channel_id, caption):
-    replace_settings = replace_collection.find_one({"channel_id": channel_id})
-    if replace_settings:
-        replace_settings["caption"] = caption
-        replace_collection.update_one(
-            {"channel_id": channel_id},
-            {"$set": replace_settings},
-            upsert=True
-        )
-    else:
-        replace_settings = {
-            "channel_id": channel_id,
-            "caption": caption
-        }
-        replace_collection.insert_one(replace_settings)
+    
+def add_caption(channel_id, new_caption):
+    existing_channel = channels_collection.find_one({"channel_id": channel_id})
+    if existing_channel:
+        raise ValueError("Your caption is already available in the database. First")
 
-def delete_caption_settings(channel_id):
-    replace_collection.update_one(
+    caption_data = {"channel_id": channel_id, "new_caption": new_caption}
+    caption_collection.insert_one(caption_data)
+    
+def update_forward_caption(channel_id, new_caption):
+    caption_collection.update_one(
         {"channel_id": channel_id},
-        {"$unset": {"caption": ""}}
+        {"$set": {"caption": new_caption}}
     )
-
+    
+    
 
 def delete_caption_settings(channel_id):
-    replace_collection.delete_one({"channel_id": channel_id})
+    caption_collection.delete_one({"channel_id": channel_id})
 
     
     
@@ -118,7 +112,7 @@ def delete_forward_settings(channel_id):
     return delete_result.deleted_count
 
 def delete_replace_settings(channel_id):
-    replace_collection.delete_one({"channel_id": channel_id})
+    caption_collection.delete_one({"channel_id": channel_id})
 
 def update_forward_settings(channel_id, forward_settings):
     forward_collection.update_one(
