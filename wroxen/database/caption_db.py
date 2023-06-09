@@ -140,7 +140,10 @@ def delete_replace_settings(channel_id, old_username, new_username):
     else:
         raise ValueError("Replace settings for this channel do not exist.")
 
-    
+def get_replace_data(channel_id):
+    replace_settings = caption_collection.find({"channel_id": channel_id})
+    return list(replace_settings)
+
 def clear_forward_db():
     delete_result = forward_collection.delete_many({})
     return delete_result.deleted_count
