@@ -80,8 +80,9 @@ async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
 
-@Client.on_message(filters.command("add_caption"))
-async def add_caption_command(bot, message):
+# Command to update caption
+@Client.on_message(filters.command("update_caption"))
+async def update_caption_command(bot, message):
     if len(message.command) < 2:
         await bot.send_message(message.chat.id, "Please provide the new caption.")
         return
@@ -89,39 +90,42 @@ async def add_caption_command(bot, message):
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
-    add_caption(channel_id, new_caption)
+    replace_settings = get_replace_settings(channel_id)
+    if replace_settings:
+        replace_settings["caption"] = new_caption
+        caption_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": replace_settings},
+            upsert=True
+        )
+        await bot.send_message(message.chat.id, f"Caption updated successfully.\n\nNew Caption: {new_caption}")
+    else:
+        await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
 
-    await bot.send_message(message.chat.id, f"New caption added successfully.\n\nNew Caption: {new_caption}")
-
-
-@Client.on_message(filters.command(["delete_caption"]))
-async def delete_caption_command(bot, message):
-    channel_id = str(message.chat.id)
-    delete_caption_settings(channel_id)
-    await bot.send_message(message.chat.id, "Caption deleted from forward Database.")
-
-
-@Client.on_message(filters.command(["add_replace"]))
-async def add_replace_command(bot, message):
-    command_args = message.text.split(maxsplit=3)
-    if len(command_args) < 3:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_replace <old_username> <new_username>")
+# Command to update replace text
+@Client.on_message(filters.command("update_replace_text"))
+async def update_replace_text_command(bot, message):
+    if len(message.command) < 3:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /update_replace_text <old_username> <new_username>")
         return
 
     channel_id = str(message.chat.id)
-    old_username = command_args[1]
-    new_username = command_args[2]
+    old_username = message.command[1]
+    new_username = message.command[2]
 
-    add_replace_settings(channel_id, old_username, new_username)
+    replace_settings = get_replace_settings(channel_id)
+    if replace_settings:
+        replace_settings["old_username"] = old_username
+        replace_settings["new_username"] = new_username
+        caption_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": replace_settings},
+            upsert=True
+        )
+        await bot.send_message(message.chat.id, f"Replace text updated successfully.\n\nOld Username: {old_username}\nNew Username: {new_username}")
+    else:
+        await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
 
-    await bot.send_message(message.chat.id, "Replace settings added.")
-
-
-@Client.on_message(filters.command(["delete_replace"]))
-async def delete_replace_command(bot, message):
-    channel_id = str(message.chat.id)
-    delete_replace_settings(channel_id)
-    await bot.send_message(message.chat.id, "Replace settings deleted.")
 
 
 
