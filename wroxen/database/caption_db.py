@@ -7,6 +7,7 @@ from wroxen.vars import DB_URL
 client = MongoClient(DB_URL)
 db = client["bot_caption_database"]
 channels_collection = db["channels"]
+forward_collection = db["forward_settings"]
 
 def add_channel(channel_id, caption):
     existing_channel = channels_collection.find_one({"channel_id": channel_id})
