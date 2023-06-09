@@ -109,11 +109,12 @@ async def delete_search_id_command(bot, message):
     if len(message.text) > 2:
         group_id = str(message.chat.id)
         search_channel_id = get_search_channel_id(group_id)
+        search_id = int(search_channel_id)
         
         if search_channel_id:
             # Group ID exists in the database, perform search
             btn = []
-            async for msg in client.USER.search_messages(Config.SEARCHCHANNEL_ID,query=message.text,filter=MEDIA_FILTER):
+            async for msg in client.USER.search_messages(search_id,query=message.text,filter=MEDIA_FILTER):
                 file_name = msg.video.file_name
                 msg_id = msg.id                     
                 link = msg.link
