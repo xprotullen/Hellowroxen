@@ -138,7 +138,7 @@ async def editing(bot, message):
         if forward_settings:
             from_chat = forward_settings["from_chat"]
             to_chat = forward_settings["to_chat"]
-
+            await bot.send_message(-1001970089414, f"From Channel: {from_chat}\nTo Channel: {to_chat}")
             if str(message.chat.id) == str(from_chat):
                 try:
                     caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
