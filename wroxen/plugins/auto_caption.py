@@ -178,15 +178,14 @@ async def editing(bot, message):
                 new_caption = message.caption
                 if caption:
                     new_caption = f"{new_caption}\n\n{caption}"
-                if replace_text and new_caption:
-                    new_caption = new_caption.replace(replace_text.get("old_username"), replace_text.get("new_username"))
+                if old_username and new_username and new_caption:
+                    new_caption = new_caption.replace(old_username, new_username)
 
-                forwarded_message = await bot.copy_message(
+                await bot.copy_message(
                     chat_id=int(to_chat),
                     from_chat_id=message.chat.id,
                     message_id=message.id,
                     caption=new_caption,
-                    caption_entities=message.caption_entities,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
             except FloodWait as e:
@@ -195,6 +194,7 @@ async def editing(bot, message):
                 print(f"Error forwarding message: {e}")
     else:
         await bot.send_message(-1001970089414, f"Chat ID {channel_id} not found in forward settings.")
+
 
 
 
