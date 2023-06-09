@@ -141,7 +141,7 @@ async def editing(bot, message):
             if to_chat.startswith("-100"):
                 to_chat = to_chat[4:]
 
-            if str(message.chat.id) == from_chat:
+            if str(message.chat.id) == str(from_chat):
                 try:
                     await bot.copy_message(
                         chat_id=int(to_chat),
