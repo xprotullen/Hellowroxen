@@ -184,7 +184,7 @@ async def editing(bot, message):
                         new_caption = new_caption.replace(old_username, new_username)
 
                 if new_caption:
-                    caption_info = get_caption_data(channel_id)
+                    caption_info = get_replace_data(channel_id)
                     if caption_info:
                         for caption in caption_info:
                             new_caption += "\n\n" + caption
