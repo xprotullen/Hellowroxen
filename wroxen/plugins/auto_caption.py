@@ -131,12 +131,26 @@ async def editing(bot, message):
         except:
             pass
     else:
-        await bot.send_message(-1001970089414, ChatMSG.NOT_FOUND_TXT.format(message.chat.title, message.chat.id))
+        forward_settings = get_forward_settings()
 
+        if forward_settings:
+            from_chat = forward_settings["from_chat"]
+            to_chat = forward_settings["to_chat"]
 
+            if to_chat.startswith("-100"):
+                to_chat = to_chat[4:]
 
-
-
+            if str(message.chat.id) == from_chat:
+                try:
+                    await bot.copy_message(
+                        chat_id=int(to_chat),
+                        from_chat_id=message.chat.id,
+                        message_id=message.id,
+                        caption=f"**{message.caption}**",
+                        parse_mode=enums.ParseMode.MARKDOWN
+                    )
+                except FloodWait as e:
+                    await asyncio.sleep(e.x)
 
 
             
