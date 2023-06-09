@@ -12,10 +12,17 @@ async def channel_status_command(bot, message):
         to_chat = forward_settings["to_chat"]
         caption, old_username, new_username = get_replace_data(channel_id)
         
-        channel_status_text = f"From Channel: {from_chat}\nTo Channel: {to_chat}\n\n"
-        channel_status_text += f"Replace txt: {old_username} => {new_username}\n\n"
-        channel_status_text += f"Caption: {caption}\n\n"
-        channel_status_text += f"Channel name: {message.chat.title}"
+        channel_status_text = f"""
+From Channel: {from_chat}
+To chat: {to_chat}
+        
+Caption: {caption}
+        
+Replace TEXT:
+{old_username} To {new_username}
+
+Channel name: {message.chat.title}"""
+          
 
         await bot.send_message(message.chat.id, channel_status_text)
     else:
