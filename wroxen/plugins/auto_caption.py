@@ -151,7 +151,7 @@ async def editing(bot, message):
                         parse_mode=enums.ParseMode.MARKDOWN
                     )
                 except FloodWait as e:
-                    await asyncio.sleep(e.x)
+                    await asyncio.sleep(e.value)
 
 
             
