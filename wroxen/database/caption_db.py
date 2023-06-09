@@ -64,12 +64,6 @@ def add_forward_settings(from_chat, to_chat):
     }
     forward_collection.insert_one(forward_settings)
 
-
-
-    
-
-    
-     
     
 def delete_forward_settings(channel_id):
     delete_result = forward_collection.delete_many({
@@ -80,7 +74,32 @@ def delete_forward_settings(channel_id):
     })
     return delete_result.deleted_count
 
+#'__&
+def update_caption(channel_id, new_caption):
+    replace_settings = caption_collection.find_one({"channel_id": channel_id})
+    if replace_settings:
+        replace_settings["caption"] = new_caption
+        replace_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": replace_settings},
+            upsert=True
+        )
+        return True
+    return False
 
+
+def update_replace_text(channel_id, old_username, new_username):
+    replace_settings = caption_collection.find_one({"channel_id": channel_id})
+    if replace_settings:
+        replace_settings["old_username"] = old_username
+        replace_settings["new_username"] = new_username
+        caption_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": replace_settings},
+            upsert=True
+        )
+        return True
+    return False
 
 
 
