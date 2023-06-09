@@ -133,18 +133,24 @@ async def editing(bot, message):
             pass
     else:
         channel_id = str(message.chat.id)
-        await bot.send_message(-1001970089414, f"ChatChat ID {channel_id}")
         forward_settings = get_forward_settings(channel_id)
+        replace_text = forward_settings.get("replace_text")
         print(f"Forward settings: {forward_settings}")
+
         if forward_settings:
             from_chat = forward_settings["from_chat"]
             to_chat = forward_settings["to_chat"]
-            await bot.send_message(-1001970089414, f"From Channel: {from_chat}\nTo Channel: {to_chat}")
+
             if str(message.chat.id) == str(from_chat):
                 try:
                     caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
+                    if replace_text:
+                        old_username = replace_text.get("old_username")
+                        new_username = replace_text.get("new_username")
+                        caption_text = caption_text.replace(old_username, new_username)
+
                     await bot.copy_message(
-                        chat_id=int(to_chat),
+                        chat_id=to_chat,
                         from_chat_id=message.chat.id,
                         message_id=message.id,
                         caption=f"**{message.caption}**" + '\n\n' + f"**{caption_text}**",
