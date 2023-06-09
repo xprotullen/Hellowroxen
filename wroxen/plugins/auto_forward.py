@@ -4,8 +4,8 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, update_forward_settings, add_replace_settings, delete_caption_settings, \
-   delete_replace_settings, delete_replace_settings, add_caption
+   clear_forward_db, update_forward_settings, update_replace_text, update_msg_caption
+   
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
 
@@ -80,7 +80,6 @@ async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
 
-# Command to update caption
 @Client.on_message(filters.command("update_caption"))
 async def update_caption_command(bot, message):
     if len(message.command) < 2:
@@ -90,14 +89,7 @@ async def update_caption_command(bot, message):
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
-    replace_settings = get_replace_settings(channel_id)
-    if replace_settings:
-        replace_settings["caption"] = new_caption
-        caption_collection.update_one(
-            {"channel_id": channel_id},
-            {"$set": replace_settings},
-            upsert=True
-        )
+    if update_caption(channel_id, new_caption):
         await bot.send_message(message.chat.id, f"Caption updated successfully.\n\nNew Caption: {new_caption}")
     else:
         await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
@@ -113,15 +105,7 @@ async def update_replace_text_command(bot, message):
     old_username = message.command[1]
     new_username = message.command[2]
 
-    replace_settings = get_replace_settings(channel_id)
-    if replace_settings:
-        replace_settings["old_username"] = old_username
-        replace_settings["new_username"] = new_username
-        caption_collection.update_one(
-            {"channel_id": channel_id},
-            {"$set": replace_settings},
-            upsert=True
-        )
+    if update_replace_text(channel_id, old_username, new_username):
         await bot.send_message(message.chat.id, f"Replace text updated successfully.\n\nOld Username: {old_username}\nNew Username: {new_username}")
     else:
         await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
