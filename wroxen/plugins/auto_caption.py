@@ -131,28 +131,28 @@ async def editing(bot, message):
             )
         except:
             pass
- else:
-     forward_chat = message.chat.id
-    forward_settings = get_forward_settings(forward_chat)                                           
-    print(f"Forward settings: {forward_settings}")
-    if forward_settings:
-        from_chat = forward_settings["from_chat"]
-        to_chat = forward_settings["to_chat"]
+    else:
+        forward_chat = message.chat.id
+        forward_settings = get_forward_settings(forward_chat)                                           
+        print(f"Forward settings: {forward_settings}")
+        if forward_settings:
+            from_chat = forward_settings["from_chat"]
+            to_chat = forward_settings["to_chat"]
 
-        if str(message.chat.id) == str(from_chat):
-            try:
-                caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
-                await bot.copy_message(
-                    chat_id=to_chat,
-                    from_chat_id=message.chat.id,
-                    message_id=message.id,
-                    caption=f"**{message.caption}**" + '\n\n' + f"**{caption_text}**",
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-            except FloodWait as e:
-                await asyncio.sleep(e.value)
-            except Exception as e:
-                print(f"Error forwarding message: {e}")
+            if str(message.chat.id) == str(from_chat):
+                try:
+                    caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
+                    await bot.copy_message(
+                        chat_id=to_chat,
+                        from_chat_id=message.chat.id,
+                        message_id=message.id,
+                        caption=f"**{message.caption}**" + '\n\n' + f"**{caption_text}**",
+                        parse_mode=enums.ParseMode.MARKDOWN
+                    )
+                except FloodWait as e:
+                    await asyncio.sleep(e.value)
+                except Exception as e:
+                    print(f"Error forwarding message: {e}")
     
 
 
