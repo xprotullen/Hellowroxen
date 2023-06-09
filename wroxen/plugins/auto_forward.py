@@ -4,7 +4,7 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, delete_caption, update_forward_settings
+   clear_forward_db, delete_caption, update_forward_settings, add_replace_settings
   
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -103,3 +103,28 @@ async def delete_caption_command(bot, message):
     channel_id = str(message.chat.id)
     delete_caption(channel_id)
     await bot.send_message(message.chat.id, "Caption deleted from forward Database.")
+      
+@Client.on_message(filters.command(["add_replace"]))
+async def add_replace_command(bot, message):
+    command_args = message.text.split(maxsplit=3)
+    if len(command_args) < 3:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_replace <old_username> <new_username>")
+        return
+    
+    channel_id = str(message.chat.id)
+    old_username = command_args[1]
+    new_username = command_args[2]
+    
+    add_replace_settings(channel_id, old_username, new_username)
+    
+    await bot.send_message(message.chat.id, "Replace settings added.")
+   
+   @Client.on_message(filters.command(["delete_replace"]))
+async def delete_replace_command(bot, message):
+    channel_id = str(message.chat.id)
+    
+    delete_replace_settings(channel_id)
+    
+    await bot.send_message(message.chat.id, "Replace settings deleted.")
+
+
