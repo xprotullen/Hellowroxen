@@ -40,7 +40,7 @@ def is_channel_added(channel_id):
 #______________________________________________________________________________#
 
 def set_forward_settings(from_chat, to_chat):
-    existing_settings = forward_collection.find_one()
+    existing_settings = forward_collection.find_one(channel_id)
 
     if existing_settings:
         raise ValueError("Forwarding settings are already added.")
