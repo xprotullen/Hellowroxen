@@ -1,5 +1,6 @@
 # (c) @TheLx0980
- """
+
+HELLO = """
 import re, pyrogram
 from pyrogram import filters, enums, Client
 from config import Config
