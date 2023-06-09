@@ -44,8 +44,12 @@ async def delete_forward_command(bot, message):
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
 
-    delete_forward_settings(channel_id)
-    await message.reply("Forwarding settings deleted.")
+    deleted_count = delete_forward_settings(channel_id)
+
+    if deleted_count > 0:
+        await message.reply(f"Forwarding settings for channel {channel_id} deleted.")
+    else:
+        await message.reply(f"No forwarding settings found for channel {channel_id}.")
 
 @Client.on_message(filters.command("check_forward"))
 async def check_forward_command(bot, message):
