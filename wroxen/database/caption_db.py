@@ -49,13 +49,15 @@ def set_forward_settings(from_chat, to_chat):
     forward_collection.insert_one(forward_data)
 
 def get_forward_settings(channel_id):
-    forward_settings = forward_collection.find_one({
-        "$or": [
-            {"from_chat": channel_id},
-            {"to_chat": channel_id}
-        ]
-    })
-    return forward_settings
+    try:
+        forward_settings = forward_collection.find_one(
+            {"$or": [{"from_chat": channel_id}, {"to_chat": channel_id}]}
+        )
+        return forward_settings
+    except Exception as e:
+        print(f"Error retrieving forwarding settings: {e}")
+        return None
+
 
 
 def delete_forward_settings(channel_id):
