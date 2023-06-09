@@ -4,7 +4,8 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, update_forward_settings, update_replace_text, update_f_caption, add_replace_settings
+   clear_forward_db, update_forward_settings, update_replace_text, update_f_caption, add_replace_settings, \
+   delete_caption_settings, delete_replace_settings
    
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -80,7 +81,7 @@ async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
 
-@Client.on_message(filters.command("add_caption_info"))
+@Client.on_message(filters.command("add_f_caption"))
 async def add_caption_info_command(bot, message):
     if len(message.command) < 2:
         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_caption_info\n{old_username} {new_username},,\n{old_username} {new_username}::{new_caption}")
@@ -163,7 +164,28 @@ async def update_replace_text_command(bot, message):
     else:
         await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
 
+@Client.on_message(filters.command("delete_f_caption"))
+async def delete_caption_command(bot, message):
+    channel_id = str(message.chat.id)
+    
+    try:
+        delete_caption_settings(channel_id)
+        await bot.send_message(message.chat.id, "Caption deleted from replace settings.")
+    except ValueError as e:
+        await bot.send_message(message.chat.id, str(e))
 
+         
+@Client.on_message(filters.command("delete_replace"))
+async def delete_replace_command(bot, message):
+    channel_id = str(message.chat.id)
+
+    try:
+        delete_replace_settings(channel_id)
+
+        await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
+    
+    except ValueError as e:
+        await bot.send_message(message.chat.id, str(e))
 
 
 
