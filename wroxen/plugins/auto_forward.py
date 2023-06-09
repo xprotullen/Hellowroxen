@@ -79,3 +79,22 @@ async def check_forward_command(bot, message):
 async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
+
+@Client.on_message(filters.command("add_caption"))
+async def add_caption_command(bot, message):
+    if len(message.command) < 2:
+        await bot.send_message(message.chat.id, "Please provide the new caption.")
+        return
+
+    new_caption = " ".join(message.command[1:])
+
+    channel_id = str(message.chat.id)
+    forward_settings = get_forward_settings(channel_id)
+    if forward_settings:
+        forward_settings["add_caption"] = new_caption
+        update_forward_settings(channel_id, forward_settings)
+        await bot.send_message(message.chat.id, f"New caption added successfully.\n\n New Caption: {new_caption}")
+    else:
+        await bot.send_message(message.chat.id, "Chat ID not found in forward settings.")
+
+
