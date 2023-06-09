@@ -4,7 +4,7 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db
+   clear_forward_db, delete_caption, update_forward_settings
   
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -98,3 +98,8 @@ async def add_caption_command(bot, message):
         await bot.send_message(message.chat.id, "Chat ID not found in forward settings.")
 
 
+@Client.on_message(filters.command(["delete_caption"]))
+async def delete_caption_command(bot, message):
+    channel_id = str(message.chat.id)
+    delete_caption(channel_id)
+    await bot.send_message(message.chat.id, "Caption deleted from forward Database.")
