@@ -96,6 +96,10 @@ def delete_forward_settings(channel_id):
     })
     return delete_result.deleted_count
 
+def delete_replace_settings(channel_id):
+    replace_collection.delete_one({"channel_id": channel_id})
+
+
 def clear_forward_db():
     delete_result = forward_collection.delete_many({})
     return delete_result.deleted_count
