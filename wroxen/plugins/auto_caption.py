@@ -101,6 +101,7 @@ async def delete_caption_command(bot, message):
         await message.reply("No caption found for the specified channel.")
 
 
+JAAN = """
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = str(message.chat.id)
@@ -161,6 +162,36 @@ async def editing(bot, message):
                 except Exception as e:
                     print(f"Error forwarding message: {e}")
     
+"""
+
+@Client.on_message(filters.channel & (media_filter))
+async def editing(bot, message):
+    channel_id = str(message.chat.id)
+    forward_settings = get_forward_settings(channel_id)
+    if forward_settings:
+        from_chat = forward_settings["from_chat"]
+        to_chat = forward_settings["to_chat"]
+
+        if str(message.chat.id) == str(from_chat):
+            try:
+                caption_text = forward_settings.get("caption", "")
+                if caption_text:
+                    caption_text += "\n"
+                caption_text += f"➠ @{forward_settings['replace_text']['old_username']}\n➠ @{forward_settings['replace_text']['new_username']}"
+                await bot.copy_message(
+                    chat_id=to_chat,
+                    from_chat_id=message.chat.id,
+                    message_id=message.id,
+                    caption=message.caption or "",
+                    caption_entities=message.caption_entities,
+                    parse_mode=enums.ParseMode.MARKDOWN
+                )
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+            except Exception as e:
+                print(f"Error forwarding message: {e}")
+    else:
+        await bot.send_message(-1001970089414, f"Chat ID {channel_id} not found in forward settings.")
 
 
             
