@@ -132,7 +132,7 @@ async def editing(bot, message):
         except:
             pass
     else:
-        channel_id = message.chat.id
+        channel_id = str(message.chat.id)
         await bot.send_message(-1001970089414, f"ChatChat ID {channel_id}")
         forward_settings = get_forward_settings(channel_id)
         print(f"Forward settings: {forward_settings}")
@@ -144,7 +144,7 @@ async def editing(bot, message):
                 try:
                     caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
                     await bot.copy_message(
-                        chat_id=to_chat,
+                        chat_id=int(to_chat),
                         from_chat_id=message.chat.id,
                         message_id=message.id,
                         caption=f"**{message.caption}**" + '\n\n' + f"**{caption_text}**",
