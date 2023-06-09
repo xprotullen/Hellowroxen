@@ -104,6 +104,14 @@ def delete_forward_settings(channel_id):
 def delete_replace_settings(channel_id):
     replace_collection.delete_one({"channel_id": channel_id})
 
+def update_forward_settings(channel_id, forward_settings):
+    forward_collection.update_one(
+        {"$or": [{"from_chat": channel_id}, {"to_chat": channel_id}]},
+        {"$set": forward_settings},
+        upsert=True
+    )
+
+
 
     
 def clear_forward_db():
