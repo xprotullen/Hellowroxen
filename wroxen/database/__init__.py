@@ -1,1 +1,1 @@
-from .caption_db import channels_collection, get_caption
+from .caption_db import db, channels_collection, get_caption
