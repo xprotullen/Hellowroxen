@@ -28,27 +28,4 @@ async def set_forward_command(bot, message):
     except:
         await message.reply("Failed to update auto forwarding settings.")
 
-HELLOS = """
-@Client.on_message(filters.channel & media_filter)
-async def forward(bot, update):
-    forward_settings = get_forward_settings()
 
-    if forward_settings:
-        from_chat = forward_settings["from_chat"]
-        to_chat = forward_settings["to_chat"]
-
-        if to_chat.startswith("-100"):
-            to_chat = to_chat[4:]
-
-        if str(update.chat.id) == from_chat:
-            try:
-                await bot.copy_message(
-                    chat_id=int(to_chat),
-                    from_chat_id=update.chat.id,
-                    message_id=update.message_id,
-                    caption=f"**{update.caption}**",
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-            except FloodWait as e:
-                await asyncio.sleep(e.value)S
-"""
