@@ -182,7 +182,7 @@ async def editing(bot, message):
                     new_caption = new_caption.replace(replace_text.get("old_username"), replace_text.get("new_username"))
 
                 forwarded_message = await bot.copy_message(
-                    chat_id=to_chat,
+                    chat_id=int(to_chat),
                     from_chat_id=message.chat.id,
                     message_id=message.id,
                     caption=new_caption,
