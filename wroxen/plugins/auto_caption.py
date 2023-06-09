@@ -139,7 +139,7 @@ async def editing(bot, message):
         if forward_settings:
             from_chat = forward_settings["from_chat"]
             to_chat = forward_settings["to_chat"]            
-            await client.send_message(-1001970089414, "<b>From Channel:</b> {from_chat}\n<b>To Channel:</b> {to_chat}")
+            await bot.send_message(-1001970089414, "<b>From Channel:</b> {from_chat}\n<b>To Channel:</b> {to_chat}")
                 
                 try:
                     await bot.copy_message(
