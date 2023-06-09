@@ -1,5 +1,6 @@
 # (c) @thelx0980
 
+from pyrogram.errors import FloodWait
 from wroxen.chek import is_channel_added
 from wroxen.text import ChatMSG
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
