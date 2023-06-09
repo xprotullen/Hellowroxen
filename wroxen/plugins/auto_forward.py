@@ -27,7 +27,7 @@ async def set_forward_command(bot, message):
 
     try:
         set_forward_settings(from_chat, to_chat)
-        await message.reply("Forwarding Successfully Set!\n\nFrom: {from_chat}\nTo Chat: {to_chat}")                         
+        await message.reply(f"Forwarding Successfully Set!\n\nFrom: {from_chat}\nTo Chat: {to_chat}")
     except ValueError as e:
         await message.reply(str(e))
         
