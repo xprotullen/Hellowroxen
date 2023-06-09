@@ -132,7 +132,7 @@ async def editing(bot, message):
         except:
             pass
 
-    forward_settings = get_forward_settings()
+    forward_settings = get_forward_settings(channel_id)
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
@@ -150,9 +150,6 @@ async def editing(bot, message):
             except FloodWait as e:
                 await asyncio.sleep(e.value)
 
-def get_forward_settings():
-    forward_settings = forward_collection.find_one()
-    return forward_settings
 
     
 
