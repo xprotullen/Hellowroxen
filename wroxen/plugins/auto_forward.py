@@ -34,13 +34,18 @@ async def forward(bot, update):
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
 
-        try:
-            await bot.copy_message(
-                chat_id=from_chat,
-                from_chat_id=to_chat,
-                message_id=update.id,
-                caption=f"**{update.caption}**",
-                parse_mode=enums.ParseMode.MARKDOWN
-            )
-        except FloodWait as e:
-            await asyncio.sleep(e.value)
+        if to_chat.startswith("-100"):
+            to_chat = to_chat[4:]
+
+        if str(update.chat.id) == from_chat:
+            try:
+                await bot.copy_message(
+                    chat_id=int(to_chat),
+                    from_chat_id=update.chat.id,
+                    message_id=update.message_id,
+                    caption=f"**{update.caption}**",
+                    parse_mode=enums.ParseMode.MARKDOWN
+                )
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+
