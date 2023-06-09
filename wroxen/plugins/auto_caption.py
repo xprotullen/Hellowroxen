@@ -133,6 +133,7 @@ async def editing(bot, message):
             pass
     forward_chat = message.chat.id
     forward_settings = get_forward_settings(forward_chat)                                           
+    print(f"Forward settings: {forward_settings}")
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
@@ -149,8 +150,8 @@ async def editing(bot, message):
                 )
             except FloodWait as e:
                 await asyncio.sleep(e.value)
-
-
+            except Exception as e:
+                print(f"Error forwarding message: {e}")
     
 
 
