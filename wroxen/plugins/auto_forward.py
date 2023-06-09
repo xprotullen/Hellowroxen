@@ -89,13 +89,10 @@ async def add_caption_command(bot, message):
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
-    forward_settings = get_forward_settings(channel_id)
-    if forward_settings:
-        forward_settings["add_caption"] = new_caption
-        update_forward_settings(channel_id, forward_settings)
-        await bot.send_message(message.chat.id, f"New caption added successfully.\n\n New Caption: {new_caption}")
-    else:
-        await bot.send_message(message.chat.id, "Chat ID not found in forward settings.")
+    add_caption(channel_id, new_caption)
+
+    await bot.send_message(message.chat.id, f"New caption added successfully.\n\nNew Caption: {new_caption}")
+
 
 @Client.on_message(filters.command(["delete_caption"]))
 async def delete_caption_command(bot, message):
