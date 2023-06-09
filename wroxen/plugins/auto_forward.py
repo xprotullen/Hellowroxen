@@ -28,7 +28,7 @@ async def set_forward_command(bot, message):
     except:
         await message.reply("Failed to update auto forwarding settings.")
 
-HELLO = """
+HELLOS = """
 @Client.on_message(filters.channel & media_filter)
 async def forward(bot, update):
     forward_settings = get_forward_settings()
