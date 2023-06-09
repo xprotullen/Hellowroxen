@@ -164,7 +164,7 @@ async def editing(bot, message):
     
 """
 
-@Client.on_message(filters.channel & (media_filter))
+Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     forward_settings = get_forward_settings(channel_id)
@@ -172,17 +172,17 @@ async def editing(bot, message):
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
         replace_text = forward_settings.get("replace_text", {})
-        add_caption = forward_settings.get("add_caption", "")
-
+        caption = forward_settings.get("caption", "")
+        
         if str(message.chat.id) == str(from_chat):
             try:
                 new_caption = message.caption
-                if add_caption:
-                    new_caption = f"{new_caption}\n\n{add_caption}"
+                if caption:
+                    new_caption = f"{new_caption}\n\n{caption}"
                 if replace_text and new_caption:
                     new_caption = new_caption.replace(replace_text.get("old_username"), replace_text.get("new_username"))
-
-                await bot.copy_message(
+                
+                forwarded_message = await bot.copy_message(
                     chat_id=to_chat,
                     from_chat_id=message.chat.id,
                     message_id=message.id,
