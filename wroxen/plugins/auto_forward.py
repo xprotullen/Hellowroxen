@@ -188,4 +188,41 @@ async def delete_replace_command(bot, message):
         await bot.send_message(message.chat.id, str(e))
 
 
+@Client.on_message(filters.command("add_f_replace"))
+async def add_f_replace_command(bot, message):
+    if len(message.command) < 2:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+        return
+
+    command_args = message.command[1:]
+    if len(command_args) != 2:
+        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+        return
+
+    old_username = command_args[0]
+    new_username = command_args[1]
+
+    channel_id = str(message.chat.id)
+
+    try:
+        add_replace_settings(channel_id, old_username, new_username, "")
+        await bot.send_message(message.chat.id, "Username replaced successfully.")
+    except ValueError as e:
+        await bot.send_message(message.chat.id, str(e))
+
+@Client.on_message(filters.command("Add_f_caption"))
+async def add_f_caption_command(bot, message):
+    if message.reply_to_message is None:
+        await bot.send_message(message.chat.id, "Please reply to a message when using this command.")
+        return
+
+    channel_id = str(message.chat.id)
+    reply_message = message.reply_to_message
+    caption = reply_message.caption if reply_message.caption else ""
+
+    try:
+        add_replace_settings(channel_id, "", "", caption)
+        await bot.send_message(message.chat.id, "Caption added successfully.")
+    except ValueError as e:
+        await bot.send_message(message.chat.id, str(e))
 
