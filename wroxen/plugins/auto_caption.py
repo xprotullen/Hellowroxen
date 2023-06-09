@@ -9,7 +9,7 @@ from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
     update_caption, get_forward_settings
 
-import logging
+import logging, asyncio
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
