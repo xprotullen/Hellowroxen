@@ -132,8 +132,8 @@ async def editing(bot, message):
         except:
             pass
     else:
-        forward_chat = message.chat.id
-        forward_settings = get_forward_settings(forward_chat)                                           
+        channel_id = message.chat.id
+        forward_settings = get_forward_settings(channel_id)                                           
         print(f"Forward settings: {forward_settings}")
         if forward_settings:
             from_chat = forward_settings["from_chat"]
