@@ -1,5 +1,6 @@
 # (c) @TheLx0980
 
+
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
@@ -27,6 +28,7 @@ async def set_forward_command(bot, message):
     except:
         await message.reply("Failed to update auto forwarding settings.")
 
+HELLO = """
 @Client.on_message(filters.channel & media_filter)
 async def forward(bot, update):
     forward_settings = get_forward_settings()
@@ -48,5 +50,5 @@ async def forward(bot, update):
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
             except FloodWait as e:
-                await asyncio.sleep(e.value)
-
+                await asyncio.sleep(e.value)S
+"""
