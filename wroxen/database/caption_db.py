@@ -96,7 +96,6 @@ def update_replace_text(channel_id, old_username, new_username):
         caption_collection.update_one(
             {"channel_id": channel_id},
             {"$set": replace_settings},
-            upsert=True
         )
         return True
     return False
@@ -106,15 +105,15 @@ def add_replace_settings(channel_id, old_username, new_username, caption):
     existing_settings = caption_collection.find_one({"channel_id": channel_id})
     if existing_settings:
         raise ValueError("Replace settings for this channel already exist.")
-    
-    try:
-        replace_settings = {
-            "channel_id": channel_id,
-            "old_username": old_username,
-            "new_username": new_username,
-            "caption": caption
-        }
-        caption_collection.insert_one(replace_settings)
+
+    replace_settings = {
+        "channel_id": channel_id,
+        "old_username": old_username,
+        "new_username": new_username,
+        "caption": caption
+    }
+    caption_collection.insert_one(replace_settings)
+
 
 
     
