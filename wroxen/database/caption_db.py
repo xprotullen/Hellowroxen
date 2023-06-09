@@ -116,6 +116,18 @@ def add_replace_settings(channel_id, old_username, new_username, caption):
 
 
 
+def delete_caption_settings(channel_id):
+    existing_settings = caption_collection.find_one({"channel_id": channel_id})
+    if existing_settings:
+        existing_settings["caption"] = ""
+        caption_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": existing_settings}
+        )
+    else:
+        raise ValueError("Replace settings for this channel do not exist.")
+    
+    
 def delete_replace_settings(channel_id, old_username, new_username):
     existing_settings = caption_collection.find_one({"channel_id": channel_id})
     if existing_settings:
