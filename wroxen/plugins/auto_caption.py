@@ -7,15 +7,13 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
-    update_caption
+    update_caption, get_forward_settings
 
 import logging
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
 
-from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
- 
 
 @Client.on_message(filters.command("update_caption"))
 async def update_caption_command(bot, message):
