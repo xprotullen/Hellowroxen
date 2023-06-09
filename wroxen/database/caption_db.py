@@ -67,4 +67,6 @@ def delete_forward_settings(channel_id):
     })
     return delete_result.deleted_count
 
-
+def clear_forward_db():
+    delete_result = forward_collection.delete_many({})
+    return delete_result.deleted_count
