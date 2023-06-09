@@ -2,7 +2,7 @@
 
 import logging
 from pyrogram import Client, filters, enums
-from wroxen.database.autoforward import set_forward_settings, get_forward_settings
+from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
   
 logger = logging.getLogger(__name__)
 
