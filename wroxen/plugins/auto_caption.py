@@ -131,6 +131,29 @@ async def editing(bot, message):
             )
         except:
             pass
+
+    forward_settings = get_forward_settings()
+    if forward_settings:
+        from_chat = forward_settings["from_chat"]
+        to_chat = forward_settings["to_chat"]
+
+        if str(message.chat.id) == str(from_chat):
+            try:
+                caption_text = "➠ @Hollywood_0980\n➠ @DFF_UPDATES"
+                await bot.copy_message(
+                    chat_id=to_chat,
+                    from_chat_id=message.chat.id,
+                    message_id=message.id,
+                    caption=f"**{message.caption}**" + '\n\n' + f"**{caption_text}**",
+                    parse_mode=enums.ParseMode.MARKDOWN
+                )
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+
+def get_forward_settings():
+    forward_settings = forward_collection.find_one()
+    return forward_settings
+
     
 
 
