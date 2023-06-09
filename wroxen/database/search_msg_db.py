@@ -1,6 +1,6 @@
-from pymongo import MongoClient
-from wroxen.database import db as DB
+# (c) @TheLx0980
 
+from wroxen.database import db as DB
 
 group_search_collection = DB["group_search"]
 
@@ -20,7 +20,8 @@ def get_search_channel_id(group_id):
         {"$set": {"search_channel_id": search_channel_id}}
     ) 
   
-  
+def delete_group_search(group_id):
+    group_search_collection.delete_one({"group_id": group_id}) 
   
   
   
