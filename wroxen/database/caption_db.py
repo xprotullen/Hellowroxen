@@ -115,40 +115,18 @@ def add_replace_settings(channel_id, old_username, new_username, caption):
     caption_collection.insert_one(replace_settings)
 
 
-@Client.on_message(filters.command("set_replace"))
-async def set_replace_command(bot, message):
-    if len(message.command) < 2:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /set_replace\n{old_username} {new_username},,\n{old_username} {new_username}")
-        return
 
-    command_args = message.text.split("\n")
-    if len(command_args) < 2:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /set_replace\n{old_username} {new_username},,\n{old_username} {new_username}")
-        return
-
-    replace_data = []
-    for command_arg in command_args:
-        parts = command_arg.strip().split(",,")
-        for info in parts:
-            usernames = info.strip().split(" ")
-            if len(usernames) != 2:
-                await bot.send_message(message.chat.id, "Invalid command. Usage: /set_replace\n{old_username} {new_username},,\n{old_username} {new_username}")
-                return
-
-            old_username = usernames[0]
-            new_username = usernames[1]
-            replace_data.append((old_username, new_username))
-
-    channel_id = str(message.chat.id)
-
-    for old_username, new_username in replace_data:
-        try:
-            add_replace_settings(channel_id, old_username, new_username, "")
-
-        except ValueError as e:
-            await bot.send_message(message.chat.id, str(e))
-
-    await bot.send_message(message.chat.id, "Replace settings added successfully.")
+def delete_replace_settings(channel_id, old_username, new_username):
+    existing_settings = caption_collection.find_one({"channel_id": channel_id})
+    if existing_settings:
+        existing_settings["old_username"] = ""
+        existing_settings["new_username"] = ""
+        caption_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": existing_settings}
+        )
+    else:
+        raise ValueError("Replace settings for this channel do not exist.")
 
     
 def clear_forward_db():
