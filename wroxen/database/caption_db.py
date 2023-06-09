@@ -40,7 +40,7 @@ def is_channel_added(channel_id):
 #______________________________________________________________________________#
 
 def set_forward_settings(from_chat, to_chat):
-    existing_settings = forward_collection.find_one(channel_id)
+    existing_settings = forward_collection.find_one("from_chat": from_chat, "to_chat": to_chat)
 
     if existing_settings:
         raise ValueError("Forwarding settings are already added.")
@@ -59,7 +59,7 @@ def get_forward_settings(channel_id):
 
 
 def delete_forward_settings(channel_id):
-    forward_collection.delete_many({
+    forward_collection.delete_one({
         "$or": [
             {"from_chat": channel_id},
             {"to_chat": channel_id}
