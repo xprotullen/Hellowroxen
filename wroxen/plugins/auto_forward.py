@@ -3,7 +3,7 @@
 
 import logging
 from pyrogram import Client, filters, enums
-from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
+from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings
   
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -27,5 +27,18 @@ async def set_forward_command(bot, message):
         await message.reply("Auto forwarding settings updated.")
     except:
         await message.reply("Failed to update auto forwarding settings.")
+        
+@Client.on_message(filters.command("delete_forward"))
+async def delete_forward_command(bot, message):
+    command_parts = message.text.split(" ", 2)
+
+    if len(command_parts) != 2:
+        await message.reply("Invalid format. Please use the format `/delete_forward {channel_id}`.")
+        return
+
+    channel_id = command_parts[1]
+
+    delete_forward_settings(channel_id)
+    await message.reply("Forwarding settings deleted.")
 
 
