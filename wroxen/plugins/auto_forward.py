@@ -3,7 +3,8 @@
 
 import logging
 from pyrogram import Client, filters, enums
-from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings
+from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
+   clear_forward_db
   
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -72,3 +73,9 @@ async def check_forward_command(bot, message):
         await message.reply(f"Forwarding settings:\nFrom Channel: {from_chat}\nTo Channel: {to_chat}")
     else:
         await message.reply("Forwarding settings not found.")
+
+        
+@Client.on_message(filters.command("clearForwardDb"))
+async def clear_forward_db_command(bot, message):
+    delete_count = clear_forward_db()
+    await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
