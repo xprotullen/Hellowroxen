@@ -164,7 +164,7 @@ async def editing(bot, message):
     
 """
 
-Client.on_message(filters.channel & (media_filter))
+@Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     forward_settings = get_forward_settings(channel_id)
