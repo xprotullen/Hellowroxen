@@ -5,6 +5,7 @@ from pyrogram import Client, filters, enums
 from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
   
 logger = logging.getLogger(__name__)
+media_filter = filters.document | filters.video
 
 @Client.on_message(filters.command("AutoForward"))
 async def set_forward_command(bot, message):
