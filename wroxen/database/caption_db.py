@@ -36,3 +36,28 @@ def is_channel_added(channel_id):
     channel_doc = channels_collection.find_one({"channel_id": channel_id})
     return channel_doc is not None
 
+#______________________________________________________________________________#
+
+def set_forward_settings(from_chat, to_chat):
+    existing_settings = forward_collection.find_one()
+
+    if existing_settings:
+        raise ValueError("Forwarding settings are already added.")
+
+    forward_data = {"from_chat": from_chat, "to_chat": to_chat}
+    forward_collection.insert_one(forward_data)
+
+def get_forward_settings():
+    forward_settings = forward_collection.find_one()
+    if forward_settings:
+        return forward_settings
+    return None
+
+
+def delete_forward_settings(channel_id):
+    forward_collection.delete_many({
+        "$or": [
+            {"from_chat": channel_id},
+            {"to_chat": channel_id}
+        ]
+    })
