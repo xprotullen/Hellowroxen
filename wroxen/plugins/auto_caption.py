@@ -12,6 +12,7 @@ import logging
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
+
 from wroxen.database.autoforward_db import set_forward_settings, get_forward_settings
  
 
