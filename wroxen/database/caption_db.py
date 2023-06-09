@@ -75,7 +75,7 @@ def delete_forward_settings(channel_id):
     return delete_result.deleted_count
 
 #'__&
-def update_caption(channel_id, new_caption):
+def update_f_caption(channel_id, new_caption):
     replace_settings = caption_collection.find_one({"channel_id": channel_id})
     if replace_settings:
         replace_settings["caption"] = new_caption
@@ -102,7 +102,19 @@ def update_replace_text(channel_id, old_username, new_username):
     return False
 
 
-
+def add_replace_settings(channel_id, old_username, new_username, caption):
+    existing_settings = caption_collection.find_one({"channel_id": channel_id})
+    if existing_settings:
+        raise ValueError("Replace settings for this channel already exist.")
+    
+    try:
+        replace_settings = {
+            "channel_id": channel_id,
+            "old_username": old_username,
+            "new_username": new_username,
+            "caption": caption
+        }
+        caption_collection.insert_one(replace_settings)
 
 
     
