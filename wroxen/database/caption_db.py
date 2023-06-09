@@ -87,6 +87,11 @@ def add_caption(channel_id, caption):
     }
     replace_collection.insert_one(replace_settings)
 
+def delete_caption_settings(channel_id):
+    replace_collection.delete_one({"channel_id": channel_id})
+
+    
+    
 def delete_forward_settings(channel_id):
     delete_result = forward_collection.delete_many({
         "$or": [
@@ -100,6 +105,7 @@ def delete_replace_settings(channel_id):
     replace_collection.delete_one({"channel_id": channel_id})
 
 
+    
 def clear_forward_db():
     delete_result = forward_collection.delete_many({})
     return delete_result.deleted_count
