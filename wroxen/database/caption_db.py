@@ -8,6 +8,7 @@ client = MongoClient(DB_URL)
 db = client["bot_caption_database"]
 channels_collection = db["channels"]
 forward_collection = db["forward_settings"]
+replace_collection = db["replace_settings"]
 
 def add_channel(channel_id, caption):
     existing_channel = channels_collection.find_one({"channel_id": channel_id})
@@ -52,9 +53,39 @@ def get_forward_settings(channel_id):
     forward_settings = forward_collection.find_one(
         {"$or": [{"from_chat": channel_id}, {"to_chat": channel_id}]}
     )
+
+    replace_settings = replace_collection.find_one({"channel_id": channel_id})
+
+    if forward_settings and replace_settings:
+        forward_settings["replace_text"] = {
+            "old_username": replace_settings.get("old_username"),
+            "new_username": replace_settings.get("new_username")
+        }
+        forward_settings["caption"] = replace_settings.get("caption")
+
     return forward_settings
 
+def add_forward_settings(from_chat, to_chat):
+    forward_settings = {
+        "from_chat": from_chat,
+        "to_chat": to_chat
+    }
+    forward_collection.insert_one(forward_settings)
 
+def add_replace_settings(channel_id, old_username, new_username):
+    replace_settings = {
+        "channel_id": channel_id,
+        "old_username": old_username,
+        "new_username": new_username
+    }
+    replace_collection.insert_one(replace_settings)
+
+def add_caption(channel_id, caption):
+    replace_settings = {
+        "channel_id": channel_id,
+        "caption": caption
+    }
+    replace_collection.insert_one(replace_settings)
 
 def delete_forward_settings(channel_id):
     delete_result = forward_collection.delete_many({
