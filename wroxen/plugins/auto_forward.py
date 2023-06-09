@@ -4,7 +4,7 @@
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, update_forward_settings, update_replace_text, update_msg_caption, add_replace_settings
+   clear_forward_db, update_forward_settings, update_replace_text, update_f_caption, add_replace_settings
    
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -133,7 +133,7 @@ async def add_caption_info_command(bot, message):
 
     await bot.send_message(message.chat.id, "Replace settings and captions added successfully.")  
    
-@Client.on_message(filters.command("update_caption"))
+@Client.on_message(filters.command("update_f_caption"))
 async def update_caption_command(bot, message):
     if len(message.command) < 2:
         await bot.send_message(message.chat.id, "Please provide the new caption.")
@@ -142,7 +142,7 @@ async def update_caption_command(bot, message):
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
-    if update_caption(channel_id, new_caption):
+    if update_f_caption(channel_id, new_caption):
         await bot.send_message(message.chat.id, f"Caption updated successfully.\n\nNew Caption: {new_caption}")
     else:
         await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
