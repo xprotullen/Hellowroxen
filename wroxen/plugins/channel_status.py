@@ -34,7 +34,7 @@ Channel name: {message.chat.title}"""
 
         await bot.send_message(message.chat.id, channel_status_text)
     else:
-        await bot.send_message(message.chat.id, f"Forward settings not found for Channel ID {channel_id}")
+        await bot.send_message(message.chat.id, f"चैनल आईडी के लिए अग्रेषण सेटिंग नहीं मिलीं {channel_id}")
 
 
         
@@ -42,13 +42,13 @@ Channel name: {message.chat.title}"""
 @Client.on_message(filters.command("add_authorised_chat"))
 async def add_authorised_chat_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
-        await message.reply("You are not an authorized user to execute this command.")
+        await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
         return
 
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/add_authorised_chat {channel_id}`.")
+        await message.reply("अवैध प्रारूप।  कृपया सही प्रारूप का उपयोग करें`/add_authorised_chat {channel_id}`.")
         return
 
     channel_id = command_parts[1]
@@ -59,26 +59,26 @@ async def add_authorised_chat_command(bot, message):
     authorized_chat = get_authorized_channels(channel_id)
     
     if channel_id in authorized_chat:
-        await message.reply("Channel ID is already authorized.")
+        await message.reply("चैनल आईडी पहले से ही अधिकृत है।")
         return
 
     try:
         add_authorized_channel(channel_id)
-        await message.reply(f"Channel ID {channel_id} added to authorized list.")
+        await message.reply(f"Channel ID {channel_id} अधिकृत सूची में जोड़ा गया।")
     except Exception as e:
-        await message.reply("An error occurred while adding the channel ID to the authorized list.")
+        await message.reply("अधिकृत सूची में चैनल आईडी जोड़ते समय एक त्रुटि हुई।")
 
 
 @Client.on_message(filters.command("delete_authorised_chat"))
 async def delete_authorised_chat_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
-        await message.reply("You are not an authorized user to execute this command.")
+        await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
         return
 
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/delete_authorised_chat {channel_id}`.")
+        await message.reply("अवैध प्रारूप।  कृपया सही प्रारूप का उपयोग करें `/delete_authorised_chat {channel_id}`.")
         return
 
     channel_id = command_parts[1]
@@ -88,36 +88,36 @@ async def delete_authorised_chat_command(bot, message):
 
     try:
         delete_authorized_channel(channel_id)
-        await message.reply(f"Channel ID {channel_id} removed from authorized list.")
+        await message.reply(f"{channel_id} को अधिकृत सूची से हटा दिया गया।")
     except Exception as e:
-        await message.reply("An error occurred while removing the channel ID from the authorized list.")
+        await message.reply("प्राधिकृत सूची से चैनल आईडी निकालते समय एक त्रुटि हुई।")
 
 @Client.on_message(filters.command("delete_all_authorised_chats"))
 async def delete_all_authorised_chats_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
-        await message.reply("You are not an authorized user to execute this command.")
+        await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
         return
 
     try:
         deleted_count = delete_all_authorized_chats()
-        await message.reply(f"{deleted_count} authorized chats have been deleted.")
+        await message.reply(f"{deleted_count} अधिकृत चैट हटा दी गई हैं।")
     except Exception as e:
-        await message.reply("An error occurred while deleting the authorized chats.")
+        await message.reply("अधिकृत चैट को हटाते समय एक त्रुटि हुई")
         
         
         
 @Client.on_message(filters.command("check_authorised"))
 async def check_authorised_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
-        await message.reply("You are not an authorized user to execute this command.")
+        await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
         return
 
     try:
         authorised_chats = get_authorized_chat()
         if not authorised_chats:
-            await message.reply("No authorized chats found.")
+            await message.reply("कोई अधिकृत चैट नहीं मिली।")
         else:
-            reply_message = "Authorized Chats:\n"
+            reply_message = "अधिकृत चैट:\n"
             for chat_id in authorised_chats:
                 reply_message += f"- {chat_id}\n"
             await message.reply(reply_message)
