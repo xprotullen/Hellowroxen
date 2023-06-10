@@ -18,7 +18,7 @@ async def set_forward_command(bot, message):
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
-     command_parts = message.text.split(" ", 2)
+    command_parts = message.text.split(" ", 2)
 
     if len(command_parts) != 2:
         await message.reply("Invalid format. Please use the format `/set_forward {to_chat}`.")
@@ -62,7 +62,7 @@ async def add_f_caption_info_command(bot, message):
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
-   if len(message.command) < 4:
+    if len(message.command) < 4:
         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_caption {old_username} {new_username} {caption}")
         return
 
@@ -139,15 +139,15 @@ async def delete_replace_command(bot, message):
 
 @Client.on_message(filters.command("add_f_replace") & filters.channel)
 async def add_f_replace_command(bot, message):
-    channel_id = str(message.chat.id)
-    authorised = get_authorized_channels(channel_id)
-
-    if channel_id not in authorised:
-        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
-        return
-    if len(message.command) < 2:
-         await bot.send_message(message.chat.id, "अवैध आदेश।  प्रयोग: /add_f_replace {old_username} {new_username}")
+     channel_id = str(message.chat.id)
+     authorised = get_authorized_channels(channel_id)
+     
+     if channel_id not in authorised:
+         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
          return
+     if len(message.command) < 2:
+          await bot.send_message(message.chat.id, "अवैध आदेश।  प्रयोग: /add_f_replace {old_username} {new_username}")
+          return
 
      command_args = message.command[1:]
      if len(command_args) != 2:
@@ -173,7 +173,7 @@ async def add_f_caption_command(bot, message):
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return   
-   if message.reply_to_message is None:
+    if message.reply_to_message is None:
         await bot.send_message(message.chat.id, "कृपया इस आदेश का उपयोग करते समय संदेश का उत्तर दें।")
         return
 
