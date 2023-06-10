@@ -5,7 +5,7 @@ import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
    clear_forward_db, update_replace_text, update_f_caption, add_replace_settings, \
-   delete_caption_settings, delete_replace_settings, get_replace_data
+   delete_caption_settings, delete_replace_settings, get_replace_data, caption_collection
    
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
@@ -196,3 +196,14 @@ async def add_f_caption_command(bot, message):
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
 
+
+@Client.on_message(filters.command("delete_f_captions") & filters.private)
+async def delete_f_captions_command(bot, message):
+    channel_id = str(message.chat.id)
+
+    result = caption_collection.delete_many({"channel_id": channel_id})
+
+    if result.deleted_count > 0:
+        await bot.send_message(message.chat.id, f"All captions for Channel ID {channel_id} have been deleted successfully.")
+    else:
+        await bot.send_message(message.chat.id, f"No captions found for Channel ID {channel_id}.")
