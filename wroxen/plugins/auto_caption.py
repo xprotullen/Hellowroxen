@@ -43,17 +43,20 @@ async def update_caption_command(bot, message):
 
 @Client.on_message(filters.command("caption") & filters.channel)
 async def get_caption_command(bot, message):
-    authorised = get_authorized_channels() 
-    if message.chat.id not in authorised:
-        await message.reply("Your channel is not authorized to execute this command.")
-        return 
     channel_id = str(message.chat.id)
+    authorised = get_authorized_channels(channel_id)
+
+    if channel_id not in authorised:
+        await message.reply("Your channel is not authorized to execute this command.")
+        return
+
     caption = get_caption(channel_id)
 
     if caption:
         await message.reply(f"The caption for channel {channel_id} is:\n{caption}")
     else:
         await message.reply(f"No caption found for channel {channel_id}.")
+
 
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
