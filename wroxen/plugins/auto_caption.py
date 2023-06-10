@@ -18,15 +18,16 @@ logger = logging.getLogger(__name__)
 
 @Client.on_message(filters.command("update_caption"))
 async def update_caption_command(bot, message):
-    command_parts = message.text.split("::", 1)
+    channel_id = str(message.chat.id)
+  
+    command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/update_caption {channel_id}::{new_caption}`.")
+        await message.reply("Invalid format. Please use the format `/update_caption {new_caption}`.")
         return
 
-    channel_id = command_parts[0].split()[1]
     new_caption = command_parts[1]
-
+    
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
 
