@@ -81,8 +81,8 @@ async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
     await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
 
-@Client.on_message(filters.command("add_f_caption"))
-async def add_f_caption_command(bot, message):
+@Client.on_message(filters.command("add_f_caption_info"))
+async def add_f_caption_info_command(bot, message):
     if len(message.command) < 4:
         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_caption {old_username} {new_username} {caption}")
         return
