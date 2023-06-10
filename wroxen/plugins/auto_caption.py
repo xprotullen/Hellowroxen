@@ -56,16 +56,15 @@ async def get_caption_command(bot, message):
     else:
         await message.reply(f"No caption found for channel {channel_id}.")
 
-
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
-    command_parts = message.text.split("::", 1)
+    command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/set_caption {channel_id}::{channel_caption}`.")
+        await message.reply("Invalid format. Please use the format `/set_caption {caption}`.")
         return
 
-    channel_id = command_parts[0].split()[1]
+    channel_id = str(message.chat.id)
     caption = command_parts[1]
 
     if not channel_id.startswith("-100"):
