@@ -5,7 +5,7 @@ import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
    clear_forward_db, update_replace_text, update_f_caption, add_replace_settings, \
-   delete_caption_settings, delete_replace_settings
+   delete_caption_settings, delete_replace_settings, get_replace_data
    
 logger = logging.getLogger(__name__)
 media_filter = filters.document | filters.video
