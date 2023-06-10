@@ -12,7 +12,13 @@ media_filter = filters.document | filters.video
 
 @Client.on_message(filters.command("set_forward") & filters.channel)
 async def set_forward_command(bot, message):
-    command_parts = message.text.split(" ", 2)
+    channel_id = str(message.chat.id)
+    authorised = get_authorized_channels(channel_id)
+
+    if channel_id not in authorised:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
+     command_parts = message.text.split(" ", 2)
 
     if len(command_parts) != 2:
         await message.reply("Invalid format. Please use the format `/set_forward {to_chat}`.")
@@ -50,7 +56,13 @@ async def clear_forward_db_command(bot, message):
 
 @Client.on_message(filters.command("add_f_caption_info") & filters.channel)
 async def add_f_caption_info_command(bot, message):
-    if len(message.command) < 4:
+    channel_id = str(message.chat.id)
+    authorised = get_authorized_channels(channel_id)
+
+    if channel_id not in authorised:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
+   if len(message.command) < 4:
         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_caption {old_username} {new_username} {caption}")
         return
 
@@ -127,29 +139,41 @@ async def delete_replace_command(bot, message):
 
 @Client.on_message(filters.command("add_f_replace") & filters.channel)
 async def add_f_replace_command(bot, message):
-    if len(message.command) < 2:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
-        return
-
-    command_args = message.command[1:]
-    if len(command_args) != 2:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
-        return
-
-    old_username = command_args[0]
-    new_username = command_args[1]
-
     channel_id = str(message.chat.id)
+    authorised = get_authorized_channels(channel_id)
 
-    try:
-        add_replace_settings(channel_id, old_username, new_username, "")
-        await bot.send_message(message.chat.id, "Username replaced successfully.")
-    except ValueError as e:
-        await bot.send_message(message.chat.id, str(e))
+    if channel_id not in authorised:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
+    if len(message.command) < 2:
+         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+         return
+
+     command_args = message.command[1:]
+     if len(command_args) != 2:
+         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+         return
+
+     old_username = command_args[0]
+     new_username = command_args[1]
+
+     channel_id = str(message.chat.id)
+
+     try:
+         add_replace_settings(channel_id, old_username, new_username, "")
+         await bot.send_message(message.chat.id, "Username replaced successfully.")
+     except ValueError as e:
+         await bot.send_message(message.chat.id, str(e))
 
 @Client.on_message(filters.command("Add_f_caption") & filters.channel)
 async def add_f_caption_command(bot, message):
-    if message.reply_to_message is None:
+    channel_id = str(message.chat.id)
+    authorised = get_authorized_channels(channel_id)
+
+    if channel_id not in authorised:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return   
+   if message.reply_to_message is None:
         await bot.send_message(message.chat.id, "Please reply to a message when using this command.")
         return
 
