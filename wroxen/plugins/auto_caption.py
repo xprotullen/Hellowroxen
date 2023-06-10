@@ -42,6 +42,9 @@ async def update_caption_command(bot, message):
 
 @Client.on_message(filters.command("caption") & filters.channel)
 async def get_caption_command(bot, message):
+    if message.chat.id not in AUTHORIZED_CHANNEL_IDS:
+        await message.reply("Your channel is not authorized to execute this command.")
+        return 
     channel_id = str(message.chat.id)
     caption = get_caption(channel_id)
 
