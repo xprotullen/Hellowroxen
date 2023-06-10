@@ -2,8 +2,8 @@
 
 from . import authorized_channels
 
-def get_authorized_channels():
-    channels = authorized_channels.find()
+def get_authorized_channels(channel_id):
+    channels = authorized_channels.find({"channel_id": channel_id})
     return [channel["channel_id"] for channel in channels]
 
 def delete_authorized_channel(channel_id):
