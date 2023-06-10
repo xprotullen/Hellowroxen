@@ -40,15 +40,9 @@ async def update_caption_command(bot, message):
         await message.reply("An error occurred while updating the caption in the database.")
 
 
-@Client.on_message(filters.command("caption"))
+@Client.on_message(filters.command("caption") & filters.channel)
 async def get_caption_command(bot, message):
-    command_parts = message.text.split(" ", 1)
-
-    if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/caption {channel_id}`.")
-        return
-
-    channel_id = command_parts[1]
+    channel_id = str(message.chat.id)
     caption = get_caption(channel_id)
 
     if caption:
@@ -85,13 +79,8 @@ async def delete_all_info_command(bot, message):
 
 @Client.on_message(filters.command("delete_caption"))
 async def delete_caption_command(bot, message):
-    command_parts = message.text.split(" ", 2)
 
-    if len(command_parts) < 2:
-        await message.reply("Please provide the channel ID to delete the caption.")
-        return
-
-    channel_id = command_parts[1]
+    channel_id = str(message.chat.id)
 
     deleted = delete_channel(channel_id)
     if deleted:
