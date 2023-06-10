@@ -1,6 +1,7 @@
 # (c) @TheLx0980
 
-from wroxen.database.authorized_chat import get_authorized_channels, add_authorized_channel, delete_authorized_channel
+from wroxen.database.authorized_chat import get_authorized_channels, add_authorized_channel, delete_authorized_channel, \
+   delete_all_authorized_chats
 from wroxen.database.caption_db import get_forward_settings, get_replace_data
 from pyrogram import Client, filters
 
@@ -35,7 +36,7 @@ Channel name: {message.chat.title}"""
 
 @Client.on_message(filters.command("add_authorised_chat"))
 async def add_authorised_chat_command(bot, message):
-    if message.from_user.id not in AUTHORIZED_USER_IDS:
+    if message.from_user.id not in ADMIN_IDS:
         await message.reply("You are not an authorized user to execute this command.")
         return
 
@@ -62,7 +63,7 @@ async def add_authorised_chat_command(bot, message):
 
 @Client.on_message(filters.command("delete_authorised_chat"))
 async def delete_authorised_chat_command(bot, message):
-    if message.from_user.id not in AUTHORIZED_USER_IDS:
+    if message.from_user.id not in ADMIN_IDS:
         await message.reply("You are not an authorized user to execute this command.")
         return
 
@@ -82,3 +83,21 @@ async def delete_authorised_chat_command(bot, message):
         await message.reply(f"Channel ID {channel_id} removed from authorized list.")
     except Exception as e:
         await message.reply("An error occurred while removing the channel ID from the authorized list.")
+
+@Client.on_message(filters.command("delete_all_authorised_chats"))
+async def delete_all_authorised_chats_command(bot, message):
+    if message.from_user.id not in AUTHORIZED_USER_IDS:
+        await message.reply("You are not an authorized user to execute this command.")
+        return
+
+    try:
+        deleted_count = delete_all_authorized_chats()
+        await message.reply(f"{deleted_count} authorized chats have been deleted.")
+    except Exception as e:
+        await message.reply("An error occurred while deleting the authorized chats.")
+        
+        
+        
+        
+        
+        
