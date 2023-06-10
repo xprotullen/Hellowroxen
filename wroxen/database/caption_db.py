@@ -79,7 +79,7 @@ def update_f_caption(channel_id, new_caption):
     replace_settings = caption_collection.find_one({"channel_id": channel_id})
     if replace_settings:
         replace_settings["caption"] = new_caption
-        replace_collection.update_one(
+        caption_collection.update_one(
             {"channel_id": channel_id},
             {"$set": replace_settings},
             upsert=True
