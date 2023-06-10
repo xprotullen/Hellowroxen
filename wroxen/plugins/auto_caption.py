@@ -171,7 +171,7 @@ async def editing(bot, message):
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
-        caption, old_username, new_username = get_replace_data(channel_id)
+        old_username, new_username, caption = get_replace_data(channel_id)
 
         if str(message.chat.id) == str(from_chat):
             try:
