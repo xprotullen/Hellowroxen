@@ -17,7 +17,7 @@ API_HASH = os.environ.get("API_HASH", "")
 SESSION = os.environ.get("SESSION", "")
 
 #OWNER ID
-OWNER_ID = int(os.environ.get("OWNER_ID", 5326801541))
+ADMIN_IDS = [5326801541, 5163706369, 5584776461]
 
 DB_NAME = "helloLx"
 DB_URL = os.environ.get("DB_URL", "")
