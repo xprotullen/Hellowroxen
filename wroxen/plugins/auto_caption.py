@@ -9,7 +9,7 @@ from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
     update_caption, get_forward_settings, get_replace_data
-
+from wroxen.vars import ADMIN_IDS
 import logging, asyncio
 
 media_filter = filters.document | filters.video | filters.audio
