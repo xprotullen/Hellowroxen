@@ -142,17 +142,20 @@ async def delete_caption_command(bot, message):
         await bot.send_message(message.chat.id, str(e))
 
          
-@Client.on_message(filters.command("delete_replace"))
+@Client.on_message(filters.command("delete_replace") & filters.channel)
 async def delete_replace_command(bot, message):
     channel_id = str(message.chat.id)
+    forward_settings = get_forward_settings(channel_id)
+    if forward_settings:
+        old_username, new_username, _ = get_replace_data(channel_id)
+        if old_username and new_username:
+            delete_replace_settings(channel_id, old_username, new_username)
+            await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
+        else:
+            await bot.send_message(message.chat.id, "Replace settings do not exist for this channel.")
+    else:
+        await bot.send_message(message.chat.id, f"Forward settings not found for Channel ID {channel_id}")
 
-    try:
-        delete_replace_settings(channel_id)
-
-        await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
-    
-    except ValueError as e:
-        await bot.send_message(message.chat.id, str(e))
 
 
 @Client.on_message(filters.command("add_f_replace"))
