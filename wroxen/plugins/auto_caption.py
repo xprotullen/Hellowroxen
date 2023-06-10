@@ -23,7 +23,7 @@ async def update_caption_command(bot, message):
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/update_caption {new_caption}`.")
+        await message.reply("अवैध प्रारूप।  कृपया सही प्रारूप का उपयोग करें`/update_caption {new_caption}`.")
         return
 
     new_caption = command_parts[1]
@@ -32,14 +32,14 @@ async def update_caption_command(bot, message):
         channel_id = "-100" + channel_id
 
     if not is_channel_added(channel_id):
-        await message.reply("The channel is not added in the database.")
+        await message.reply("इस चैनल को डेटाबेस में नहीं जोड़ा गया है।")
         return
 
     try:
         update_caption(channel_id, new_caption)
-        await message.reply(f"Caption updated for channel {channel_id}.\n\n{new_caption}")
+        await message.reply(f"चैनल {channel_id} के लिए कैप्शन अपडेट किया गया।\n\n{new_caption}")
     except ValueError:
-        await message.reply("An error occurred while updating the caption in the database.")
+        await message.reply("डेटाबेस में कैप्शन अपडेट करते समय एक त्रुटि हुई। ")
 
 
 @Client.on_message(filters.command("caption") & filters.channel)
@@ -48,15 +48,15 @@ async def get_caption_command(bot, message):
     authorised = get_authorized_channels(channel_id)
 
     if channel_id not in authorised:
-        await message.reply("Your channel is not authorized to execute this command.")
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
 
     caption = get_caption(channel_id)
 
     if caption:
-        await message.reply(f"The caption for channel {channel_id} is:\n{caption}")
+        await message.reply(f"{channel_id} इस चैनल के लिए कैप्शन सेट किया गया।\nकैप्शन{caption}")
     else:
-        await message.reply(f"No caption found for channel {channel_id}.")
+        await message.reply(f"इस चैनल के लिए कोई कैप्शन नहीं मिला {channel_id}.")
 
 
 @Client.on_message(filters.command("set_caption"))
@@ -71,7 +71,7 @@ async def set_caption_command(bot, message):
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/set_caption {caption}`.")
+        await message.reply("अवैध प्रारूप।  कृपया सही  प्रारूप का उपयोग करें `/set_caption {caption}`.")
         return
 
     caption = command_parts[1]
@@ -102,9 +102,9 @@ async def delete_caption_command(bot, message):
 
     deleted = delete_channel(channel_id)
     if deleted:
-        await message.reply(f"Caption deleted for channel {channel_id}.")
+        await message.reply(f"{channel_id} इस चैनल के लिए कैप्शन हटाया गया।")
     else:
-        await message.reply("No caption found for the specified channel.")
+        await message.reply("आप जिस चैनल की कैप्शन को हटाने की कोशिश कर रहे हैं उसके लिए कोई कैप्शन नहीं मिला।")
 
 
 @Client.on_message(filters.channel & (media_filter))
