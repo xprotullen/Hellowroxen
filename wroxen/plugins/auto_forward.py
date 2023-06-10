@@ -18,10 +18,11 @@ async def set_forward_command(bot, message):
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
+    
     command_parts = message.text.split(" ", 2)
 
     if len(command_parts) != 2:
-        await message.reply("Invalid format. Please use the format `/set_forward {to_chat}`.")
+        await message.reply("अमान्य प्रारूप। कृपया इस प्रारूप का उपयोग करें: `/set_forward {to_chat}`।")
         return
 
     from_chat = str(message.chat.id)
@@ -32,9 +33,10 @@ async def set_forward_command(bot, message):
 
     try:
         set_forward_settings(from_chat, to_chat)
-        await message.reply(f"Forwarding Successfully Set!\n\nFrom: {from_chat}\nTo Chat: {to_chat}")
+        await message.reply(f"फ़ोरवर्डिंग सफलतापूर्वक सेट की गई!\n\nसे: {from_chat}\nटू चैट: {to_chat}")
     except ValueError as e:
         await message.reply(str(e))
+
 
         
 @Client.on_message(filters.command("delete_forward") & filters.channel)
