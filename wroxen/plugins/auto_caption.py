@@ -106,14 +106,14 @@ async def editing(bot, message):
     channel_id = str(message.chat.id)
     if is_channel_added(channel_id):
         caption = get_caption(channel_id)
-        
+    
         try:
             media = message.document or message.video or message.audio
             caption_text = f"**{caption}**"
         except:
             caption_text = ""
             pass
-        
+
         if message.document or message.video or message.audio:
             if message.caption:
                 file_caption = f"**{message.caption}**"
@@ -121,23 +121,23 @@ async def editing(bot, message):
                 fname = media.file_name
                 filename = fname.replace("_", ".")
                 file_caption = f"`{filename}`"
-        
+
         old_message_id = message.id
-        
-        if caption_text
-              await bot.edit_message_caption(
-                   chat_id=message.chat.id,
-                   message_id=message.id,
-                   caption=file_caption + "\n\n" + caption_text,
-                   parse_mode=enums.ParseMode.MARKDOWN
+
+        if caption_text:
+            await bot.edit_message_caption(
+                chat_id=message.chat.id,
+                message_id=message.id,
+                caption=file_caption + "\n\n" + caption_text,
+                parse_mode=enums.ParseMode.MARKDOWN
             )
-            
+    channel_id = str(message.chat.id)
     forward_settings = get_forward_settings(channel_id)
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
         old_username, new_username, caption = get_replace_data(channel_id)
-        await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld UserName {old_username}\ncaption: {caption}🖐️")
+        await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
         if str(message.chat.id) == str(from_chat):
             try:
                 new_caption = message.caption
@@ -153,9 +153,9 @@ async def editing(bot, message):
                     caption=new_caption,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
-            except FloodWait as e:
-                await asyncio.sleep(e.value)
-            except Exception as e: 
+            except Exception as e:
+                print(f"Error copying message: {e}")
+
 
 
 
