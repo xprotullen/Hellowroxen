@@ -11,6 +11,7 @@ from wroxen.vars import ADMIN_IDS
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
     channel_id = str(message.chat.id)
+    auto_caption = get_caption(channel_id)
     forward_settings = get_forward_settings(channel_id)
     if forward_settings:
         from_chat = forward_settings["from_chat"]
@@ -25,6 +26,9 @@ Caption: {caption}
         
 Replace TEXT:
 {old_username} To {new_username}
+
+Channel Auto Caption:
+{auto_caption}
 
 Channel name: {message.chat.title}"""
 
