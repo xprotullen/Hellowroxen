@@ -1,5 +1,6 @@
 # (c) @TheLx0980
 
+from wroxen.database.authorized_chat import get_authorized_channels, add_authorized_channel
 from wroxen.database.caption_db import get_forward_settings, get_replace_data
 from pyrogram import Client, filters
 
@@ -49,13 +50,13 @@ async def add_authorised_chat_command(bot, message):
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
 
-    if channel_id in AUTHORIZED_CHANNEL_IDS:
+    if channel_id in AUTHORIZED_CHANL:
         await message.reply("Channel ID is already authorized.")
         return
 
     try:
         add_authorized_channel(channel_id)
-        AUTHORIZED_CHANNEL_IDS.append(channel_id)
+        AUTHORIZED_CHANL.append(channel_id)
         await message.reply(f"Channel ID {channel_id} added to authorized list.")
     except Exception as e:
         await message.reply("An error occurred while adding the channel ID to the authorized list.")
