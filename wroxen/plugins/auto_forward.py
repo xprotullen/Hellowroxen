@@ -1,6 +1,6 @@
 # (c) @TheLx0980
 
-
+from wroxen.database.authorized_chat import get_authorized_channels
 import logging
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
@@ -46,9 +46,9 @@ async def delete_forward_command(bot, message):
     deleted_count = delete_forward_settings(channel_id)
 
     if deleted_count > 0:
-        await message.reply(f"Forwarding settings for channel {channel_id} deleted.")
+        await message.reply(f"चैनल {channel_id} के लिए फ़ोरवर्डिंग सेटिंग्स हटा दी गईं।")
     else:
-        await message.reply(f"No forwarding settings found for channel {channel_id}.")
+        await message.reply(f"चैनल {channel_id} के लिए कोई फ़ोरवर्डिंग सेटिंग्स नहीं मिलीं।")
 
         
 @Client.on_message(filters.command("clearForwardDb"))
@@ -65,7 +65,7 @@ async def add_f_caption_info_command(bot, message):
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
     if len(message.command) < 4:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_caption {old_username} {new_username} {caption}")
+        await bot.send_message(message.chat.id, "अमान्य कमांड। उपयोग: /add_f_caption {पुराना_यूज़रनेम} {नया_यूज़रनेम} {कैप्शन}")
         return
 
     command_args = message.command[1:]
@@ -77,9 +77,10 @@ async def add_f_caption_info_command(bot, message):
 
     try:
         add_replace_settings(channel_id, old_username, new_username, caption)
-        await bot.send_message(message.chat.id, "Caption added successfully.")
+        await bot.send_message(message.chat.id, "कैप्शन सफलतापूर्वक जोड़ा गया।")
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
+
   
    
 @Client.on_message(filters.command("update_f_caption") & filters.channel)
