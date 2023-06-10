@@ -1,5 +1,6 @@
 # (c) @thelx0980
 
+from wroxen.database.authorized_chat import get_authorized_channels
 from pyrogram.errors import FloodWait
 from wroxen.chek import is_channel_added
 from wroxen.text import ChatMSG
