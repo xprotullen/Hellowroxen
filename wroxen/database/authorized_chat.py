@@ -12,8 +12,9 @@ def delete_authorized_channel(channel_id):
 def add_authorized_channel(channel_id):
     authorized_channels.insert_one({"channel_id": channel_id})
     
-def delete_all_authorized_chats()
-    authorized_channels.delete_many({})
+def delete_all_authorized_chats():
+    result = authorized_channels.delete_many({})
+    return result.deleted_count
 
     
     
