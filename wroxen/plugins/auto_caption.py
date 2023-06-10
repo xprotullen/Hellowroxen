@@ -107,9 +107,12 @@ async def editing(bot, message):
     if is_channel_added(channel_id):
         caption = get_caption(channel_id)
         
+     try:
         media = message.document or message.video or message.audio
         caption_text = f"**{caption}**" if caption else ""
-        
+        except:
+            caption_text = ""
+            pass
         if message.document or message.video or message.audio:
             if message.caption:
                 file_caption = f"**{message.caption}**"
@@ -118,11 +121,12 @@ async def editing(bot, message):
                 filename = fname.replace("_", ".")
                 file_caption = f"`{filename}`"
         old_message_id = message.id
-        await bot.edit_message_caption(
+     try: 
+         await bot.edit_message_caption(
             chat_id=message.chat.id,
             message_id=message.id,
             caption=file_caption + "\n\n" + caption_text,
-            parse_mode=enums.ParseMode.MARKDOWN
+            
         )
         
         forward_settings = get_forward_settings(channel_id)
@@ -149,7 +153,8 @@ async def editing(bot, message):
                     print(f"Error editing or forwarding message: {e}")
 
 
-
+            except:
+          pass
 
 JAAN = """
 @Client.on_message(filters.channel & (media_filter))
