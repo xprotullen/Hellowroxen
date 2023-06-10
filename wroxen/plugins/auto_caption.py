@@ -61,13 +61,19 @@ async def get_caption_command(bot, message):
 
 @Client.on_message(filters.command("set_caption"))
 async def set_caption_command(bot, message):
+    channel_id = str(message.chat.id)
+    authorized_channels = get_authorized_channels(channel_id)
+    
+    if channel_id not in authorized_channels:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
+    
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
         await message.reply("Invalid format. Please use the format `/set_caption {caption}`.")
         return
 
-    channel_id = str(message.chat.id)
     caption = command_parts[1]
 
     if not channel_id.startswith("-100"):
@@ -75,15 +81,18 @@ async def set_caption_command(bot, message):
 
     try:
         add_channel(channel_id, caption)
-        await message.reply(f"Caption set for channel {channel_id}.\n\n{caption}")
+        await message.reply(f"चैनल के लिए कैप्शन सेट किया {channel_id}.\n\n{caption}")
     except ValueError:
-        await message.reply("Channel already added in the database.")
+        await message.reply("चैनल पहले ही डेटाबेस में जोड़ा जा चुका है!")
 
 
 @Client.on_message(filters.command("cleardb"))
 async def delete_all_info_command(bot, message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.reply("आपको इस आदेश का उपयोग करने का अधिकार नहीं है।")
+        return
     channels_collection.delete_many({})
-    await message.reply("All database info deleted.")
+    await message.reply("डेटाबेस की सभी  ऑटो कैप्शन जानकारी को डिलीट किया गया")
 
 
 @Client.on_message(filters.command("delete_caption"))
