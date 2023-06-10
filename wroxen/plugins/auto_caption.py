@@ -107,12 +107,13 @@ async def editing(bot, message):
     if is_channel_added(channel_id):
         caption = get_caption(channel_id)
         
-     try:
-        media = message.document or message.video or message.audio
-        caption_text = f"**{caption}**" if caption else ""
+        try:
+            media = message.document or message.video or message.audio
+            caption_text = f"**{caption}**"
         except:
             caption_text = ""
             pass
+        
         if message.document or message.video or message.audio:
             if message.caption:
                 file_caption = f"**{message.caption}**"
@@ -120,41 +121,43 @@ async def editing(bot, message):
                 fname = media.file_name
                 filename = fname.replace("_", ".")
                 file_caption = f"`{filename}`"
-        old_message_id = message.id
-     try: 
-         await bot.edit_message_caption(
-            chat_id=message.chat.id,
-            message_id=message.id,
-            caption=file_caption + "\n\n" + caption_text,
-            
-        )
         
-        forward_settings = get_forward_settings(channel_id)
-        if forward_settings:
-            from_chat = forward_settings["from_chat"]
-            to_chat = forward_settings["to_chat"]
-            old_username, new_username, caption = get_replace_data(channel_id)
-            await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
-            if str(message.chat.id) == str(from_chat):
-                try:
-                    new_caption = message.caption
-                    if caption:
-                        new_caption = f"{new_caption}\n\n{caption}"
-                    if old_username and new_username and new_caption:
-                        new_caption = new_caption.replace(old_username, new_username)
-                    await bot.copy_message(
-                        chat_id=int(to_chat),
-                        from_chat_id=message.chat.id,
-                        message_id=old_message_id,
-                        caption=new_caption,
-                        parse_mode=enums.ParseMode.MARKDOWN
-                    )
-                except Exception as e:
-                    print(f"Error editing or forwarding message: {e}")
+        old_message_id = message.id
+        
+        try: 
+            await bot.edit_message_caption(
+                chat_id=message.chat.id,
+                message_id=message.id,
+                caption=file_caption + "\n\n" + caption_text,
+                parse_mode=enums.ParseMode.MARKDOWN
+            )
+            
+            forward_settings = get_forward_settings(channel_id)
+            if forward_settings:
+                from_chat = forward_settings["from_chat"]
+                to_chat = forward_settings["to_chat"]
+                old_username, new_username, caption = get_replace_data(channel_id)
+                await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
+                if str(message.chat.id) == str(from_chat):
+                    try:
+                        new_caption = message.caption
+                        if caption:
+                            new_caption = f"{new_caption}\n\n{caption}"
+                        if old_username and new_username and new_caption:
+                            new_caption = new_caption.replace(old_username, new_username)
+                        await bot.copy_message(
+                            chat_id=int(to_chat),
+                            from_chat_id=message.chat.id,
+                            message_id=old_message_id,
+                            caption=new_caption,
+                            parse_mode=enums.ParseMode.MARKDOWN
+                        )
+                    except Exception as e:
+                        print(f"Error editing or forwarding message: {e}")
+        
+        except:
+            pass
 
-
-            except:
-          pass
 
 JAAN = """
 @Client.on_message(filters.channel & (media_filter))
