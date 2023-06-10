@@ -4,6 +4,7 @@ from wroxen.database.authorized_chat import get_authorized_channels, add_authori
    delete_all_authorized_chats
 from wroxen.database.caption_db import get_forward_settings, get_replace_data
 from pyrogram import Client, filters
+from wroxen.vars import ADMIN_IDS
 
 AUTHORIZED_CHANL = get_authorized_channels()
 
@@ -86,7 +87,7 @@ async def delete_authorised_chat_command(bot, message):
 
 @Client.on_message(filters.command("delete_all_authorised_chats"))
 async def delete_all_authorised_chats_command(bot, message):
-    if message.from_user.id not in AUTHORIZED_USER_IDS:
+    if message.from_user.id not in ADMIN_IDS:
         await message.reply("You are not an authorized user to execute this command.")
         return
 
