@@ -9,6 +9,7 @@ db = client["bot_caption_database"]
 channels_collection = db["channels"]
 forward_collection = db["forward_settings"]
 caption_collection = db["caption_settings"]
+authorized_channels = db["authorized_channel"]
 
 def add_channel(channel_id, caption):
     existing_channel = channels_collection.find_one({"channel_id": channel_id})
