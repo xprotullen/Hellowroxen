@@ -17,7 +17,9 @@ def delete_all_authorized_chats():
     return result.deleted_count
 
     
-    
-    
+def get_authorized_chat():
+    channels = authorized_channels.find({})
+    return [channel["channel_id"] for channel in channels]
+
     
     
