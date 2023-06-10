@@ -131,7 +131,7 @@ async def delete_replace_command(bot, message):
             delete_replace_settings(channel_id, old_username, new_username)
             await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
         else:
-            await bot.send_message(message.chat.id, "Replace settings do not exist for this channel.")
+            await bot.send_message(message.chat.id, "इस चैनल के लिए सेटिंग बदलें (बदलना) मौजूद नहीं है")
     else:
         await bot.send_message(message.chat.id, f"Forward settings not found for Channel ID {channel_id}")
 
@@ -146,12 +146,12 @@ async def add_f_replace_command(bot, message):
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
     if len(message.command) < 2:
-         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+         await bot.send_message(message.chat.id, "अवैध आदेश।  प्रयोग: /add_f_replace {old_username} {new_username}")
          return
 
      command_args = message.command[1:]
      if len(command_args) != 2:
-         await bot.send_message(message.chat.id, "Invalid command. Usage: /add_f_replace {old_username} {new_username}")
+         await bot.send_message(message.chat.id, "अवैध आदेश।  प्रयोग: /add_f_replace {old_username} {new_username}")
          return
 
      old_username = command_args[0]
@@ -174,7 +174,7 @@ async def add_f_caption_command(bot, message):
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return   
    if message.reply_to_message is None:
-        await bot.send_message(message.chat.id, "Please reply to a message when using this command.")
+        await bot.send_message(message.chat.id, "कृपया इस आदेश का उपयोग करते समय संदेश का उत्तर दें।")
         return
 
     channel_id = str(message.chat.id)
@@ -183,7 +183,7 @@ async def add_f_caption_command(bot, message):
 
     try:
         add_replace_settings(channel_id, "", "", caption)
-        await bot.send_message(message.chat.id, "Caption added successfully.")
+        await bot.send_message(message.chat.id, "कैप्शन सफलतापूर्वक जोड़ा गया।")
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
 
@@ -195,6 +195,15 @@ async def delete_f_captions_command(bot, message):
     result = caption_collection.delete_many({"channel_id": channel_id})
 
     if result.deleted_count > 0:
-        await bot.send_message(message.chat.id, f"All captions for Channel ID {channel_id} have been deleted successfully.")
+        await bot.send_message(message.chat.id, f"चैनल आईडी {channel_id} के लिए सभी कैप्शन सफलतापूर्वक हटा दिए गए हैं।")
     else:
-        await bot.send_message(message.chat.id, f"No captions found for Channel ID {channel_id}.")
+        await bot.send_message(message.chat.id, f"चैनल आईडी के लिए कोई कैप्शन नहीं मिला। {channel_id}.")
+         
+         
+         
+         
+         
+         
+         
+         
+         
