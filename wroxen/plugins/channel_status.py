@@ -6,7 +6,7 @@ from wroxen.database.caption_db import get_forward_settings, get_replace_data
 from pyrogram import Client, filters
 from wroxen.vars import ADMIN_IDS
 
-AUTHORIZED_CHANL = get_authorized_channels()
+# AUTHORIZED_CHANL = get_authorized_channels()
 
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
@@ -48,11 +48,13 @@ async def add_authorised_chat_command(bot, message):
         return
 
     channel_id = command_parts[1]
-
+    
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
-
-    if channel_id in AUTHORIZED_CHANL:
+    
+    authorized_chat = get_authorized_channels(channel_id)
+    
+    if channel_id in authorized_chat:
         await message.reply("Channel ID is already authorized.")
         return
 
@@ -61,6 +63,7 @@ async def add_authorised_chat_command(bot, message):
         await message.reply(f"Channel ID {channel_id} added to authorized list.")
     except Exception as e:
         await message.reply("An error occurred while adding the channel ID to the authorized list.")
+
 
 @Client.on_message(filters.command("delete_authorised_chat"))
 async def delete_authorised_chat_command(bot, message):
