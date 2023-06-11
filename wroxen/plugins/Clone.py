@@ -99,13 +99,13 @@ async def set_skip_number(bot, message):
     try:
         _, skip = message.text.split(" ")
     except:
-        return await message.reply("Give me a skip number.")
+        return await message.reply("मुझे एक स्किप नंबर दें।")
     try:
         skip = int(skip)
     except:
-        return await message.reply("Only support in numbers.")
+        return await message.reply("केवल संख्याओं का समर्थन करें।")
     CURRENT[message.from_user.id] = int(skip)
-    await message.reply(f"Successfully set <code>{skip}</code> skip number.")
+    await message.reply(f"सफलतापूर्वक सेट किया गया है <code>{skip}</code> स्किप नंबर।")
 
 
 @Client.on_message(filters.private & filters.command(['set_channel']))
@@ -113,30 +113,29 @@ async def set_target_channel(bot, message):
     try:
         _, chat_id = message.text.split(" ")
     except:
-        return await message.reply("Give me a target channel ID")
+        return await message.reply("मुझे एक लक्षित चैनल आईडी दें।")
     try:
         chat_id = int(chat_id)
     except:
-        return await message.reply("Give me a valid ID")
+        return await message.reply("एक मान्य आईडी दें")
 
     try:
         chat = await bot.get_chat(chat_id)
     except:
-        return await message.reply("Make me a admin in your target channel.")
+        return await message.reply("मुझे अपने लक्षित चैनल में एडमिन बनाएं।")
     if chat.type != enums.ChatType.CHANNEL:
-        return await message.reply("I can set channels only.")
+        return await message.reply("मैं केवल चैनल को सेट कर सकता हूँ।")
     CHANNEL[message.from_user.id] = int(chat.id)
-    await message.reply(f"Successfully set {chat.title} target channel.")
-
+    await message.reply(f"सफलतापूर्वक सेट किया गया है {chat.title} लक्षित चैनल।")
 
 @Client.on_message(filters.private & filters.command(['set_caption']))
 async def set_caption(bot, message):
     try:
         caption = message.text.split(" ", 1)[1]
     except:
-        return await message.reply("Give me a caption.")
+        return await message.reply("मुझे एक कैप्शन दें।")
     CAPTION[message.from_user.id] = caption
-    await message.reply(f"Successfully set file caption.\n\n{caption}")
+    await message.reply(f"सफलतापूर्वक फ़ाइल कैप्शन सेट किया गया है।\n\n{caption}")
     
     
     
