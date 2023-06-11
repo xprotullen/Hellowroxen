@@ -164,7 +164,7 @@ async def clear_database_command(bot, message):
 
     if delete_confirmation[user_id]:
         # Delete the database or perform other deletion logic
-         delete_count = clear_all_db()
+        delete_count = clear_all_db()
         await bot.send_message(message.chat.id, f"Database deleted successfully. {delete_count}")
     else:
         await bot.send_message(message.chat.id, "Deletion confirmation timed out.")
