@@ -158,18 +158,22 @@ def clear_forward_db():
 
 # पूरे डेटाबेस को हटा दें।
 def clear_all_db():
-    ab = forward_collection.delete_many({})
-    cd = authorized_channels.delete_many({})
-    ef = caption_collection.delete_many({})
-    gh = channels_collection.delete_many({})
+    ab = forward_collection.delete_many({}).deleted_count
+    cd = authorized_channels.delete_many({}).deleted_count
+    ef = caption_collection.delete_many({}).deleted_count
+    gh = channels_collection.delete_many({}).deleted_count
 
-    total_deleted_count = (
-        ab.deleted_count +
-        cd.deleted_count +
-        ef.deleted_count +
-        gh.deleted_count
+    total_count = (
+        ab +
+        cd +
+        ef +
+        gh
     )
-    return ab.deleted_count, cd.deleted_count, ef.deleted_count, gh.deleted_count
-    return total_deleted_count
-
+    return {
+        'a1': ab,
+        'a2': cd,
+        'a3': ef,
+        'a4': gh,
+        'a5': total_count
+    }
 
