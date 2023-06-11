@@ -5,10 +5,13 @@ import re
 from wroxen.vars import LOGGER
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from wroxen.database.authorized_chat import get_authorized_channels
 
-logger = LOGGER(__name__)
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
 
 CURRENT = {}
 CHANNEL = {}
@@ -18,8 +21,10 @@ CAPTION = {}
 
 FILE_CAPTION = "{file_name}"
 
+
+
 @Client.on_callback_query(filters.regex(r'^forward'))
-async def forward(bot, query):
+async def forward(bot, query: CallbackQuery):
     _, ident, chat, lst_msg_id = query.data.split("#")
     if ident == 'yes':
         if FORWARDING.get(query.from_user.id):
