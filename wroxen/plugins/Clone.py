@@ -111,22 +111,23 @@ async def set_skip_number(bot, message):
 
 @Client.on_message(filters.private & filters.command(['clone_set_channel']))
 async def set_target_channel(bot, message):
+    chat_id = message.text.split(" ")
+    if not chat_id.startswith("-100"):
+        chat_n_id = "-100" + chat_id
+    channel_id = int(chat_n_id)
+    chats_id = await bot.get_chat(channel_id)
+    channel_id = str(chats_id.id)
+    authorised = get_authorized_channels(channel_id)
+    if channel_id not in authorised:
+        return await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
     try:
-        _, chat_id = message.text.split(" ")
+        _, chat_id = chat_n_id
     except:
         return await message.reply("मुझे एक लक्षित चैनल आईडी दें।")
-       if not chat_id.startswith("-100"):
-        chat_id = "-100" + chat_id
     try:
         chat_id = int(chat_id)
     except:
         return await message.reply("एक मान्य आईडी दें")
-    chats_id = await bot.get_chat(chat_id)
-    channel_id = str(chats_id.id)
-    authorised = get_authorized_channels(channel_id)
-    if channel_id not in authorised:
-        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
-        return
     try:
         chat = await bot.get_chat(chat_id)
 
