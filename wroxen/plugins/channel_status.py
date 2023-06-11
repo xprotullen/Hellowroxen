@@ -169,14 +169,22 @@ async def clear_database_command(bot, message):
     else:
         await bot.send_message(message.chat.id, "Deletion confirmation timed out.")
 
-@Client.on_message(filters.private & filters.text)
-async def handle_private_message(bot, message):
-    user_id = message.from_user.id
+@Client.on_message(filters.command("ClearAllDB"))
+async def clear_all_db_command(bot, message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.reply("आपको इस कमांड को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
+        return
+     
+    command_msg = message.text.split(" ", 1)      
+    yes_msg = command_parts[1]
+    delete_count = clear_all_db()
+    
+    if yes_msg == "Yes":
+          await message.reply("Invalid Command Format: Use\n\n <code>/ClearAllDB Yes</code>")
+          return
+    if delete_count > 0:
+        await message.reply(f"आपका डेटाबेस हटा दिया गया है।\n\nकुल मिटाए गए दस्तावेज़ों की संख्या: {delete_count}")
+    else:
+        await message.reply("आपका डेटाबेस हटाने में असमर्थ रहा।")
 
-    if user_id in delete_confirmation and delete_confirmation[user_id] is False:
-        if message.text.lower() == "yes":
-            delete_confirmation[user_id] = True
-        else:
-            del delete_confirmation[user_id]
-            await bot.send_message(message.chat.id, "Database deletion cancelled.")
         
