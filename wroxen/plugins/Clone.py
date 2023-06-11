@@ -139,6 +139,9 @@ async def set_target_channel(bot, message):
 
 @Client.on_message(filters.private & filters.command(['clone_set_caption']))
 async def set_caption(bot, message):
+    target_chat_id = CHANNEL.get(message.from_user.id)
+    if not target_chat_id:
+        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
     try:
         caption = message.text.split(" ", 1)[1]
     except:
