@@ -133,17 +133,23 @@ async def clear_all_db_command(bot, message):
         await message.reply("आपको इस कमांड को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
         return
      
-    command_msg = message.text.split(" ", 1)      
+    command_msg = message.text.split(" ", 1)
+    
+    if len(command_msg) < 2:
+        await message.reply("अमान्य कमांड प्रारूप: उपयोग करें\n\n <code>/ClearAllDB हाँ</code>")
+        return
+      
     yes_msg = command_msg[1]
-    delete_count = clear_all_db()
     
     if "हाँ" == yes_msg:
+        delete_count = clear_all_db()
         if delete_count > 0:
             await message.reply(f"आपका डेटाबेस हटा दिया गया है।\n\nकुल मिटाए गए दस्तावेज़ों की संख्या: {delete_count}")
         else:
             await message.reply("आपका डेटाबेस हटाने में असमर्थ रहा।")
     else:
-        await message.reply("अमान्य कमांड प्रारूप: उपयोग करें\n\n <code>/ClearAllDb हाँ</code>")
+        await message.reply("अमान्य कमांड प्रारूप: उपयोग करें\n\n <code>/ClearAllDB हाँ</code>")
+
 
 
 
