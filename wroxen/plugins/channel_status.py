@@ -141,7 +141,7 @@ async def clear_all_db_command(bot, message):
       
     yes_msg = command_msg[1]
     
-    if "हाँ" == yes_msg:
+    if str("हाँ") == str(yes_msg):
         delete_count = clear_all_db()
         if delete_count > 0:
             await message.reply(f"आपका डेटाबेस हटा दिया गया है।\n\nकुल मिटाए गए दस्तावेज़ों की संख्या: {delete_count}")
