@@ -1,5 +1,14 @@
 # (©) TheLx0980 
 
+import logging
+import logging.config
+
+# Get logging configurations
+logging.config.fileConfig('logging.conf')
+logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("imdbpy").setLevel(logging.ERROR)
+
 from pyrogram import Client, enums, __version__
 from wroxen.vars import API_HASH, APP_ID, LOGGER, BOT_TOKEN 
 from typing import Union, Optional, AsyncGenerator
