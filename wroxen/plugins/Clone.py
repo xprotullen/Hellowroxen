@@ -16,7 +16,7 @@ CAPTION = {}
 
 FILE_CAPTION = "{file_name}"
 
-@Client.on_callback_query(filters.regex(r'^forward'))
+@Client.on_callback_query(filters.regex(r'^start_clone'))
 async def forward(bot, query):
     _, ident, chat, lst_msg_id = query.data.split("#")
     if ident == 'yes':
@@ -94,7 +94,7 @@ async def send_for_forward(bot, message):
     await message.reply(f"स्रोत चैनल: {source_chat.title}\nलक्षित चैनल: {target_chat.title}\nसंदेश छोड़ें: <code>{skip}</code>\nकुल संदेश: <code>{last_msg_id}</code>\nफ़ाइल कैप्शन: {caption}\n\nक्या आप फ़ॉरवर्ड करना चाहते हैं?", reply_markup=InlineKeyboardMarkup(buttons))
     
     
-@Client.on_message(filters.private & filters.command(['set_skip']))
+@Client.on_message(filters.private & filters.command(['clone_set_skip']))
 async def set_skip_number(bot, message):
     try:
         _, skip = message.text.split(" ")
@@ -108,7 +108,7 @@ async def set_skip_number(bot, message):
     await message.reply(f"सफलतापूर्वक सेट किया गया है <code>{skip}</code> स्किप नंबर।")
 
 
-@Client.on_message(filters.private & filters.command(['set_channel']))
+@Client.on_message(filters.private & filters.command(['clone_set_channel']))
 async def set_target_channel(bot, message):
     try:
         _, chat_id = message.text.split(" ")
@@ -128,7 +128,7 @@ async def set_target_channel(bot, message):
     CHANNEL[message.from_user.id] = int(chat.id)
     await message.reply(f"सफलतापूर्वक सेट किया गया है {chat.title} लक्षित चैनल।")
 
-@Client.on_message(filters.private & filters.command(['set_caption']))
+@Client.on_message(filters.private & filters.command(['clone_set_caption']))
 async def set_caption(bot, message):
     try:
         caption = message.text.split(" ", 1)[1]
