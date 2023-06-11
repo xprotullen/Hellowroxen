@@ -37,7 +37,6 @@ async def set_forward_command(bot, message):
     except ValueError as e:
         await message.reply(str(e))
 
-
         
 @Client.on_message(filters.command("delete_forward") & filters.channel)
 async def delete_forward_command(bot, message):
@@ -54,7 +53,7 @@ async def delete_forward_command(bot, message):
 @Client.on_message(filters.command("clearForwardDb"))
 async def clear_forward_db_command(bot, message):
     delete_count = clear_forward_db()
-    await message.reply(f"All forwarding connections deleted. Total deleted count: {delete_count}.")
+    await message.reply(f"सभी फवार्डिंग कनेक्शन हटा दिए गए। कुल हटाए गए काउंट: {delete_count}.")
 
 @Client.on_message(filters.command("add_f_caption_info") & filters.channel)
 async def add_f_caption_info_command(bot, message):
@@ -86,22 +85,22 @@ async def add_f_caption_info_command(bot, message):
 @Client.on_message(filters.command("update_f_caption") & filters.channel)
 async def update_caption_command(bot, message):
     if len(message.command) < 2:
-        await bot.send_message(message.chat.id, "Please provide the new caption.")
+        await bot.send_message(message.chat.id, "कृपया नया कैप्शन प्रदान करें।")
         return
 
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
     if update_f_caption(channel_id, new_caption):
-        await bot.send_message(message.chat.id, f"Caption updated successfully.\n\nNew Caption: {new_caption}")
+        await bot.send_message(message.chat.id, f"कैप्शन सफलतापूर्वक अपडेट किया गया।\n\nनया कैप्शन: {new_caption}")
     else:
-        await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
+        await bot.send_message(message.chat.id, "चैनल के लिए प्रतिस्थापन सेटिंग नहीं मिली।")
 
 # Command to update replace text
 @Client.on_message(filters.command("update_replace_text") & filters.channel)
 async def update_replace_text_command(bot, message):
     if len(message.command) < 3:
-        await bot.send_message(message.chat.id, "Invalid command. Usage: /update_replace_text <old_username> <new_username>")
+        await bot.send_message(message.chat.id, "अमान्य आदेश। उपयोग: /update_replace_text <old_username> <new_username>")
         return
 
     channel_id = str(message.chat.id)
@@ -109,9 +108,9 @@ async def update_replace_text_command(bot, message):
     new_username = message.command[2]
 
     if update_replace_text(channel_id, old_username, new_username):
-        await bot.send_message(message.chat.id, f"Replace text updated successfully.\n\nOld Username: {old_username}\nNew Username: {new_username}")
+        await bot.send_message(message.chat.id, f"प्रतिस्थापित पाठ सफलतापूर्वक अपडेट किया गया।\n\nपुराना उपयोगकर्ता नाम: {old_username}\nनया उपयोगकर्ता नाम: {new_username}")
     else:
-        await bot.send_message(message.chat.id, "Replace settings not found for the channel.")
+        await bot.send_message(message.chat.id, "चैनल के लिए प्रतिस्थापित सेटिंग नहीं मिली।")
 
 @Client.on_message(filters.command("delete_f_caption") & filters.channel)
 async def delete_caption_command(bot, message):
