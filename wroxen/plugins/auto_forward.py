@@ -1,7 +1,7 @@
 # (c) @TheLx0980
 
 from wroxen.database.authorized_chat import get_authorized_channels
-import logging
+import logging, asyncio
 from pyrogram import Client, filters, enums
 from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
    clear_forward_db, update_replace_text, update_f_caption, add_replace_settings, \
@@ -55,9 +55,19 @@ async def clear_forward_db_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
         return
-    delete_count = clear_forward_db()
-    await message.reply(f"सभी फवार्डिंग कनेक्शन हटा दिए गए। कुल हटाए गए काउंट: {delete_count}.")
 
+    await message.reply(confirmation_message)
+
+    try:
+        response = await bot.wait_for("message", timeout=30, chat_id=message.from_user.id)
+        if response.text.lower() == "हाँ":
+            delete_count = clear_forward_db()
+            await message.reply(f"सभी फवार्डिंग कनेक्शन हटा दिए गए हैं। कुल हटाए गए काउंट: {delete_count}.")
+        else:
+            await message.reply("फवार्डिंग कनेक्शन हटाना रद्द कर दिया गया है।")
+    except asyncio.TimeoutError:
+        await message.reply("फवार्डिंग कनेक्शन हटाने का समय समाप्त हो गया है। कृपया पुनः प्रयास करें।")
+      
 @Client.on_message(filters.command("add_f_caption_info") & filters.channel)
 async def add_f_caption_info_command(bot, message):
     channel_id = str(message.chat.id)
