@@ -4,9 +4,9 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
-From .Clone.py import FORWARDING
 
 import logging
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
@@ -86,25 +86,3 @@ async def callback_data(bot, update: CallbackQuery):
         await update.message.delete()
 
         
-@Client.on_callback_query(filters.regex(r'^forward'))
-async def forward(bot, query):
-    _, ident, chat, lst_msg_id = query.data.split("#")
-    if ident == 'yes':
-        if FORWARDING.get(query.from_user.id):
-            return await query.answer('पिछली प्रक्रिया पूरी होने तक प्रतीक्षा करें।', show_alert=True)
-
-        msg = query.message
-        await msg.edit('फ़ॉरवर्डिंग शुरू हो रही है...')
-        try:
-            chat = int(chat)
-        except:
-            chat = chat
-        await forward_files(int(lst_msg_id), chat, msg, bot, query.from_user.id)
-
-    elif ident == 'close':
-        await query.answer("ठीक है!")
-        await query.message.delete()
-
-    elif ident == 'cancel':
-        await query.message.edit("फ़ॉरवर्डिंग रद्द करने का प्रयास कर रहा है...")
-        CANCEL[query.from_user.id] = True
