@@ -7,8 +7,8 @@ from wroxen.database.caption_db import get_forward_settings, get_replace_data, c
 from pyrogram import Client, filters
 from wroxen.vars import ADMIN_IDS
 
-# AUTHORIZED_CHANL = get_authorized_channels()
-delete_confirmation = {}
+import logging
+logger = logging.getLogger(__name__)
 
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
