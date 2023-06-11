@@ -133,19 +133,18 @@ async def clear_all_db_command(client, message):
         return
 
     confirmation_message = """क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए "<code>हाँ</code>" के साथ जवाब दें।"""
-    await message.reply(confirmation_message)
+    await client.ask(text = confirmation_message, chat_id = message.from_user.id, filters.text, timeout=30)
 
     try:
-        response = await client.ask(message.chat.id, "हाँ", timeout=30)
-        if response.text.lower() == "हाँ":
+        response = await client.get_messages(chat_id=message.from_user.id, text = "Yes")
+        if response.text == "Yes":
             delete_count = clear_all_db()
             await message.reply(f"डेटाबेस सफलतापूर्वक हटा दिया गया है। कुल मिटाए गए: {delete_count}.")
         else:
             await message.reply("डेटाबेस हटाना रद्द कर दिया गया है।")
     except asyncio.TimeoutError:
         await message.reply("डेटाबेस हटाने का समय समाप्त हो गया है। कृपया पुन: प्रयास करें।")
-    except AttributeError:
-        await message.reply("""अमान्य प्रतिक्रिया। कृपया "<code>हाँ</code>" के साथ जवाब दें।""")
 
+    
 
         
