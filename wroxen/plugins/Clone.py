@@ -6,15 +6,15 @@ import logging
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from info import FILE_CAPTION
 logger = logging.getLogger(__name__)
 
-# Setup database yourself. If you need setup database contact @Hansaka_Anuhas for paid edits
 CURRENT = {}
 CHANNEL = {}
 CANCEL = {}
 FORWARDING = {}
 CAPTION = {}
+
+FILE_CAPTION = "{file_name}"
 
 @Client.on_callback_query(filters.regex(r'^forward'))
 async def forward(bot, query):
