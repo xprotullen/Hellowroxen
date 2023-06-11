@@ -16,7 +16,7 @@ media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
 
 
-@Client.on_message(filters.command("update_caption"))
+@Client.on_message(filters.command("update_caption") & filters.channel)
 async def update_caption_command(bot, message):
     channel_id = str(message.chat.id)
   
@@ -59,7 +59,7 @@ async def get_caption_command(bot, message):
         await message.reply(f"इस चैनल के लिए कोई कैप्शन नहीं मिला {channel_id}.")
 
 
-@Client.on_message(filters.command("set_caption"))
+@Client.on_message(filters.command("set_caption") & filters.channel)
 async def set_caption_command(bot, message):
     channel_id = str(message.chat.id)
     authorized_channels = get_authorized_channels(channel_id)
@@ -86,7 +86,7 @@ async def set_caption_command(bot, message):
         await message.reply("चैनल पहले ही डेटाबेस में जोड़ा जा चुका है!")
 
 
-@Client.on_message(filters.command("cleardb"))
+@Client.on_message(filters.command("ClearCaptionDB"))
 async def delete_all_info_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस आदेश का उपयोग करने का अधिकार नहीं है।")
@@ -95,7 +95,7 @@ async def delete_all_info_command(bot, message):
     await message.reply("डेटाबेस की सभी  ऑटो कैप्शन जानकारी को डिलीट किया गया")
 
 
-@Client.on_message(filters.command("delete_caption"))
+@Client.on_message(filters.command("delete_caption") & filters.channel)
 async def delete_caption_command(bot, message):
 
     channel_id = str(message.chat.id)
@@ -165,40 +165,9 @@ async def editing(bot, message):
 
 
 
-JAAN = """
-@Client.on_message(filters.channel & (media_filter))
-async def editing(bot, message):
-    channel_id = str(message.chat.id)
-    forward_settings = get_forward_settings(channel_id)
-    if forward_settings:
-        from_chat = forward_settings["from_chat"]
-        to_chat = forward_settings["to_chat"]
-        old_username, new_username, caption = get_replace_data(channel_id)
-        await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld UserName {old_username}\ncaption: {caption}🖐️")
-        if str(message.chat.id) == str(from_chat):
-            try:
-                new_caption = message.caption
-                if caption:
-                    new_caption = f"{new_caption}\n\n{caption}"
-                if old_username and new_username and new_caption:
-                    new_caption = new_caption.replace(old_username, new_username)
-
-                await bot.copy_message(
-                    chat_id=int(to_chat),
-                    from_chat_id=message.chat.id,
-                    message_id=message.id,
-                    caption=new_caption,
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-            except FloodWait as e:
-                await asyncio.sleep(e.value)
-            except Exception as e:
-                print(f"Error forwarding message: {e}")
-    else:
-        await bot.send_message(-1001970089414, f"Chat ID {channel_id} not found in forward settings.")
 
 
-"""
+
 
 
 
