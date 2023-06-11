@@ -7,8 +7,8 @@ from wroxen.database.caption_db import set_forward_settings, delete_forward_sett
    clear_forward_db, update_replace_text, update_f_caption, add_replace_settings, \
    delete_caption_settings, delete_replace_settings, get_replace_data, caption_collection
    
+from wroxen.vars import ADMIN_IDS
 logger = logging.getLogger(__name__)
-media_filter = filters.document | filters.video
 
 @Client.on_message(filters.command("set_forward") & filters.channel)
 async def set_forward_command(bot, message):
@@ -52,6 +52,9 @@ async def delete_forward_command(bot, message):
         
 @Client.on_message(filters.command("clearForwardDb"))
 async def clear_forward_db_command(bot, message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
+        return
     delete_count = clear_forward_db()
     await message.reply(f"सभी फवार्डिंग कनेक्शन हटा दिए गए। कुल हटाए गए काउंट: {delete_count}.")
 
