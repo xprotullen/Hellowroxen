@@ -2,12 +2,13 @@
 
 import asyncio
 import re
-import logging
+from wroxen.vars import LOGGER
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from wroxen.database.authorized_chat import get_authorized_channels
-logger = logging.getLogger(__name__)
+
+logger = LOGGER(__name__)
 
 CURRENT = {}
 CHANNEL = {}
@@ -17,7 +18,7 @@ CAPTION = {}
 
 FILE_CAPTION = "{file_name}"
 
-@Client.on_callback_query(filters.regex(r'^start_clone'))
+@Client.on_callback_query(filters.regex(r'^forward'))
 async def forward(bot, query):
     _, ident, chat, lst_msg_id = query.data.split("#")
     if ident == 'yes':
