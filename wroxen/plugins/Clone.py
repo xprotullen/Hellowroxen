@@ -5,7 +5,7 @@ import re
 from wroxen.vars import LOGGER
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton # CallbackQuery
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton CallbackQuery
 from wroxen.database.authorized_chat import get_authorized_channels
 
 import logging
@@ -23,7 +23,7 @@ FILE_CAPTION = "{file_name}"
 
 
 
-HellO = """ @Client.on_callback_query(filters.regex(r'^forward'))
+@Client.on_callback_query(filters.regex(r'^forward'))
 async def forward(bot, query: CallbackQuery):
     _, ident, chat, lst_msg_id = query.data.split("#")
     if ident == 'yes':
@@ -45,7 +45,7 @@ async def forward(bot, query: CallbackQuery):
     elif ident == 'cancel':
         await query.message.edit("फ़ॉरवर्डिंग रद्द करने का प्रयास कर रहा है...")
         CANCEL[query.from_user.id] = True
-"""
+
 
 @Client.on_message((filters.forwarded | (filters.regex("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")) & filters.text) & filters.private & filters.incoming)
 async def send_for_forward(bot, message):
