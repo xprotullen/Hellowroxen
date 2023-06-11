@@ -84,6 +84,21 @@ class ChatMSG(object):
 """
 
       ADMIN_COMMAND_TXT = """
+<code>/add_authorised_chat</code> - इस आदेश की मदद से आप अधिकृत चैट को डेटाबेस में जोड़ सकते हैं।
+
+<code>/delete_authorised_chat</code> - इस आदेश की मदद से आप अधिकृत चैट को डेटाबेस से हटा सकते हैं।
+
+<code>/check_authorised_chats</code> - इस आदेश की मदद से आप जोड़े गए सभी अधिकृत चैट्स की सूची देख सकते हैं।
+
+<code>/clearForwardDb</code> - इस आदेश की मदद से आप सभी चैनल के फवार्डिंग कनेक्शन्स को हटा सकते हैं।
+
+<code>/ClearCaptionDB</code>  - इस आदेश की मदद से आप सभी चैनल कैप्शन को डेटाबेस से हटा सकते हैं। 
+
+<code>/ClearAllDB</code> - इस कमांड से बोट व्यवस्थापक पूरे डेटाबेस को साफ कर सकता है या हटा सकता है।
+"""
+
+
+
 
       
       
