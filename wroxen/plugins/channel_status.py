@@ -133,8 +133,7 @@ async def clear_all_db_command(client, message):
         await message.reply("आपको इस कमांड को निष्पादित करने की अनुमति नहीं है।")
         return
 
-    confirmation_message = """क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए "<code>हाँ</code>" के साथ जवाब दें।"""
-    await client.ask(text = confirmation_message, chat_id = message.from_user.id, filters.text, timeout=30)
+    confirmation_message = "क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए "<code>हाँ</code>" के साथजवाब  दें।await client.ask(text = confirmation_message, chat_id = message.from_user.id, filters.text, timeout=30)
 
     try:
         response = await client.wait_,for(chat_id=message.from_user.id, text = "Yes")
