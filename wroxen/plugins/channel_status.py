@@ -136,7 +136,7 @@ async def clear_all_db_command(bot, message):
     await message.reply(confirmation_message)
     
     try:
-        response = await bot.wait_for("message", timeout=30, chat_id=message.from_user.id)
+        response = await bot.client.wait_for("message", timeout=30, chat_id=message.from_user.id)
         if response.text.lower() == "हाँ":
             delete_count = clear_all_db()
             await message.reply(f"डेटाबेस सफलतापूर्वक हटा दिया गया है। कुल मिटाए गए: {delete_count}.")
