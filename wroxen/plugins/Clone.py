@@ -99,7 +99,8 @@ async def send_for_forward(bot, message):
 async def set_skip_number(bot, message):
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
-        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
+        await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
+        return
     try:
         _, skip = message.text.split(" ")
     except:
@@ -122,8 +123,9 @@ async def set_target_channel(bot, message):
     chats_id = await bot.get_chat(channel_id)
     channel_id = str(chats_id.id)
     authorised = get_authorized_channels(channel_id)
-    if channel_id not in authorised:
-        return await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+    if channel_id not in authorised:     
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
     try:
         _, chat_id = chat_n_id
     except:
@@ -146,7 +148,8 @@ async def set_target_channel(bot, message):
 async def set_caption(bot, message):
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
-        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
+        await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
+        return
     try:
         caption = message.text.split(" ", 1)[1]
     except:
