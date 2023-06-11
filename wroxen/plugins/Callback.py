@@ -7,7 +7,7 @@ from wroxen.text import ChatMSG
 
 import logging
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.ERROR)
 
 @Wroxen.on_callback_query()
 async def callback_data(bot, update: CallbackQuery):
