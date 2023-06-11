@@ -97,6 +97,9 @@ async def send_for_forward(bot, message):
     
 @Client.on_message(filters.private & filters.command(['clone_set_skip']))
 async def set_skip_number(bot, message):
+    target_chat_id = CHANNEL.get(message.from_user.id)
+    if not target_chat_id:
+        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
     try:
         _, skip = message.text.split(" ")
     except:
