@@ -5,7 +5,7 @@ import re
 from wroxen.vars import LOGGER
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton CallbackQuery
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from wroxen.database.authorized_chat import get_authorized_channels
 
 import logging
