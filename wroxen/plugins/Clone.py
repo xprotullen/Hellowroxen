@@ -95,7 +95,7 @@ async def send_for_forward(bot, message):
     await message.reply(f"स्रोत चैनल: {source_chat.title}\nलक्षित चैनल: {target_chat.title}\nसंदेश छोड़ें: <code>{skip}</code>\nकुल संदेश: <code>{last_msg_id}</code>\nफ़ाइल कैप्शन: {caption}\n\nक्या आप फ़ॉरवर्ड करना चाहते हैं?", reply_markup=InlineKeyboardMarkup(buttons))
     
     
-@Client.on_message(filters.private & filters.command(['clone_set_skip']))
+@Client.on_message(filters.private & filters.command(['set_clone_skip']))
 async def set_skip_number(bot, message):
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
@@ -113,38 +113,32 @@ async def set_skip_number(bot, message):
     await message.reply(f"सफलतापूर्वक सेट किया गया है <code>{skip}</code> स्किप नंबर।")
 
 
-@Client.on_message(filters.private & filters.command(['clone_set_channel']))
+@Client.on_message(filters.private & filters.command(['set_target_channel']))
 async def set_target_channel(bot, message):
-    command_parts = message.text.split(" ", 1)
-    chat_id = command_parts[1]
-    if not chat_id.startswith("-100"):
-        chat_n_id = "-100" + chat_id
-    channel_id = int(chat_n_id)
-    chats_id = await bot.get_chat(channel_id)
-    channel_id = str(chats_id.id)
-    authorised = get_authorized_channels(channel_id)
-    if channel_id not in authorised:     
-        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
-        return
     try:
-        _, chat_id = chat_n_id
+        _, chat_id = message.text.split(" ")
     except:
-        return await message.reply("मुझे एक लक्षित चैनल आईडी दें।")
+        return await message.reply("कृपया एक टारगेट चैनल ID दें।")
     try:
         chat_id = int(chat_id)
     except:
-        return await message.reply("एक मान्य आईडी दें")
+        return await message.reply("कृपया एक वैध ID दें।")
+
     try:
         chat = await bot.get_chat(chat_id)
-
     except:
-        return await message.reply("मुझे अपने लक्षित चैनल में एडमिन बनाएं।")
+        return await message.reply("मुझे अपने टारगेट चैनल में एडमिन बनाएं।")
+    channel_id = str(chat.id)
+    authorised = get_authorized_channels(channel_id)
     if chat.type != enums.ChatType.CHANNEL:
-        return await message.reply("मैं केवल चैनल को सेट कर सकता हूँ।")
+        return await message.reply("मैं केवल चैनल्स को सेट कर सकता हूँ।")
+    if channel_id not in authorised:
+        return await message.reply("आपका चैनल इस आदेश का उपयोग करने के लिए अधिकृत नहीं है।")
     CHANNEL[message.from_user.id] = int(chat.id)
-    await message.reply(f"सफलतापूर्वक सेट किया गया है {chat.title} लक्षित चैनल।")
+    await message.reply(f"सफलतापूर्वक {chat.title} टारगेट चैनल सेट किया गया है।")
 
-@Client.on_message(filters.private & filters.command(['clone_set_caption']))
+
+@Client.on_message(filters.private & filters.command(['set_clone_caption']))
 async def set_caption(bot, message):
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
