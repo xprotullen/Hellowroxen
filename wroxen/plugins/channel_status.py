@@ -131,10 +131,10 @@ async def clear_all_db_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस कमांड को निष्पादित करने की अनुमति नहीं है।")
         return
-    
-    confirmation_message = "क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए 'हाँ' के साथ जवाब दें।"
+
+    confirmation_message = """क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए "<code>हाँ</code>" के साथ जवाब दें।"""
     await message.reply(confirmation_message)
-    
+
     try:
         response = await bot.client.wait_for("message", timeout=30, chat_id=message.from_user.id)
         if response.text.lower() == "हाँ":
@@ -144,5 +144,8 @@ async def clear_all_db_command(bot, message):
             await message.reply("डेटाबेस हटाना रद्द कर दिया गया है।")
     except asyncio.TimeoutError:
         await message.reply("डेटाबेस हटाने का समय समाप्त हो गया है। कृपया पुन: प्रयास करें।")
+    except AttributeError:
+        await message.reply("""अमान्य प्रतिक्रिया। कृपया "<code>हाँ</code>" के साथ जवाब दें।""")
+
 
         
