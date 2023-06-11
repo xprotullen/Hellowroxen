@@ -6,6 +6,7 @@ import logging
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from wroxen.database.authorized_chat import get_authorized_channels
 logger = logging.getLogger(__name__)
 
 CURRENT = {}
@@ -67,7 +68,7 @@ async def send_for_forward(bot, message):
 
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
-        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/set_channel कमांड का उपयोग करके जोड़ें.")
+        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/clone_set_channel कमांड का उपयोग करके जोड़ें.")
 
     try:
         target_chat = await bot.get_chat(target_chat_id)
@@ -114,13 +115,21 @@ async def set_target_channel(bot, message):
         _, chat_id = message.text.split(" ")
     except:
         return await message.reply("मुझे एक लक्षित चैनल आईडी दें।")
+       if not chat_id.startswith("-100"):
+        chat_id = "-100" + chat_id
     try:
         chat_id = int(chat_id)
     except:
         return await message.reply("एक मान्य आईडी दें")
-
+    chats_id = await bot.get_chat(chat_id)
+    channel_id = str(chats_id.id)
+    authorised = get_authorized_channels(channel_id)
+    if channel_id not in authorised:
+        await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
+        return
     try:
         chat = await bot.get_chat(chat_id)
+
     except:
         return await message.reply("मुझे अपने लक्षित चैनल में एडमिन बनाएं।")
     if chat.type != enums.ChatType.CHANNEL:
