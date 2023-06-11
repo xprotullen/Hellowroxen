@@ -82,3 +82,13 @@ class ChatMSG(object):
 
 <b>@Lx0980AI</b> के द्वारा।
 """
+
+      ADMIN_COMMAND_TXT = """
+
+      
+      
+      
+      
+      
+      
+      
