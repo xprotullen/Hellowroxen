@@ -144,22 +144,15 @@ async def clear_db_command(bot, message):
         delete_counts = clear_all_db()
     
         reply_text = f"""
-Total Deleted Connection:
+कुल मिटाए गए कनेक्शन:
 
-Auto Forward = {}
-Authorised Channel = {}
-Auto Forward Caption = {}
-Auto Caption = {}
+ऑटो फ़ॉरवर्ड = {delete_counts['a1']}
+अधिकृत चैनल = {delete_counts['a2']}
+ऑटो फ़ॉरवर्ड कैप्शन = {delete_counts['a3']}
+ऑटो कैप्शन = {delete_counts['a4']}
 
-Total: {}
-        """.format(
-            
-            delete_counts["a1"],
-            delete_counts["a2"],
-            delete_counts["a3"],
-            delete_counts["a4"],
-            delete_counts["a5"]
-        )         
+कुल: {delete_counts['a5']}
+        """
         await message.reply(reply_text)
     else:
         await message.reply("अमान्य कमांड प्रारूप: उपयोग करें\n\n <code>/cleardb all</code>")
