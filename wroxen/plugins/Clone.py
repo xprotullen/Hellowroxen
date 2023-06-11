@@ -161,7 +161,7 @@ async def forward_files(lst_msg_id, chat, msg, bot, user_id):
                 btn = [[
                     InlineKeyboardButton('CANCEL', callback_data=f'forward#cancel#{chat}#{lst_msg_id}')
                 ]]
-                await msg.edit_text(text=f"Forward Processing...\n\nTotal Messages: <code>{lst_msg_id}</code>\nCompleted Messages: <code>{current} / {lst_msg_id}</code>\nForwarded Files: <code>{forwarded}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nUnsupported Files Skipped: <code>{unsupported}</code>", reply_markup=InlineKeyboardMarkup(btn))            
+                await msg.edit_text(text=f"फ़ॉरवर्ड प्रोसेसिंग हो रही है...\n\nकुल संदेश: <code>{lst_msg_id}</code>\nपूर्ण किए गए संदेश: <code>{current} / {lst_msg_id}</code>\nफ़ॉरवर्ड किए गए फ़ाइलें: <code>{forwarded}</code>\nडिलीट किए गए संदेश छोड़ दिए: <code>{deleted}</code>\nअसमर्थित फ़ाइलें छोड़ दी गईं: <code>{unsupported}</code>", reply_markup=InlineKeyboardMarkup(btn))            
             if message.empty:
                 deleted += 1
                 continue
@@ -197,7 +197,7 @@ async def forward_files(lst_msg_id, chat, msg, bot, user_id):
         logger.exception(e)
         await msg.reply(f"Forward Canceled!\n\nError - {e}")
     else:
-        await msg.edit(f'Forward Completed!\n\nTotal Messages: <code>{lst_msg_id}</code>\nCompleted Messages: <code>{current} / {lst_msg_id}</code>\nFetched Messages: <code>{fetched}</code>\nTotal Forwarded Files: <code>{forwarded}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nUnsupported Files Skipped: <code>{unsupported}</code>')
+        await msg.edit(f'फ़ॉरवर्ड पूर्ण हुआ!\n\nकुल संदेश: <code>{lst_msg_id}</code>\nपूर्ण किए गए संदेश: <code>{current} / {lst_msg_id}</code>\nप्राप्त किए गए संदेश: <code>{fetched}</code>\nकुल फ़ॉरवर्ड की गई फ़ाइलें: <code>{forwarded}</code>\nडिलीट किए गए संदेश छोड़ दिए: <code>{deleted}</code>\nअसमर्थित फ़ाइलें छोड़ दी गईं: <code>{unsupported}</code>')
         FORWARDING[user_id] = False
 
 
