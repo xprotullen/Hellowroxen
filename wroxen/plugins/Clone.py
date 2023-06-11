@@ -74,8 +74,12 @@ async def send_for_forward(bot, message):
     except Exception as e:
         return await message.reply(f'त्रुटि - {e}')
 
-    skip = max(CURRENT.get(message.from_user.id, 0), 12)
-
+    skip = CURRENT.get(message.from_user.id)
+    if skip:
+        skip = skip
+    else:
+        skip = 0
+   
     caption = CAPTION.get(message.from_user.id)
     if caption:
         caption = caption
@@ -87,10 +91,9 @@ async def send_for_forward(bot, message):
     ],[
         InlineKeyboardButton('बंद करें', callback_data=f'forward#close#{chat_id}#{last_msg_id}')
     ]]
-    await message.reply(f"स्रोत चैनल: {source_chat.title}\nलक्षित चैनल: {target_chat.title}\nसंदेश छोड़ें: <code>{skip}</code>\nकुल संदेश: <code>{last_msg_id}</code>\nफ़ाइल कैप्शन: {caption}\n\nक्या आप फ़ॉरवर्ड करना चाहत
-    await message.reply(f"Source Channel: {source_chat.title}\nTarget Channel: {target_chat.title}\nSkip messages: <code>{skip}</code>\nTotal Messages: <code>{last_msg_id}</code>\nFile Caption: {caption}\n\nDo you want to forward?", reply_markup=InlineKeyboardMarkup(buttons))
-
-
+    await message.reply(f"स्रोत चैनल: {source_chat.title}\nलक्षित चैनल: {target_chat.title}\nसंदेश छोड़ें: <code>{skip}</code>\nकुल संदेश: <code>{last_msg_id}</code>\nफ़ाइल कैप्शन: {caption}\n\nक्या आप फ़ॉरवर्ड करना चाहते हैं?", reply_markup=InlineKeyboardMarkup(buttons))
+    
+    
 @Client.on_message(filters.private & filters.command(['set_skip']))
 async def set_skip_number(bot, message):
     try:
