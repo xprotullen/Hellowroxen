@@ -8,6 +8,7 @@ from pyrogram import Client, filters
 from wroxen.vars import ADMIN_IDS
 
 # AUTHORIZED_CHANL = get_authorized_channels()
+delete_confirmation = {}
 
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
@@ -126,7 +127,7 @@ async def check_authorised_command(bot, message):
         await message.reply("An error occurred while checking the authorized chats.")
 
         
-@Client.on_message(filters.command("clearalldb") & filters.private)
+HELT = """ @Client.on_message(filters.command("clearalldb") & filters.private)
 async def clear_all_db_command(client, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस कमांड को निष्पादित करने की अनुमति नहीं है।")
@@ -136,15 +137,47 @@ async def clear_all_db_command(client, message):
     await client.ask(text = confirmation_message, chat_id = message.from_user.id, filters.text, timeout=30)
 
     try:
-        response = await client.get_messages(chat_id=message.from_user.id, text = "Yes")
+        response = await client.wait_,for(chat_id=message.from_user.id, text = "Yes")
         if response.text == "Yes":
-            delete_count = clear_all_db()
+             = clear_all_db()
             await message.reply(f"डेटाबेस सफलतापूर्वक हटा दिया गया है। कुल मिटाए गए: {delete_count}.")
         else:
             await message.reply("डेटाबेस हटाना रद्द कर दिया गया है।")
     except asyncio.TimeoutError:
         await message.reply("डेटाबेस हटाने का समय समाप्त हो गया है। कृपया पुन: प्रयास करें।")
 
-    
+    """
+@Client.on_message(filters.command("clearalldb") & filters.user(ADMIN_IDS))
+async def clear_database_command(bot, message):
+    user_id = message.from_user.id
 
+    if user_id not in delete_confirmation:
+        delete_confirmation[user_id] = False
+        await bot.send_message(message.chat.id, "You really want to delete the database? Please reply with 'Yes' within 30 seconds to confirm.")
+        await asyncio.sleep(30)
+
+        if user_id in delete_confirmation and not delete_confirmation[user_id]:
+            del delete_confirmation[user_id]
+            await bot.send_message(message.chat.id, "Database deletion cancelled.")
+            return
+
+        del delete_confirmation[user_id]
+
+    if delete_confirmation[user_id]:
+        # Delete the database or perform other deletion logic
+         delete_count = clear_all_db()
+        await bot.send_message(message.chat.id, f"Database deleted successfully. {delete_count}")
+    else:
+        await bot.send_message(message.chat.id, "Deletion confirmation timed out.")
+
+@Client.on_message(filters.private & filters.text)
+async def handle_private_message(bot, message):
+    user_id = message.from_user.id
+
+    if user_id in delete_confirmation and delete_confirmation[user_id] is False:
+        if message.text.lower() == "yes":
+            delete_confirmation[user_id] = True
+        else:
+            del delete_confirmation[user_id]
+            await bot.send_message(message.chat.id, "Database deletion cancelled.")
         
