@@ -18,7 +18,7 @@ async def start(client, message):
         reply_markup = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("😊 मदद", callback_data = "help"),
+                    InlineKeyboardButton("😊 मदद", callback_data = "callback_data_regex#help"),
                     InlineKeyboardButton("🔒 बंद करो", callback_data = "close")
                 ]
             ]
