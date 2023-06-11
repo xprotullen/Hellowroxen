@@ -86,13 +86,24 @@ async def set_caption_command(bot, message):
         await message.reply("चैनल पहले ही डेटाबेस में जोड़ा जा चुका है!")
 
 
-@Client.on_message(filters.command("ClearCaptionDB"))
+@Client.on_message(filters.command("ClearCaptionDB") & filters.private)
 async def delete_all_info_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस आदेश का उपयोग करने का अधिकार नहीं है।")
         return
-    channels_collection.delete_many({})
-    await message.reply("डेटाबेस की सभी  ऑटो कैप्शन जानकारी को डिलीट किया गया")
+
+    confirmation_message = "क्या आप वाकई सभी ऑटो कैप्शन जानकारी को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए 'हाँ' के साथ जवाब दें।"
+    await message.reply(confirmation_message)
+
+    try:
+        response = await bot.wait_for("message", timeout=30, chat_id=message.from_user.id)
+        if response.text.lower() == "हाँ":
+            channels_collection.delete_many({})
+            await message.reply("डेटाबेस की सभी ऑटो कैप्शन जानकारी को सफलतापूर्वक हटा दिया गया है।")
+        else:
+            await message.reply("ऑटो कैप्शन हटाना रद्द कर दिया गया है।")
+    except asyncio.TimeoutError:
+        await message.reply("ऑटो कैप्शन हटाने का समय समाप्त हो गया है। कृपया पुन: प्रयास करें।")
 
 
 @Client.on_message(filters.command("delete_caption") & filters.channel)
