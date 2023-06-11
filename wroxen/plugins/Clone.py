@@ -111,7 +111,8 @@ async def set_skip_number(bot, message):
 
 @Client.on_message(filters.private & filters.command(['clone_set_channel']))
 async def set_target_channel(bot, message):
-    chat_id = message.text.split(" ")
+    command_parts = message.text.split(" ", 1)
+    chat_id = command_parts[1]
     if not chat_id.startswith("-100"):
         chat_n_id = "-100" + chat_id
     channel_id = int(chat_n_id)
