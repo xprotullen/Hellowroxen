@@ -12,7 +12,7 @@ logger.setLevel(logging.ERROR)
 
 
 
-@Client.on_callback_query(filters.regex(r'^callback_data_regex'))
+@Client.on_callback_query()
 async def callback_data(bot, update: CallbackQuery):
 
     query_data = update.data
