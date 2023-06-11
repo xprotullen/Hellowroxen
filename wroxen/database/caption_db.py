@@ -155,3 +155,14 @@ def get_replace_data(channel_id):
 def clear_forward_db():
     delete_result = forward_collection.delete_many({})
     return delete_result.deleted_count
+
+# पूरे डेटाबेस को हटा दें।
+def clear_all_db():
+    delete_result = forward_collection.delete_many({})
+    authorized = authorized_channels.delete_many({})
+    caption = caption_collection.delete_many({})
+    channel = channels_collection.delete_many({})
+    
+
+
+
