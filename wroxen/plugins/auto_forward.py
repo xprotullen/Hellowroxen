@@ -50,7 +50,7 @@ async def delete_forward_command(bot, message):
         await message.reply(f"चैनल {channel_id} के लिए कोई फ़ोरवर्डिंग सेटिंग्स नहीं मिलीं।")
 
         
-@Client.on_message(filters.command("clearForwardDb"))
+@Client.on_message(filters.command("clearForwardDb") & filters.private)
 async def clear_forward_db_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
@@ -99,7 +99,7 @@ async def update_caption_command(bot, message):
     else:
         await bot.send_message(message.chat.id, "चैनल के लिए प्रतिस्थापन सेटिंग नहीं मिली।")
 
-# Command to update replace text
+# टेक्स्ट को अपडेट करने की कमांड
 @Client.on_message(filters.command("update_replace_text") & filters.channel)
 async def update_replace_text_command(bot, message):
     if len(message.command) < 3:
