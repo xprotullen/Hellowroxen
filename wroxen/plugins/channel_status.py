@@ -1,8 +1,9 @@
 # (c) @TheLx0980
 
+import asyncio
 from wroxen.database.authorized_chat import get_authorized_channels, add_authorized_channel, delete_authorized_channel, \
    delete_all_authorized_chats, get_authorized_chat
-from wroxen.database.caption_db import get_forward_settings, get_replace_data
+from wroxen.database.caption_db import get_forward_settings, get_replace_data, clear_all_db, get_caption
 from pyrogram import Client, filters
 from wroxen.vars import ADMIN_IDS
 
@@ -125,4 +126,23 @@ async def check_authorised_command(bot, message):
         await message.reply("An error occurred while checking the authorized chats.")
 
         
+@Client.on_message(filters.command("clearalldb"))
+async def clear_all_db_command(bot, message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.reply("आपको इस कमांड को निष्पादित करने की अनुमति नहीं है।")
+        return
+    
+    confirmation_message = "क्या आप वाकई पूरे डेटाबेस को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती है।\n\nकृपया पुष्टि के लिए 'हाँ' के साथ जवाब दें।"
+    await message.reply(confirmation_message)
+    
+    try:
+        response = await bot.wait_for("message", timeout=30, chat_id=message.from_user.id)
+        if response.text.lower() == "हाँ":
+            delete_count = clear_all_db()
+            await message.reply(f"डेटाबेस सफलतापूर्वक हटा दिया गया है। कुल मिटाए गए: {delete_count}.")
+        else:
+            await message.reply("डेटाबेस हटाना रद्द कर दिया गया है।")
+    except asyncio.TimeoutError:
+        await message.reply("डेटाबेस हटाने का समय समाप्त हो गया है। कृपया पुन: प्रयास करें।")
+
         
