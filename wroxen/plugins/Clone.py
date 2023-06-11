@@ -21,10 +21,10 @@ async def forward(bot, query):
     _, ident, chat, lst_msg_id = query.data.split("#")
     if ident == 'yes':
         if FORWARDING.get(query.from_user.id):
-            return await query.answer('Wait until previous process complete.', show_alert=True)
+            return await query.answer('पिछली प्रक्रिया पूरी होने तक प्रतीक्षा करें।', show_alert=True)
 
         msg = query.message
-        await msg.edit('Starting Forwarding...')
+        await msg.edit('फ़ॉरवर्डिंग शुरू हो रही है...')
         try:
             chat = int(chat)
         except:
@@ -32,11 +32,11 @@ async def forward(bot, query):
         await forward_files(int(lst_msg_id), chat, msg, bot, query.from_user.id)
 
     elif ident == 'close':
-        await query.answer("Okay!")
+        await query.answer("ठीक है!")
         await query.message.delete()
 
     elif ident == 'cancel':
-        await query.message.edit("Trying to cancel forwarding...")
+        await query.message.edit("फ़ॉरवर्डिंग रद्द करने का प्रयास कर रहा है...")
         CANCEL[query.from_user.id] = True
 
 
@@ -46,7 +46,7 @@ async def send_for_forward(bot, message):
         regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
         match = regex.match(message.text)
         if not match:
-            return await message.reply('Invalid link for forward!')
+            return await message.reply('फ़ॉरवर्ड करने के लिए अमान्य लिंक!')
         chat_id = match.group(4)
         last_msg_id = int(match.group(5))
         if chat_id.isnumeric():
@@ -60,25 +60,21 @@ async def send_for_forward(bot, message):
     try:
         source_chat = await bot.get_chat(chat_id)
     except Exception as e:
-        return await message.reply(f'Error - {e}')
+        return await message.reply(f'त्रुटि - {e}')
 
     if source_chat.type != enums.ChatType.CHANNEL:
-        return await message.reply("I can forward only channels.")
+        return await message.reply("मैं केवल चैनल को फ़ॉरवर्ड कर सकता हूँ.")
 
     target_chat_id = CHANNEL.get(message.from_user.id)
     if not target_chat_id:
-        return await message.reply("You not added target channel.\nAdd using /set_channel command.")
+        return await message.reply("आपने लक्षित चैनल जोड़ा नहीं है।\n/set_channel कमांड का उपयोग करके जोड़ें.")
 
     try:
         target_chat = await bot.get_chat(target_chat_id)
     except Exception as e:
-        return await message.reply(f'Error - {e}')
+        return await message.reply(f'त्रुटि - {e}')
 
-    skip = CURRENT.get(message.from_user.id)
-    if skip:
-        skip = skip
-    else:
-        skip = 0
+    skip = max(CURRENT.get(message.from_user.id, 0), 12)
 
     caption = CAPTION.get(message.from_user.id)
     if caption:
@@ -87,10 +83,11 @@ async def send_for_forward(bot, message):
         caption = FILE_CAPTION
     # last_msg_id is same to total messages
     buttons = [[
-        InlineKeyboardButton('YES', callback_data=f'forward#yes#{chat_id}#{last_msg_id}')
+        InlineKeyboardButton('हाँ', callback_data=f'forward#yes#{chat_id}#{last_msg_id}')
     ],[
-        InlineKeyboardButton('CLOSE', callback_data=f'forward#close#{chat_id}#{last_msg_id}')
+        InlineKeyboardButton('बंद करें', callback_data=f'forward#close#{chat_id}#{last_msg_id}')
     ]]
+    await message.reply(f"स्रोत चैनल: {source_chat.title}\nलक्षित चैनल: {target_chat.title}\nसंदेश छोड़ें: <code>{skip}</code>\nकुल संदेश: <code>{last_msg_id}</code>\nफ़ाइल कैप्शन: {caption}\n\nक्या आप फ़ॉरवर्ड करना चाहत
     await message.reply(f"Source Channel: {source_chat.title}\nTarget Channel: {target_chat.title}\nSkip messages: <code>{skip}</code>\nTotal Messages: <code>{last_msg_id}</code>\nFile Caption: {caption}\n\nDo you want to forward?", reply_markup=InlineKeyboardMarkup(buttons))
 
 
