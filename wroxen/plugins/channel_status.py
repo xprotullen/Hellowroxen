@@ -40,7 +40,7 @@ Channel name: {message.chat.title}"""
 
         
 
-@Client.on_message(filters.command("add_authorised_chat"))
+@Client.on_message(filters.command("add_authorised_chat") & filters.private)
 async def add_authorised_chat_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
@@ -70,7 +70,7 @@ async def add_authorised_chat_command(bot, message):
         await message.reply("अधिकृत सूची में चैनल आईडी जोड़ते समय एक त्रुटि हुई।")
 
 
-@Client.on_message(filters.command("delete_authorised_chat"))
+@Client.on_message(filters.command("delete_authorised_chat") & filters.private)
 async def delete_authorised_chat_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
@@ -93,7 +93,7 @@ async def delete_authorised_chat_command(bot, message):
     except Exception as e:
         await message.reply("प्राधिकृत सूची से चैनल आईडी निकालते समय एक त्रुटि हुई।")
 
-@Client.on_message(filters.command("delete_all_authorised_chats"))
+@Client.on_message(filters.command("delete_all_authorised_chats") & filters.private)
 async def delete_all_authorised_chats_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
@@ -107,7 +107,7 @@ async def delete_all_authorised_chats_command(bot, message):
         
         
         
-@Client.on_message(filters.command("check_authorised"))
+@Client.on_message(filters.command("check_authorised") & filters.private)
 async def check_authorised_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
@@ -126,7 +126,7 @@ async def check_authorised_command(bot, message):
         await message.reply("An error occurred while checking the authorized chats.")
 
         
-@Client.on_message(filters.command("clearalldb"))
+@Client.on_message(filters.command("clearalldb") & filters.private)
 async def clear_all_db_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस कमांड को निष्पादित करने की अनुमति नहीं है।")
