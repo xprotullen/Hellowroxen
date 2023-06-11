@@ -140,10 +140,27 @@ async def clear_db_command(bot, message):
         return
     
     clear_type = command_msg[1].lower()
-    
     if clear_type == "all":
-        delete_count = clear_all_db()
-        await message.reply(f"सभी रिकॉर्ड हटा दिए गए हैं। कुल हटाने की संख्या: {delete_count}")
+        delete_counts = clear_all_db()
+    
+        reply_text = f"""
+Total Deleted Connection:
+
+Auto Forward = {}
+Authorised Channel = {}
+Auto Forward Caption = {}
+Auto Caption = {}
+
+Total: {}
+        """.format(
+            
+            delete_counts["a1"],
+            delete_counts["a2"],
+            delete_counts["a3"],
+            delete_counts["a4"],
+            delete_counts["a5"]
+        )         
+        await message.reply(reply_text)
     else:
         await message.reply("अमान्य कमांड प्रारूप: उपयोग करें\n\n <code>/cleardb all</code>")
 
