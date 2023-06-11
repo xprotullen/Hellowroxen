@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-@Wroxen.on_callback_query()
+@Client.on_callback_query(filters.regex(r'^callback_data_regex'))
 async def callback_data(bot, update: CallbackQuery):
 
     query_data = update.data
