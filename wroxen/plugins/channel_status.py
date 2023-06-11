@@ -134,7 +134,7 @@ async def clear_all_db_command(bot, message):
         return
      
     command_msg = message.text.split(" ", 1)      
-    yes_msg = command_parts[1]
+    yes_msg = command_msg[1]
     delete_count = clear_all_db()
     
     if yes_msg == "हाँ":
