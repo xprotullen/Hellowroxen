@@ -9,7 +9,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 db = Database()
-auth = AuthorizedChannels()
 
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
