@@ -1,25 +1,33 @@
 # (c) @TheLx0980
 
-from . import authorized_channels
+from . import Database
 
-def get_authorized_channels(channel_id):
-    channels = authorized_channels.find({"channel_id": channel_id})
-    return [channel["channel_id"] for channel in channels]
-
-def delete_authorized_channel(channel_id):
-    authorized_channels.delete_one({"channel_id": channel_id})
-
-def add_authorized_channel(channel_id):
-    authorized_channels.insert_one({"channel_id": channel_id})
+class AuthorizedChannels:
+    authorized_channels = Database.authorized_channels
     
-def delete_all_authorized_chats():
-    result = authorized_channels.delete_many({})
-    return result.deleted_count
-
+    @staticmethod
+    def get_authorized_channels(channel_id):
+        channels = AuthorizedChannels.authorized_channels.find({"channel_id": channel_id})
+        return [channel["channel_id"] for channel in channels]
     
-def get_authorized_chat():
-    channels = authorized_channels.find({})
-    return [channel["channel_id"] for channel in channels]
+    @staticmethod
+    def delete_authorized_channel(channel_id):
+        AuthorizedChannels.authorized_channels.delete_one({"channel_id": channel_id})
+    
+    @staticmethod
+    def add_authorized_channel(channel_id):
+        AuthorizedChannels.authorized_channels.insert_one({"channel_id": channel_id})
+    
+    @staticmethod
+    def delete_all_authorized_chats():
+        result = AuthorizedChannels.authorized_channels.delete_many({})
+        return result.deleted_count
+    
+    @staticmethod
+    def get_authorized_chat():
+        channels = AuthorizedChannels.authorized_channels.find({})
+        return [channel["channel_id"] for channel in channels]
+
 
     
     
