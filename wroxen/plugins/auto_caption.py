@@ -1,6 +1,5 @@
 # (c) @thelx0980
 
-from wroxen.database.authorized_chat import get_authorized_channels
 from pyrogram.errors import FloodWait
 from wroxen.chek import is_channel_added
 from wroxen.text import ChatMSG
@@ -9,10 +8,10 @@ from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.vars import ADMIN_IDS
 import logging, asyncio
-from wroxen.database import Database
-
+from wroxen.database import Database, AuthorizedChannels
 
 db = Database()
+auth = AuthorizedChannels()
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
@@ -47,7 +46,7 @@ async def update_caption_command(bot, message):
 @Client.on_message(filters.command("caption") & filters.channel)
 async def get_caption_command(bot, message):
     channel_id = str(message.chat.id)
-    authorised = get_authorized_channels(channel_id)
+    authorised = auth.get_authorized_channels(channel_id)
 
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
@@ -64,7 +63,7 @@ async def get_caption_command(bot, message):
 @Client.on_message(filters.command("set_caption") & filters.channel)
 async def set_caption_command(bot, message):
     channel_id = str(message.chat.id)
-    authorized_channels = get_authorized_channels(channel_id)
+    authorized_channels = auth.get_authorized_channels(channel_id)
     
     if channel_id not in authorized_channels:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
