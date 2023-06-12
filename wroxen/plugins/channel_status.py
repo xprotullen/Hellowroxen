@@ -51,29 +51,32 @@ async def add_authorised_chat_command(bot, message):
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("अवैध प्रारूप।  कृपया सही प्रारूप का उपयोग करें`/add_authorised_chat {channel_id}`.")
+        await message.reply("अवैध प्रारूप। कृपया सही प्रारूप का उपयोग करें `/add_authorised_chat {channel_id}`.")
         return
-   
+
     channel_id = command_parts[1]
-    
+
     if not channel_id.startswith("-100"):
-        chat_id = "-100" + channel_id
+        channel_id = "-100" + channel_id
+
     try:
-        chat = await bot.get_chat(int(chat_id))
-    except:
+        chat = await bot.get_chat(int(channel_id))
+    except Exception as e:
         return await message.reply("मुझे अपने टारगेट चैनल में एडमिन बनाएं।")
+
     channel_id = str(chat.id)
     authorized_chat = auth.get_authorized_channels(channel_id)
-    
+
     if channel_id in authorized_chat:
         await message.reply("चैनल आईडी पहले से ही अधिकृत है।")
         return
 
     try:
         auth.add_authorized_channel(channel_id)
-        await message.reply(f"Channel ID {channel_id} <b>{chat.titel}</b> अधिकृत सूची में जोड़ा गया।")
+        await message.reply(f"Channel ID {channel_id} <b>{chat.title}</b> अधिकृत सूची में जोड़ा गया।")
     except Exception as e:
         await message.reply("अधिकृत सूची में चैनल आईडी जोड़ते समय एक त्रुटि हुई।")
+
 
 
 @Client.on_message(filters.command("delete_authorised_chat") & filters.private)
