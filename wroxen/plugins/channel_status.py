@@ -88,7 +88,12 @@ async def delete_authorised_chat_command(bot, message):
 
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
-
+        
+    bkr = channel_id
+    channel_id = auth.get_authorized_channels(str(channel_id))
+    if str(bkr) not in str(channel_id):
+        await message.reply("हटाने के लिए कोई चैनल आईडी नही मिला।")
+        return
     try:
         auth.delete_authorized_channel(channel_id)
         await message.reply(f"{channel_id} को अधिकृत सूची से हटा दिया गया।")
