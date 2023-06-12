@@ -11,7 +11,7 @@ import logging, asyncio
 from wroxen.database import Database, AuthorizedChannels
 
 db = Database()
-auth = AuthorizedChannels()
+auth = AuthorizedChannels
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
