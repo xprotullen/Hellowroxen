@@ -1,14 +1,15 @@
 # (c) @TheLx0980
 
 import asyncio
-from wroxen.database.authorized_chat import get_authorized_channels, add_authorized_channel, delete_authorized_channel, \
-   delete_all_authorized_chats, get_authorized_chat
-from wroxen.database.caption_db import get_forward_settings, get_replace_data, clear_all_db, get_caption
 from pyrogram import Client, filters
 from wroxen.vars import ADMIN_IDS
+from wroxen.database import Database, AuthorizedChannels
 
 import logging
 logger = logging.getLogger(__name__)
+
+db = Database()
+auth = AuthorizedChannels()
 
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
@@ -18,7 +19,7 @@ async def channel_status_command(bot, message):
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
-        old_username, new_username, caption = get_replace_data(channel_id)
+        old_username, new_username, caption = db.get_replace_data(channel_id)
         await bot.send_message(message.chat.id, f"New Username: {new_username} 🖐️")
         channel_status_text = f"""
 From Channel: {from_chat}
@@ -58,7 +59,7 @@ async def add_authorised_chat_command(bot, message):
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
     
-    authorized_chat = get_authorized_channels(channel_id)
+    authorized_chat = auth.get_authorized_channels(channel_id)
     
     if channel_id in authorized_chat:
         await message.reply("चैनल आईडी पहले से ही अधिकृत है।")
@@ -89,7 +90,7 @@ async def delete_authorised_chat_command(bot, message):
         channel_id = "-100" + channel_id
 
     try:
-        delete_authorized_channel(channel_id)
+        auth.delete_authorized_channel(channel_id)
         await message.reply(f"{channel_id} को अधिकृत सूची से हटा दिया गया।")
     except Exception as e:
         await message.reply("प्राधिकृत सूची से चैनल आईडी निकालते समय एक त्रुटि हुई।")
@@ -101,7 +102,7 @@ async def delete_all_authorised_chats_command(bot, message):
         return
 
     try:
-        deleted_count = delete_all_authorized_chats()
+        deleted_count = auth.delete_all_authorized_chats()
         await message.reply(f"{deleted_count} अधिकृत चैट हटा दी गई हैं।")
     except Exception as e:
         await message.reply("अधिकृत चैट को हटाते समय एक त्रुटि हुई")
@@ -115,7 +116,7 @@ async def check_authorised_command(bot, message):
         return
 
     try:
-        authorised_chats = get_authorized_chat()
+        authorised_chats = auth.get_authorized_chat()
         if not authorised_chats:
             await message.reply("कोई अधिकृत चैट नहीं मिली।")
         else:
