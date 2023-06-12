@@ -96,18 +96,18 @@ class Database:
         return True
     return False
 
-        def add_replace_settings(self, channel_id, old_username, new_username, caption):
-            existing_settings = self.caption_collection.find_one({"channel_id": channel_id})
-            if existing_settings:
-                raise ValueError("Replace settings for this channel already exist.")
+    def add_replace_settings(self, channel_id, old_username, new_username, caption):
+        existing_settings = self.caption_collection.find_one({"channel_id": channel_id})
+        if existing_settings:
+            raise ValueError("Replace settings for this channel already exist.")
 
-            replace_settings = {
-                "channel_id": channel_id,
-                "old_username": old_username,
-                "new_username": new_username,
-                "caption": caption
-            }
-            self.caption_collection.insert_one(replace_settings)
+        replace_settings = {
+            "channel_id": channel_id,
+            "old_username": old_username,
+            "new_username": new_username,
+            "caption": caption
+        }
+        self.caption_collection.insert_one(replace_settings)
 
         def delete_caption_settings(self, channel_id):
             existing_settings = self.caption_collection.find_one({"channel_id": channel_id})
