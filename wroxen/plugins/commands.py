@@ -6,8 +6,9 @@ from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
 import logging
 
+import logging
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.ERROR)
 
 
 @Wroxen.on_message(filters.command("start") & filters.private & filters.incoming)
