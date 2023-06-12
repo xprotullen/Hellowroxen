@@ -123,7 +123,7 @@ async def delete_all_authorised_chats_command(bot, message):
         
         
         
-@Client.on_message(filters.command("check_authorised") & filters.private)
+@Client.on_message(filters.command("check_authorised_chats") & filters.private)
 async def check_authorised_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं")
