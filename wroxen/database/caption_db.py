@@ -90,11 +90,11 @@ class Database:
             replace_settings["old_username"] = old_username
             replace_settings["new_username"] = new_username
             self.caption_collection.update_one(
-            {"channel_id": channel_id},
-            {"$set": replace_settings}
-        )
-        return True
-    return False
+                {"channel_id": channel_id},
+                {"$set": replace_settings}
+            )
+            return True
+        return False
 
     def add_replace_settings(self, channel_id, old_username, new_username, caption):
         existing_settings = self.caption_collection.find_one({"channel_id": channel_id})
