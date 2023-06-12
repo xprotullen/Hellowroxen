@@ -7,10 +7,12 @@ from wroxen.text import ChatMSG
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
-from wroxen.database.caption_db import add_channel, delete_channel, get_caption, channels_collection, \
-    update_caption, get_forward_settings, get_replace_data
 from wroxen.vars import ADMIN_IDS
 import logging, asyncio
+from wroxen.database import Database
+
+
+db = Database()
 
 media_filter = filters.document | filters.video | filters.audio
 logger = logging.getLogger(__name__)
@@ -36,7 +38,7 @@ async def update_caption_command(bot, message):
         return
 
     try:
-        update_caption(channel_id, new_caption)
+        db.update_caption(channel_id, new_caption)
         await message.reply(f"चैनल {channel_id} के लिए कैप्शन अपडेट किया गया।\n\n{new_caption}")
     except ValueError:
         await message.reply("डेटाबेस में कैप्शन अपडेट करते समय एक त्रुटि हुई। ")
@@ -51,7 +53,7 @@ async def get_caption_command(bot, message):
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
 
-    caption = get_caption(channel_id)
+    caption = db.get_caption(channel_id)
 
     if caption:
         await message.reply(f"{channel_id} इस चैनल के लिए कैप्शन सेट किया गया।\nकैप्शन{caption}")
@@ -80,7 +82,7 @@ async def set_caption_command(bot, message):
         channel_id = "-100" + channel_id
 
     try:
-        add_channel(channel_id, caption)
+        db.add_channel(channel_id, caption)
         await message.reply(f"चैनल के लिए कैप्शन सेट किया {channel_id}.\n\n{caption}")
     except ValueError:
         await message.reply("चैनल पहले ही डेटाबेस में जोड़ा जा चुका है!")
@@ -91,7 +93,7 @@ async def delete_all_info_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आपको इस आदेश का उपयोग करने का अधिकार नहीं है।")
         return
-    channels_collection.delete_many({})
+    db.channels_collection.delete_many({})
     await message.reply("डेटाबेस की सभी  ऑटो कैप्शन जानकारी को डिलीट किया गया")
 
 
@@ -100,7 +102,7 @@ async def delete_caption_command(bot, message):
 
     channel_id = str(message.chat.id)
 
-    deleted = delete_channel(channel_id)
+    deleted = db.delete_channel(channel_id)
     if deleted:
         await message.reply(f"{channel_id} इस चैनल के लिए कैप्शन हटाया गया।")
     else:
@@ -111,7 +113,7 @@ async def delete_caption_command(bot, message):
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     if is_channel_added(channel_id):
-        caption = get_caption(channel_id)
+        caption = db.get_caption(channel_id)
     
         try:
             media = message.document or message.video or message.audio
@@ -138,11 +140,11 @@ async def editing(bot, message):
                 parse_mode=enums.ParseMode.MARKDOWN
             )
     channel_id = str(message.chat.id)
-    forward_settings = get_forward_settings(channel_id)
+    forward_settings = db.get_forward_settings(channel_id)
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
-        old_username, new_username, caption = get_replace_data(channel_id)
+        old_username, new_username, caption = db.get_replace_data(channel_id)
         await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
         if str(message.chat.id) == str(from_chat):
             try:
