@@ -2,8 +2,10 @@
 
 from . import Database
 
+db = Database()
+
 class AuthorizedChannels:
-    authorized_channels = Database.authorized_channels
+    authorized_channels = db.authorized_channels
     
     @staticmethod
     def get_authorized_channels(channel_id):
