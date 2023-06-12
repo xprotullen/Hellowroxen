@@ -1,18 +1,18 @@
 # (c) @TheLx0980
 
-from wroxen.database import Database
-from wroxen.database.authorized_chat import get_authorized_channels
+from wroxen.database import Database, AuthorizedChannels
 import logging, asyncio
 from pyrogram import Client, filters, enums
 from wroxen.vars import ADMIN_IDS
 logger = logging.getLogger(__name__)
 
 db = Database()
+auth = AuthorizedChannels()
 
 @Client.on_message(filters.command("set_forward") & filters.channel)
 async def set_forward_command(bot, message):
     channel_id = str(message.chat.id)
-    authorised = get_authorized_channels(channel_id)
+    authorised = auth.get_authorized_channels(channel_id)
 
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
@@ -60,7 +60,7 @@ async def clear_forward_db_command(bot, message):
 @Client.on_message(filters.command("add_f_caption_info") & filters.channel)
 async def add_f_caption_info_command(bot, message):
     channel_id = str(message.chat.id)
-    authorised = get_authorized_channels(channel_id)
+    authorised = auth.get_authorized_channels(channel_id)
 
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
@@ -144,7 +144,7 @@ async def delete_replace_command(bot, message):
 @Client.on_message(filters.command("add_f_replace") & filters.channel)
 async def add_f_replace_command(bot, message):
      channel_id = str(message.chat.id)
-     authorised = get_authorized_channels(channel_id)
+     authorised = auth.get_authorized_channels(channel_id)
      
      if channel_id not in authorised:
          await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
@@ -172,7 +172,7 @@ async def add_f_replace_command(bot, message):
 @Client.on_message(filters.command("Add_f_caption") & filters.channel)
 async def add_f_caption_command(bot, message):
     channel_id = str(message.chat.id)
-    authorised = get_authorized_channels(channel_id)
+    authorised = auth.get_authorized_channels(channel_id)
 
     if channel_id not in authorised:
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
