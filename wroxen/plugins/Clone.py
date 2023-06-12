@@ -6,12 +6,14 @@ from wroxen.vars import LOGGER
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from wroxen.database.authorized_chat import get_authorized_channels
+# from wroxen.database.authorized_chat import get_authorized_channels
 import logging
+from wroxen.database import AuthorizedChannels
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-
+auth = AuthorizedChannels()
 CURRENT = {}
 CHANNEL = {}
 CANCEL = {}
@@ -134,7 +136,7 @@ async def set_target_channel(bot, message):
     except:
         return await message.reply("मुझे अपने टारगेट चैनल में एडमिन बनाएं।")
     channel_id = str(chat.id)
-    authorised = get_authorized_channels(channel_id)
+    authorised = auth.get_authorized_channels(channel_id)
     if chat.type != enums.ChatType.CHANNEL:
         return await message.reply("मैं केवल चैनल्स को सेट कर सकता हूँ।")
     if channel_id not in authorised:
