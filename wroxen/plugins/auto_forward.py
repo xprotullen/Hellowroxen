@@ -1,14 +1,13 @@
 # (c) @TheLx0980
 
+from wroxen.database import Database
 from wroxen.database.authorized_chat import get_authorized_channels
 import logging, asyncio
 from pyrogram import Client, filters, enums
-from wroxen.database.caption_db import set_forward_settings, delete_forward_settings, get_forward_settings, \
-   clear_forward_db, update_replace_text, update_f_caption, add_replace_settings, \
-   delete_caption_settings, delete_replace_settings, get_replace_data, caption_collection
-   
 from wroxen.vars import ADMIN_IDS
 logger = logging.getLogger(__name__)
+
+db = Database()
 
 @Client.on_message(filters.command("set_forward") & filters.channel)
 async def set_forward_command(bot, message):
@@ -32,7 +31,7 @@ async def set_forward_command(bot, message):
         to_chat = "-100" + to_chat
 
     try:
-        set_forward_settings(from_chat, to_chat)
+        db.set_forward_settings(from_chat, to_chat)
         await message.reply(f"फ़ोरवर्डिंग सफलतापूर्वक सेट की गई!\n\nसे: {from_chat}\nटू चैट: {to_chat}")
     except ValueError as e:
         await message.reply(str(e))
@@ -42,7 +41,7 @@ async def set_forward_command(bot, message):
 async def delete_forward_command(bot, message):
     channel_id = str(message.chat.id)
 
-    deleted_count = delete_forward_settings(channel_id)
+    deleted_count = db.delete_forward_settings(channel_id)
 
     if deleted_count > 0:
         await message.reply(f"चैनल {channel_id} के लिए फ़ोरवर्डिंग सेटिंग्स हटा दी गईं।")
@@ -55,7 +54,7 @@ async def clear_forward_db_command(bot, message):
     if message.from_user.id not in ADMIN_IDS:
         await message.reply("आप इस आदेश को निष्पादित करने के लिए अधिकृत उपयोगकर्ता नहीं हैं।")
         return
-    delete_count = clear_forward_db()
+    delete_count = db.clear_forward_db()
     await message.reply(f"सभी फवार्डिंग कनेक्शन हटा दिए गए। कुल हटाए गए काउंट: {delete_count}.")
       
 @Client.on_message(filters.command("add_f_caption_info") & filters.channel)
@@ -78,7 +77,7 @@ async def add_f_caption_info_command(bot, message):
     channel_id = str(message.chat.id)
 
     try:
-        add_replace_settings(channel_id, old_username, new_username, caption)
+        db.add_replace_settings(channel_id, old_username, new_username, caption)
         await bot.send_message(message.chat.id, "कैप्शन सफलतापूर्वक जोड़ा गया।")
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
@@ -94,7 +93,7 @@ async def update_caption_command(bot, message):
     new_caption = " ".join(message.command[1:])
 
     channel_id = str(message.chat.id)
-    if update_f_caption(channel_id, new_caption):
+    if db.update_f_caption(channel_id, new_caption):
         await bot.send_message(message.chat.id, f"कैप्शन सफलतापूर्वक अपडेट किया गया।\n\nनया कैप्शन: {new_caption}")
     else:
         await bot.send_message(message.chat.id, "चैनल के लिए प्रतिस्थापन सेटिंग नहीं मिली।")
@@ -110,7 +109,7 @@ async def update_replace_text_command(bot, message):
     old_username = message.command[1]
     new_username = message.command[2]
 
-    if update_replace_text(channel_id, old_username, new_username):
+    if db.update_replace_text(channel_id, old_username, new_username):
         await bot.send_message(message.chat.id, f"प्रतिस्थापित पाठ सफलतापूर्वक अपडेट किया गया।\n\nपुराना उपयोगकर्ता नाम: {old_username}\nनया उपयोगकर्ता नाम: {new_username}")
     else:
         await bot.send_message(message.chat.id, "चैनल के लिए प्रतिस्थापित सेटिंग नहीं मिली।")
@@ -120,7 +119,7 @@ async def delete_caption_command(bot, message):
     channel_id = str(message.chat.id)
     
     try:
-        delete_caption_settings(channel_id)
+        db.delete_caption_settings(channel_id)
         await bot.send_message(message.chat.id, "Caption deleted from replace settings.")
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
@@ -129,11 +128,11 @@ async def delete_caption_command(bot, message):
 @Client.on_message(filters.command("delete_replace") & filters.channel)
 async def delete_replace_command(bot, message):
     channel_id = str(message.chat.id)
-    forward_settings = get_forward_settings(channel_id)
+    forward_settings = db.get_forward_settings(channel_id)
     if forward_settings:
         old_username, new_username, _ = get_replace_data(channel_id)
         if old_username and new_username:
-            delete_replace_settings(channel_id, old_username, new_username)
+            db.delete_replace_settings(channel_id, old_username, new_username)
             await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
         else:
             await bot.send_message(message.chat.id, "इस चैनल के लिए सेटिंग बदलें (बदलना) मौजूद नहीं है")
@@ -165,7 +164,7 @@ async def add_f_replace_command(bot, message):
      channel_id = str(message.chat.id)
 
      try:
-         add_replace_settings(channel_id, old_username, new_username, "")
+         db.add_replace_settings(channel_id, old_username, new_username, "")
          await bot.send_message(message.chat.id, "Username replaced successfully.")
      except ValueError as e:
          await bot.send_message(message.chat.id, str(e))
@@ -187,7 +186,7 @@ async def add_f_caption_command(bot, message):
     caption = reply_message.caption if reply_message.caption else ""
 
     try:
-        add_replace_settings(channel_id, "", "", caption)
+        db.add_replace_settings(channel_id, "", "", caption)
         await bot.send_message(message.chat.id, "कैप्शन सफलतापूर्वक जोड़ा गया।")
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
@@ -197,7 +196,7 @@ async def add_f_caption_command(bot, message):
 async def delete_f_captions_command(bot, message):
     channel_id = str(message.chat.id)
 
-    result = caption_collection.delete_many({"channel_id": channel_id})
+    result = db.caption_collection.delete_many({"channel_id": channel_id})
 
     if result.deleted_count > 0:
         await bot.send_message(message.chat.id, f"चैनल आईडी {channel_id} के लिए सभी कैप्शन सफलतापूर्वक हटा दिए गए हैं।")
