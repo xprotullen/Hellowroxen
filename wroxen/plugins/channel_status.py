@@ -88,24 +88,26 @@ async def delete_authorised_chat_command(bot, message):
     command_parts = message.text.split(" ", 1)
 
     if len(command_parts) != 2:
-        await message.reply("अवैध प्रारूप।  कृपया सही प्रारूप का उपयोग करें `/delete_authorised_chat {channel_id}`.")
+        await message.reply("अवैध प्रारूप। कृपया सही प्रारूप का उपयोग करें `/delete_authorised_chat {channel_id}`.")
         return
 
     channel_id = command_parts[1]
 
     if not channel_id.startswith("-100"):
         channel_id = "-100" + channel_id
-        
-    bkr = channel_id
-    channel_id = auth.get_authorized_channels(str(channel_id))
-    if str(bkr) not in str(channel_id):
-        await message.reply("हटाने के लिए कोई चैनल आईडी नही मिला।")
+
+    channel_ids = auth.get_authorized_channels(channel_id)
+
+    if channel_id not in channel_ids:
+        await message.reply("हटाने के लिए कोई चैनल आईडी नहीं मिली।")
         return
+
     try:
         auth.delete_authorized_channel(channel_id)
         await message.reply(f"{channel_id} को अधिकृत सूची से हटा दिया गया।")
     except Exception as e:
         await message.reply("प्राधिकृत सूची से चैनल आईडी निकालते समय एक त्रुटि हुई।")
+
 
 @Client.on_message(filters.command("delete_all_authorised_chats") & filters.private)
 async def delete_all_authorised_chats_command(bot, message):
