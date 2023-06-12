@@ -121,7 +121,7 @@ async def check_authorised_command(bot, message):
         return
 
     try:
-        authorised_chats = await auth.get_authorized_chat()
+        authorised_chats = auth.get_authorized_chat()
         if not authorised_chats:
             await message.reply("कोई अधिकृत चैट नहीं मिली।")
         else:
