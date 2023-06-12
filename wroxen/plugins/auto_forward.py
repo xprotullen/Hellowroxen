@@ -7,7 +7,7 @@ from wroxen.vars import ADMIN_IDS
 logger = logging.getLogger(__name__)
 
 db = Database()
-auth = AuthorizedChannels()
+auth = AuthorizedChannels
 
 @Client.on_message(filters.command("set_forward") & filters.channel)
 async def set_forward_command(bot, message):
