@@ -13,7 +13,8 @@ from wroxen.database import AuthorizedChannels
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-auth = AuthorizedChannels()
+auth = AuthorizedChannels
+
 CURRENT = {}
 CHANNEL = {}
 CANCEL = {}
