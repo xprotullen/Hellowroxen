@@ -77,7 +77,7 @@ async def callback_data(bot, update: CallbackQuery):
         ],[
             InlineKeyboardButton('मीडिया क्लोन', callback_data='media_clone')
         ],[
-            InlineKeyboardButton('मीडिया क्लोन', callback_data='admin_command')
+            InlineKeyboardButton('व्यवस्थापक आदेश', callback_data='admin_command')
         ],[ 
             InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
@@ -129,7 +129,7 @@ async def callback_data(bot, update: CallbackQuery):
         reply_markup = InlineKeyboardMarkup(buttons)
         
         await update.message.edit_text(
-            ChatMSG.AUTOFORWARD_TXT,
+            ChatMSG.AUTO_FORWARD_TXT,
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
