@@ -7,7 +7,6 @@ from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from wroxen.database.authorized_chat import get_authorized_channels
-
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
