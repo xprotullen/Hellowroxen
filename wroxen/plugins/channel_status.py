@@ -66,7 +66,7 @@ async def add_authorised_chat_command(bot, message):
         return
 
     try:
-        add_authorized_channel(channel_id)
+        auth.add_authorized_channel(channel_id)
         await message.reply(f"Channel ID {channel_id} अधिकृत सूची में जोड़ा गया।")
     except Exception as e:
         await message.reply("अधिकृत सूची में चैनल आईडी जोड़ते समय एक त्रुटि हुई।")
