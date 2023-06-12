@@ -19,7 +19,7 @@ async def start(client, message):
         reply_markup = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("😊 मदद", callback_data = "help"),
+                    InlineKeyboardButton("मदद ⚙", callback_data = "help"),
                     InlineKeyboardButton("🔒 बंद करो", callback_data = "close")
                 ]
             ]
@@ -52,7 +52,8 @@ async def callback_data(bot, update: CallbackQuery):
 
     if query_data == "start":
         buttons = [[            
-            InlineKeyboardButton('मदद ⚙', callback_data="help")
+            InlineKeyboardButton('मदद ⚙', callback_data="help"),
+            InlineKeyboardButton("🔒 बंद करो", callback_data = "close")
         ]]
     
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -71,7 +72,8 @@ async def callback_data(bot, update: CallbackQuery):
             InlineKeyboardButton('मेरे बारे में', callback_data='about')
         ],[
             InlineKeyboardButton('स्वचालित कैप्शन', callback_data='caption')
-            #InlineKeyboardButton('About', callback_data='about')
+        ],[
+            InlineKeyboardButton('स्वचालित फ़ॉरवर्ड', callback_data='autoforward')
         ],[
             InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
@@ -110,6 +112,48 @@ async def callback_data(bot, update: CallbackQuery):
         
         await update.message.edit_text(
             ChatMSG.CAPTION_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+  
+    elif query_data == "autoforward": 
+        buttons = [[
+            InlineKeyboardButton('पीछे⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+        ]]
+        
+        reply_markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.edit_text(
+            ChatMSG.AUTOFORWARD_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+        
+    elif query_data == "admin_command": 
+        buttons = [[
+            InlineKeyboardButton('पीछे⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+        ]]
+        
+        reply_markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.edit_text(
+            ChatMSG.ADMIN_COMMAND_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+        
+    elif query_data == "media_clone": 
+        buttons = [[
+            InlineKeyboardButton('पीछे⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+        ]]
+        
+        reply_markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.edit_text(
+            ChatMSG.MEDIA_CLONE_TXT,
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
