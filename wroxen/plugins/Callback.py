@@ -1,6 +1,6 @@
 # @thelx0980
 
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+HELLO = """ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram import Client, filters, enums
 from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
@@ -85,4 +85,5 @@ async def callback_data(bot, update: CallbackQuery):
     elif query_data == "close":
         await update.message.delete()
 
-        
+
+"""
