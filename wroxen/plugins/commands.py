@@ -75,6 +75,10 @@ async def callback_data(bot, update: CallbackQuery):
         ],[
             InlineKeyboardButton('स्वचालित फ़ॉरवर्ड', callback_data='autoforward')
         ],[
+            InlineKeyboardButton('मीडिया क्लोन', callback_data='media_clone')
+        ],[
+            InlineKeyboardButton('मीडिया क्लोन', callback_data='admin_command')
+        ],[ 
             InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
     
