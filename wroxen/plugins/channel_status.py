@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 @Client.on_message(filters.command("Channel_status") & filters.channel)
 async def channel_status_command(bot, message):
     channel_id = str(message.chat.id)
-    auto_caption = get_caption(channel_id)
-    forward_settings = get_forward_settings(channel_id)
+    auto_caption = db.get_caption(channel_id)
+    forward_settings = db.get_forward_settings(channel_id)
     if forward_settings:
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
@@ -141,7 +141,7 @@ async def clear_db_command(bot, message):
     
     clear_type = command_msg[1].lower()
     if clear_type == "all":
-        delete_counts = clear_all_db()
+        delete_counts = db.clear_all_db()
     
         reply_text = f"""
 कुल मिटाए गए कनेक्शन:
