@@ -79,6 +79,8 @@ async def callback_data(bot, update: CallbackQuery):
         ],[
             InlineKeyboardButton('व्यवस्थापक आदेश', callback_data='admin_command')
         ],[ 
+            InlineKeyboardButton('चैनल में खोजें', callback_data='channel_search')
+        ],[
             InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
     
