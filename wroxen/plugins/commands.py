@@ -162,6 +162,20 @@ async def callback_data(bot, update: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
         )
 
+    elif query_data == "channel_search": 
+        buttons = [[
+            InlineKeyboardButton('पीछे⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+        ]]
+        
+        reply_markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.edit_text(
+            ChatMSG.CHANNEL_SEARCH_TXT,  
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+    )
+
 
     elif query_data == "close":
         await update.message.delete()
