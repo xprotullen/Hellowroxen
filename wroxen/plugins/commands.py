@@ -4,7 +4,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 from pyrogram import filters, Client, enums
 from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
-import logging
+from wroxen.vars import ADMIN_IDS
 
 import logging
 logger = logging.getLogger(__name__)
@@ -137,6 +137,10 @@ async def callback_data(bot, update: CallbackQuery):
         )
         
     elif query_data == "admin_command": 
+        user_id = update.from_user.id
+        if user_id not in ADMIN_IDS:            
+            await update.answer("आप बोट व्यवस्थापक नहीं है।",show_alert=True)
+            return
         buttons = [[
             InlineKeyboardButton('पीछे⚡', callback_data='help'),
             InlineKeyboardButton('बंद करें 🔐', callback_data='close')
