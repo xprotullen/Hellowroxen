@@ -26,6 +26,7 @@ async def filter(client: Client, message: Message):
 
     if len(message.text) > 2:
         query = message.text        
+        group_id = message.chat.id
         channel_id = get_channel_id(group_id)
 
         if not channel_id:
