@@ -2,7 +2,7 @@
 # Year : 2023
 
 import re
-from bot.database.search_msg_db import get_channel_id, add_channel, delete_channel, is_group_in_database
+from wroxen.database.search_msg_db import get_channel_id, add_channel, delete_channel, is_group_in_database
 from pyrogram.types import Message, CallbackQuery
 from wroxen.wroxen import Wroxen as Bot
 from pyrogram import filters, Client
