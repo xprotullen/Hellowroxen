@@ -5,7 +5,7 @@ from pyrogram import filters, Client, enums
 from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
 from wroxen.vars import ADMIN_IDS
-from .search_msg import DATABASE, send_result_message
+from wroxen.chek.search_caption_info import DATABASE, send_result_message
 
 import logging
 logger = logging.getLogger(__name__)
