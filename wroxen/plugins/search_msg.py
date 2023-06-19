@@ -4,7 +4,7 @@
 import re, pyrogram
 from pyrogram import filters, enums, Client
 from wroxen.wroxen import Wroxen as Bot
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 import logging
 from wroxen.database.search_msg_db import get_channel_id
 
@@ -120,34 +120,3 @@ def generate_result_message(query, movies, page):
     return result_message
 
 
-@Client.on_callback_query(filters.regex(r'^next_page:'))
-async def next_page_callback(client: Client, query: CallbackQuery):
-    data = query.data
-    _, query_text, page = data.split(':')
-        
-    # Retrieve data from DATABASE
-    db_entry = DATABASE.get(query_text)
-    if db_entry:
-        movies = db_entry['movies']
-        result_message_id = db_entry['message_id']
-            
-        await query.answer()
-        await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
-    else:
-        await query.answer("Thats not for you!!", show_alert=True)
-    
-@Client.on_callback_query(filters.regex(r'^previous_page:'))
-async def previous_page_callback(client: Client, query: CallbackQuery):
-    data = query.data
-    _, query_text, page = data.split(':')
-        
-    # Retrieve data from DATABASE
-    db_entry = DATABASE.get(query_text)
-    if db_entry:
-        movies = db_entry['movies']
-        result_message_id = db_entry['message_id']
-            
-        await query.answer()
-        await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
-    else:
-        await query.answer("Thats not for you!!", show_alert=True)
