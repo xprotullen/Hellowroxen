@@ -58,7 +58,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await query.answer()
             await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
         else:
-            await query.answer("Thats not for you!!",show_alert=True)
+            await query.answer("यह आपके लिए नहीं है!",show_alert=True)
     
     elif data.startswith('previous_page:'):
         _, query_text, page = data.split(':')
@@ -72,4 +72,4 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await query.answer()
             await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
         else:
-            await query.answer("Thats not for you!!",show_alert=True)
+            await query.answer("यह आपके लिए नहीं है!",show_alert=True)
