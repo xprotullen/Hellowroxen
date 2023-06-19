@@ -8,22 +8,18 @@ from .vars import API_HASH, APP_ID, LOGGER, \
 class User(Client):
     def __init__(self):
         super().__init__(
-            name="user_session",
-            session_string=USER_SESSION,
+            "userbot",
             api_hash=API_HASH,
             api_id=APP_ID,
-            workers=4
+            session_string=USER_SESSION,
+            workers=20
         )
         self.LOGGER = LOGGER
 
     async def start(self):
         await super().start()
         usr_bot_me = await self.get_me()
-        self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(
-            f"@{usr_bot_me.username}  started!"
-        )
-        return self, usr_bot_me.id
+        return (self, usr_bot_me.id)
 
     async def stop(self, *args):
         await super().stop()
