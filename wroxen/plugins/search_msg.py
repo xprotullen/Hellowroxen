@@ -116,37 +116,39 @@ async def filter(client: Client, message: Message):
         page = 1
         await send_result_message(client, message, query, msgs, page)
 
-@Client.on_callback_query()
-async def callback_handler(client: Client, query: CallbackQuery):
+
+@Client.on_callback_query(filters.regex(r'^next_page:'))
+async def next_page_callback(client: Client, query: CallbackQuery):
     data = query.data
-    
-    if data.startswith('next_page:'):
-        _, query_text, page = data.split(':')
-        
-        # Retrieve data from DATABASE
-        db_entry = DATABASE.get(query_text)
-        if db_entry:
-            movies = db_entry['movies']
-            result_message_id = db_entry['message_id']
-            
-            await query.answer()
-            await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
-        else:
-            await query.answer("यह आपके लिए नहीं है!",show_alert=True)
-    
-    elif data.startswith('previous_page:'):
-        _, query_text, page = data.split(':')
-        
-        # Retrieve data from DATABASE
-        db_entry = DATABASE.get(query_text)
-        if db_entry:
-            movies = db_entry['movies']
-            result_message_id = db_entry['message_id']
-            
-            await query.answer()
-            await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
-        else:
-            await query.answer("यह आपके लिए नहीं है!",show_alert=True)
+    _, query_text, page = data.split(':')
+
+    # Retrieve data from DATABASE
+    db_entry = DATABASE.get(query_text)
+    if db_entry:
+        movies = db_entry['movies']
+        result_message_id = db_entry['message_id']
+
+        await query.answer()
+        await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
+    else:
+        await query.answer("यह आपके लिए नहीं है।", show_alert=True)
+
+
+@Client.on_callback_query(filters.regex(r'^previous_page:'))
+async def previous_page_callback(client: Client, query: CallbackQuery):
+    data = query.data
+    _, query_text, page = data.split(':')
+
+    # Retrieve data from DATABASE
+    db_entry = DATABASE.get(query_text)
+    if db_entry:
+        movies = db_entry['movies']
+        result_message_id = db_entry['message_id']
+
+        await query.answer()
+        await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
+    else:
+        await query.answer("यह आपके लिए नहीं है।", show_alert=True)
 
 
 async def send_result_message(client, message, query, movies, page, result_message_id=None):
