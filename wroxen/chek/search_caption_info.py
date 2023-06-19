@@ -6,6 +6,8 @@ from pyrogram import enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from html import escape
 
+DATABASE = {}
+
 async def send_result_message(client, message, query, movies, page, result_message_id=None):
     total_results = len(movies)
 
