@@ -4,7 +4,7 @@
 import re
 from pyrogram import enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
+from html import escape
 
 DATABASE = {}
 
