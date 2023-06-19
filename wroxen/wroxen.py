@@ -10,12 +10,15 @@ logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("imdbpy").setLevel(logging.ERROR)
 
 from pyrogram import Client, enums, __version__
-from wroxen.vars import API_HASH, APP_ID, LOGGER, BOT_TOKEN 
+from .vars import API_HASH, APP_ID, LOGGER, BOT_TOKEN 
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
+from .user import User
 
 class Wroxen(Client):
-
+    USER: User = None
+    USER_ID: int = None
+    
     def __init__(self):
         super().__init__(
             "wroxen",
@@ -37,6 +40,7 @@ class Wroxen(Client):
         self.LOGGER(__name__).info(
             f"@{bot_details.username}  started! "
         )
+        self.USER, self.USER_ID = await User().start()
        
 
     async def stop(self, *args):
