@@ -106,7 +106,7 @@ async def filter(client: Client, message: Message):
             caption = msg.caption
             movie_name, year, quality = extract_movie_details(caption)
             link = msg.link                     
-            movie_text = f"<b>{movie_name} ({year}) {quality}</b>\n<b>Link:</b> {link}"
+            movie_text = f"<b>{escape(movie_name)} ({year}) {quality}</b>\n<b>Link:</b> {link}"
             msgs.append(movie_text)
 
         if not msgs:
