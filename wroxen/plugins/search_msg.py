@@ -2,7 +2,7 @@
 # Year : 2023
 
 import re
-from bot.database.search_msg_db import get_channel_id
+from bot.database.search_msg_db import get_channel_id, add_channel, delete_channel, is_group_in_database
 from pyrogram.types import Message, CallbackQuery
 from wroxen.wroxen import Wroxen as Bot
 from pyrogram import filters, Client
@@ -14,6 +14,77 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 MEDIA_FILTER = enums.MessagesFilter.VIDEO
+
+
+@Client.on_message(filters.command("add_search_cnl") & filters.reply)
+async def add_channel_handler(client, message):
+    chat_id = message.chat.id
+    group_id = message.chat.id
+    channel_id = message.reply_to_message.forward_from_chat.id
+
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"आप एक अज्ञात व्यवस्थापक हैं।")
+
+    chat_type = message.chat.type
+    if chat_type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        return
+
+    st = await client.get_chat_member(chat_id, userid)
+    if (
+        st.status not in [enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER]
+    ):
+        return
+
+    if is_group_in_database(group_id):
+        if get_channel_id(group_id) == channel_id:
+            await client.send_message(
+                chat_id=chat_id,
+                text="समूह के लिए चैनल आईडी पहले से ही जोड़ दिया गया है।"
+            )
+        else:
+            add_channel(group_id, channel_id)
+            await client.send_message(
+                chat_id=chat_id,
+                text="समूह के लिए चैनल आईडी अपडेट की गई है।"
+            )
+    else:
+        add_channel(group_id, channel_id)
+        await client.send_message(
+            chat_id=chat_id,
+            text="चैनल आईडी को डेटाबेस में जोड़ दिया गया है।"
+       
+
+@Client.on_message(filters.command("delete_search_cnl") & filters.group)
+async def delete_channel_handler(client, message):
+    chat_id = message.chat.id
+    group_id = message.chat.id
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"आप एक अज्ञात व्यवस्थापक हैं।")
+
+    chat_type = message.chat.type
+    if chat_type not in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        return
+
+    st = await client.get_chat_member(chat_id, userid)
+    if (
+        st.status not in [enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER]
+    ):
+        return
+
+    if is_group_in_database(group_id):
+        delete_channel(group_id)
+        await client.send_message(
+            chat_id=chat_id,
+            text="समूह और उससे संबंधित चैनल को डेटाबेस से हटा दिया गया है।"
+        )
+    else:
+        await client.send_message(
+            chat_id=chat_id,
+            text="समूह डेटाबेस में मौजूद नहीं है।"
+        )
+
 
 @Client.on_message(filters.group & filters.text)
 async def filter(client: Client, message: Message):
