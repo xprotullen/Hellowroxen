@@ -190,3 +190,24 @@ async def send_result_message(client, message, query, movies, page, result_messa
         'movies': movies,
         'page': page
     }
+
+
+def generate_inline_keyboard(query, total_results, current_page):
+    buttons = []
+
+    if total_results > current_page * 10:
+        next_page_button = InlineKeyboardButton(
+            text='Next Page',
+            callback_data=f'next_page:{query}:{current_page + 1}'
+        )
+        buttons.append(next_page_button)
+
+    if current_page > 1:
+        previous_page_button = InlineKeyboardButton(
+            text='Previous Page',
+            callback_data=f'previous_page:{query}:{current_page - 1}'
+        )
+        buttons.append(previous_page_button)
+
+    inline_keyboard = [buttons]
+    return InlineKeyboardMarkup(inline_keyboard)  
