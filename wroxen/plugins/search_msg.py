@@ -6,7 +6,7 @@ from wroxen.database.search_msg_db import get_channel_id, add_channel, delete_ch
 from pyrogram.types import Message, CallbackQuery
 from wroxen.wroxen import Wroxen as Bot
 from pyrogram import filters, Client, enums
-from wroxen.chek.search_caption_info import extract_movie_details, generate_inline_keyboard, \
+from wroxen.chek.search_caption_info import extract_movie_details, \
     generate_result_message
 from html import escape
 
@@ -120,7 +120,7 @@ async def filter(client: Client, message: Message):
 @Client.on_callback_query(filters.regex(r'^next_page:'))
 async def next_page_callback(client: Client, query: CallbackQuery):
     data = query.data
-    _, query_text, page = data.split(':')
+    _, query_text, page = data.split('#')
 
     # Retrieve data from DATABASE
     db_entry = DATABASE.get(query_text)
@@ -137,7 +137,7 @@ async def next_page_callback(client: Client, query: CallbackQuery):
 @Client.on_callback_query(filters.regex(r'^previous_page:'))
 async def previous_page_callback(client: Client, query: CallbackQuery):
     data = query.data
-    _, query_text, page = data.split(':')
+    _, query_text, page = data.split('#')
 
     # Retrieve data from DATABASE
     db_entry = DATABASE.get(query_text)
@@ -198,14 +198,14 @@ def generate_inline_keyboard(query, total_results, current_page):
     if total_results > current_page * 10:
         next_page_button = InlineKeyboardButton(
             text='Next Page',
-            callback_data=f'next_page:{query}:{current_page + 1}'
+            callback_data=f'next_page#{query}:{current_page + 1}'
         )
         buttons.append(next_page_button)
 
     if current_page > 1:
         previous_page_button = InlineKeyboardButton(
             text='Previous Page',
-            callback_data=f'previous_page:{query}:{current_page - 1}'
+            callback_data=f'previous_page#{query}:{current_page - 1}'
         )
         buttons.append(previous_page_button)
 
