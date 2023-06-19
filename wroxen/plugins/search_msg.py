@@ -6,7 +6,8 @@ from wroxen.database.search_msg_db import get_channel_id, add_channel, delete_ch
 from pyrogram.types import Message, CallbackQuery
 from wroxen.wroxen import Wroxen as Bot
 from pyrogram import filters, Client, enums
-from wroxen.chek.search_caption_info import send_result_message, extract_movie_details, DATABASE
+from wroxen.chek.search_caption_info import extract_movie_details, generate_inline_keyboard, \
+    generate_result_message
 from html import escape
 
 import logging
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 MEDIA_FILTER = enums.MessagesFilter.VIDEO
-
+DATABASE = {}
 
 @Client.on_message(filters.command("add_search_cnl") & filters.reply)
 async def add_channel_handler(client, message):
@@ -146,3 +147,44 @@ async def callback_handler(client: Client, query: CallbackQuery):
             await send_result_message(client, query.message, query_text, movies, int(page), result_message_id)
         else:
             await query.answer("यह आपके लिए नहीं है!",show_alert=True)
+
+
+async def send_result_message(client, message, query, movies, page, result_message_id=None):
+    total_results = len(movies)
+
+    if total_results <= 10:
+        # Less than or equal to 10 results, no need for pagination
+        movies_page = movies
+        reply_markup = None
+    else:
+        results_per_page = 10
+        start_index = (page - 1) * results_per_page
+        end_index = page * results_per_page
+        movies_page = movies[start_index:end_index]
+        reply_markup = generate_inline_keyboard(query, total_results, page)
+
+    result_message = generate_result_message(query, movies_page, page)
+
+    if result_message_id:
+        # Edit the existing message
+        await client.edit_message_text(
+            chat_id=message.chat.id,
+            message_id=result_message_id,
+            text=result_message,
+            parse_mode=enums.ParseMode.HTML,
+            reply_markup=reply_markup
+        )
+    else:
+        # Send a new message
+        sent_message = await message.reply_text(
+            result_message,
+            parse_mode=enums.ParseMode.HTML,
+            reply_markup=reply_markup
+        )
+        result_message_id = sent_message.id
+
+    DATABASE[query] = {
+        'message_id': result_message_id,
+        'movies': movies,
+        'page': page
+    }
