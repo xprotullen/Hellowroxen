@@ -14,7 +14,7 @@ APP_ID = int(os.environ.get("APP_ID", ""))
 #Your API Hash from my.telegram.org
 API_HASH = os.environ.get("API_HASH", "")
 
-USER_SESSION = os.environ.get("SESSION", "")
+USER_SESSION = os.environ.get("USER_SESSION", "")
 
 #OWNER ID
 ADMIN_IDS = [5326801541, 5163706369, 5584776461]
