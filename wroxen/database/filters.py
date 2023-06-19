@@ -2,7 +2,7 @@
 
 import pymongo
 from pyrogram import enums
-from wroxen import DB_URI, DB_NAME
+from wroxen.vars import DB_URI, DB_NAME
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
