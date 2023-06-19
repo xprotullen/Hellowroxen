@@ -48,6 +48,7 @@ async def send_result_message(client, message, query, movies, page, result_messa
         'page': page
     }
 
+
 def generate_inline_keyboard(query, total_results, current_page):
     buttons = []
 
@@ -68,12 +69,15 @@ def generate_inline_keyboard(query, total_results, current_page):
     inline_keyboard = [buttons]
     return InlineKeyboardMarkup(inline_keyboard) 
 
+
 def generate_result_message(query, movies, page):
     start_number = (page - 1) * 10 + 1
     result_message = f"Here are the results for <b>{escape(query)}</b>:\n\n"
     for i, movie_text in enumerate(movies, start=start_number):
         result_message += f"{i}. {movie_text}\n\n"
     return result_message
+
+
 def extract_movie_details(caption):
     # Movie name patterns
     name_patterns = [
