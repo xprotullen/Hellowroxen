@@ -53,6 +53,7 @@ async def add_channel_handler(client, message):
         await client.send_message(
             chat_id=chat_id,
             text="चैनल आईडी को डेटाबेस में जोड़ दिया गया है।"
+        )
        
 
 @Client.on_message(filters.command("delete_search_cnl") & filters.group)
