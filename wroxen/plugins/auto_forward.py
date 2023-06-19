@@ -130,7 +130,7 @@ async def delete_replace_command(bot, message):
     channel_id = str(message.chat.id)
     forward_settings = db.get_forward_settings(channel_id)
     if forward_settings:
-        old_username, new_username, _ = get_replace_data(channel_id)
+        old_username, new_username, _ = auth.get_replace_data(channel_id)
         if old_username and new_username:
             db.delete_replace_settings(channel_id, old_username, new_username)
             await bot.send_message(message.chat.id, "Replace settings deleted successfully.")
