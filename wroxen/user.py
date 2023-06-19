@@ -2,7 +2,7 @@
 # Year : 2023
 
 from pyrogram import Client, __version__
-from wroxen.vars import API_HASH, APP_ID, LOGGER, \
+from .vars import API_HASH, APP_ID, LOGGER, \
     USER_SESSION
 
 class User(Client):
