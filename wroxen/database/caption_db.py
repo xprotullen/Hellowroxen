@@ -12,7 +12,16 @@ class Database:
         self.forward_collection = self.db["forward_settings"]
         self.caption_collection = self.db["caption_settings"]
         self.authorized_channels = self.db["authorized_channel"]
-
+        self.user_collection = self.db["user-collection"]
+    
+    def add_user(self, user_id):
+        existing_user = self.user_collection.find_one({"user_id": user_id})
+        if existing_user:
+            return existing_user["user_id"]
+        user_data = {"user_id": user_id}
+        self.user_collection.insert_one(user_data)
+        return None
+    
     def add_channel(self, channel_id, caption):
         existing_channel = self.channels_collection.find_one({"channel_id": channel_id})
         if existing_channel:
