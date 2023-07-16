@@ -13,7 +13,7 @@ logger.setLevel(logging.ERROR)
 
 db = Database()
 
-@Wroxen.on_message(filters.command("start") & filters.private & filters.incoming)
+@Wroxen.on_message(filters.command("start") & filters.private)
 async def start(client, message):
     await message.reply(
         text=ChatMSG.START_TXT.format(message.from_user.first_name),
@@ -33,7 +33,7 @@ async def start(client, message):
     db.add_user(user_id)
     await client.send_message(
         chat_id=-1001970089414,
-        text=f"<b>User:</b> {message.from_user.first_name}\n<b>ID</b>: <code>{user_id}</code>\n<b>Link:</b> {message.from_user.mention}"
+        text=f"<b>User:</b> {message.from_user.first_name}\n<b>ID:</b> <code>{user_id}</code>\n<b>Link:</b> {message.from_user.mention}"
     )
 
          
