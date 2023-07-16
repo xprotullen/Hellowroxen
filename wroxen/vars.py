@@ -19,7 +19,7 @@ API_HASH = os.environ.get("API_HASH", "")
 USER_SESSION = os.environ.get("USER_SESSION", "")
 
 #OWNER ID
-ADMIN_IDS = [int(admin) if id_pattern.search(admin) else admin for admin in environ['ADMIN_IDS'].split()]
+ADMIN_IDS = [int(admin) if id_pattern.search(admin) else admin for admin in os.environ['ADMIN_IDS'].split()]
 
 #MongoDB URL
 DB_URL = os.environ.get("DB_URL", "")
