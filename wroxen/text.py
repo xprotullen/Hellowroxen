@@ -95,7 +95,7 @@ class ChatMSG(object):
 
 <code>/ClearDB</code> - इस कमांड से बोट व्यवस्थापक पूरे डेटाबेस को साफ कर सकता है या हटा सकता है।
 
-<b>© @Lx0980AI</b>
+<b> Lx 0980</b>
 """
       
       MEDIA_CLONE_TXT = """
