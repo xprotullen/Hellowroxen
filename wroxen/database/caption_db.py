@@ -16,11 +16,17 @@ class Database:
     
     def add_user(self, user_id):
         existing_user = self.user_collection.find_one({"user_id": user_id})
+        if not existing_user:
+            user_data = {"user_id": user_id}        
+            self.user_collection.insert_one(user_data)
+
+    
+    def get_user(self, user_id):
+        existing_user = self.user_collection.find_one({"user_id": user_id})
         if existing_user:
-            return existing_user["user_id"]
-        user_data = {"user_id": user_id}
-        self.user_collection.insert_one(user_data)
+            return existing_user['user_id']
         return None
+        
     
     def add_channel(self, channel_id, caption):
         existing_channel = self.channels_collection.find_one({"channel_id": channel_id})
