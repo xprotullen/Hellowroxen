@@ -5,12 +5,13 @@ from pyrogram import filters, Client, enums
 from wroxen.wroxen import Wroxen
 from wroxen.text import ChatMSG
 from wroxen.vars import ADMIN_IDS
-from wroxen.chek.search_caption_info import DATABASE, send_result_message
-
+from wroxen.database import Database 
 import logging
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
+db = Database()
 
 @Wroxen.on_message(filters.command("start") & filters.private & filters.incoming)
 async def start(client, message):
@@ -18,17 +19,24 @@ async def start(client, message):
         text=ChatMSG.START_TXT.format(message.from_user.first_name),
         disable_web_page_preview=True,
         reply_markup = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("मदद ⚙", callback_data = "help"),
-                    InlineKeyboardButton("🔒 बंद करो", callback_data = "close")
-                ]
-            ]
+            [[                
+                InlineKeyboardButton("मदद ⚙", callback_data = "help"),
+                InlineKeyboardButton("🔒 बंद करो", callback_data = "close")                
+            ]]
         ),
         quote=True
     )
-    
+    user_id = str(message.from_user.id)
+    existing = db.get_user(user_id)
+    if existing:
+        return 
+    db.add_user(user_id)
+    await client.send_message(
+        chat_id=-1001970089414,
+        text=f"<b>User:</b> {message.from_user.first_name}\n<b>ID</b>: <code>{user_id}</code>\n<b>Link:</b> {message.from_user.mention}"
+    )
 
+         
 @Wroxen.on_message(filters.command("help") & filters.private & filters.incoming)
 async def about(client, message):
     await message.reply(
