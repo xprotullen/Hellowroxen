@@ -273,8 +273,8 @@ async def callback_handler(client: Client, query: CallbackQuery):
 
     elif data == "about": 
         buttons = [[
-            InlineKeyboardButton('पीछे ⚡', callback_data='start'),
-                        InlineKeyboardButton('बंद करें 🔐', callback_data='close')
+            InlineKeyboardButton('पीछे ⚡', callback_data='help'),
+            InlineKeyboardButton('बंद करें 🔐', callback_data='close')
         ]]
         
         reply_markup = InlineKeyboardMarkup(buttons)
