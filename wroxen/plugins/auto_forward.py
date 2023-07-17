@@ -67,20 +67,16 @@ async def add_f_caption_info_command(bot, message):
         await message.reply("आपका चैनल इस आदेश को निष्पादित करने के लिए अधिकृत नहीं है।")
         return
 
-    command_args = message.command[1:]
-    raw_text = ' '.join(command_args)
-    split_text = raw_text.split('\\"')
-
-    if len(split_text) < 3:
-        await bot.send_message(message.chat.id, "अमान्य कमांड। उपयोग: /add_f_caption {पुराना_यूज़रनेम} {नया_यूज़रनेम} {कैप्शन}")
-        return
-
-    old_username = codecs.decode(split_text[0].strip()[3:-3], 'unicode_escape')
-    new_username = codecs.decode(split_text[1].strip()[3:-3], 'unicode_escape')
-    caption = codecs.decode(split_text[2].strip()[3:-3], 'unicode_escape')
+    command_parts = message.text.split("\\", 2)
+        
+    replace = command_parts[0].replace("/add_f_caption_info", "")
+        
+    old_username = replace.strip()
+    new_username = command_parts[1].strip()
+    caption = command_parts[2].strip()
 
     try:
-        db.add_replace_settings(channel_id, old_username, new_username, caption)
+        #db.add_replace_settings(channel_id, old_username, new_username, caption)
         text = await bot.send_message(message.chat.id, f"कैप्शन सफलतापूर्वक जोड़ा गया।\n<b>कैप्शन:</b> <code>{caption}</code>\n<b>बदलना</b> <code>{old_username}</code>\n<b>बदलना जाएगा:</b> <code>{new_username}</code>") 
     except ValueError as e:
         await bot.send_message(message.chat.id, str(e))
