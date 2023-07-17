@@ -40,7 +40,7 @@ class Wroxen(Client):
         self.LOGGER(__name__).info(
             f"@{bot_details.username}  started! "
         )
-      #  self.USER, self.USER_ID = await User().start()
+        self.USER, self.USER_ID = await User().start()
        
 
     async def stop(self, *args):
