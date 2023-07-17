@@ -1,7 +1,7 @@
 # (c) @TheLx0980
 
 from wroxen.database import Database, AuthorizedChannels
-import logging, asyncio, codecs
+import logging
 from pyrogram import Client, filters, enums
 from wroxen.vars import ADMIN_IDS
 logger = logging.getLogger(__name__)
@@ -74,9 +74,7 @@ async def add_f_caption_info_command(bot, message):
     old_username = command_args[0]
     new_username = command_args[1]
     caption = " ".join(command_args[2:])
-
-    channel_id = str(message.chat.id)
-
+    
     try:
         db.add_replace_settings(channel_id, old_username, new_username, caption)
         await bot.send_message(message.chat.id, f"कैप्शन सफलतापूर्वक जोड़ा गया।\n<b>कैप्शन:</b> <code>{caption}</code>\n<b>बदलना:</b> <code>{old_username}</code>\n<b>बदलना जाएगा:</b> <code>{new_username}</code>") 
