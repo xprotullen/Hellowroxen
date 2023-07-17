@@ -144,7 +144,7 @@ async def editing(bot, message):
         from_chat = forward_settings["from_chat"]
         to_chat = forward_settings["to_chat"]
         old_username, new_username, caption = db.get_replace_data(channel_id)
-        await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
+      # await bot.send_message(message.chat.id, f"New Username: {new_username}\nOld Username: {old_username}\nCaption: {caption}🖐️")
         if str(message.chat.id) == str(from_chat):
             try:
                 new_caption = message.caption
