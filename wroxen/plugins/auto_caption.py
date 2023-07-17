@@ -157,7 +157,7 @@ async def editing(bot, message):
                     chat_id=int(to_chat),
                     from_chat_id=message.chat.id,
                     message_id=message.id,
-                    caption=new_caption,
+                    caption=f"**{new_caption}**",
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
             except Exception as e:
