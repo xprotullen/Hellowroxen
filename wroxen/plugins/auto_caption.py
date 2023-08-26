@@ -13,7 +13,7 @@ from wroxen.database import Database, AuthorizedChannels
 db = Database()
 auth = AuthorizedChannels
 
-media_filter = filters.document | filters.video | filters.audio
+media_filter = filters.document | filters.video | filters.audio | filters.sticker
 logger = logging.getLogger(__name__)
 
 
@@ -131,7 +131,7 @@ async def editing(bot, message):
 
         old_message_id = message.id
 
-        if caption_text:
+        if message.caption:
             await bot.edit_message_caption(
                 chat_id=message.chat.id,
                 message_id=message.id,
@@ -162,16 +162,3 @@ async def editing(bot, message):
                 )
             except Exception as e:
                 print(f"Error copying message: {e}")
-
-
-
-
-
-
-
-
-
-
-            
-
-
