@@ -27,15 +27,15 @@ async def start(client, message):
         ),
         quote=True
     )
-    user_id = str(message.from_user.id)
-    existing = db.get_user(user_id)
-    if existing:
-        return 
-    db.add_user(user_id)
-    await client.send_message(
-        chat_id=-1001970089414,
-        text=f"<b>User:</b> {message.from_user.first_name}\n<b>ID:</b> <code>{user_id}</code>\n<b>Link:</b> {message.from_user.mention}"
-    )
+   # user_id = str(message.from_user.id)
+   # existing = db.get_user(user_id)
+   # if existing:
+   #     return 
+   # db.add_user(user_id)
+   # await client.send_message(
+   #     chat_id=-1001970089414,
+   #     text=f"<b>User:</b> {message.from_user.first_name}\n<b>ID:</b> <code>{user_id}</code>\n<b>Link:</b> {message.from_user.mention}"
+   # )
 
          
 @Wroxen.on_message(filters.command("help") & filters.private & filters.incoming)
